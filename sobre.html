@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sobre o Conecta — O portal feito para quem está começando</title>
+<meta name="description" content="Conheça o Conecta, a plataforma que conecta estudantes com as melhores oportunidades de estágio e Jovem Aprendiz em Bauru.">
+<style>
+/*
+ * ════════════════════════════════════════════════════════════════
+ *  INICIAAÍ — DESIGN SYSTEM UNIFICADO
+ *  Paleta oficial Anhembi Morumbi — Polo Bauru-Centro
+ *  PANTONE 7719C (#007A5E) · PANTONE 3285C (#00A88E) · Gray 10C (#76787B)
+ * ════════════════════════════════════════════════════════════════
+ */
+
+/* ── TOKENS ──────────────────────────────────────────────────── */
+:root {
+  /* Cores Pantone */
+  --c-green:        #007A5E;   /* PANTONE 7719C */
+  --c-green-dark:   #005C47;
+  --c-green-mid:    #006B52;
+  --c-mint:         #00A88E;   /* PANTONE 3285C */
+  --c-mint-dark:    #008C76;
+  --c-mint-light:   #E6F7F4;
+  --c-gray:         #76787B;   /* PANTONE Cool Gray 10C */
+
+  /* Superfícies */
+  --surface-hero:   #003528;   /* hero background base */
+  --surface-dark:   #004D3D;   /* dark sections */
+  --surface-bg:     #F4F8F7;   /* page background */
+  --surface-white:  #FFFFFF;
+  --surface-card:   #FFFFFF;
+
+  /* Texto */
+  --text-primary:   #1A2E28;
+  --text-secondary: #76787B;
+  --text-disabled:  #B0BFB8;
+  --text-on-dark:   rgba(255,255,255,.9);
+  --text-muted-dark:rgba(255,255,255,.6);
+
+  /* Bordas */
+  --border-light:   #D4E5DF;
+  --border-card:    #E0EDEA;
+
+  /* Sombras */
+  --shadow-sm:  0 2px 8px rgba(0,90,70,.07);
+  --shadow-md:  0 8px 24px rgba(0,90,70,.1);
+  --shadow-lg:  0 20px 48px rgba(0,90,70,.14);
+  --shadow-xl:  0 32px 64px rgba(0,90,70,.18);
+
+  /* Bordas arredondadas */
+  --r-sm:  8px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-pill:50px;
+
+  /* Espaçamento */
+  --space-xs:  .375rem;
+  --space-sm:  .75rem;
+  --space-md:  1.5rem;
+  --space-lg:  2.5rem;
+  --space-xl:  4rem;
+  --space-2xl: 6rem;
+
+  /* Transições */
+  --t-fast:   .15s ease;
+  --t-base:   .25s ease;
+  --t-slow:   .4s ease;
+
+  /* Aliases para compatibilidade com código existente */
+  --primary:      var(--c-green);
+  --primary-dark: var(--c-green-dark);
+  --primary-mid:  var(--c-green-mid);
+  --accent:       var(--c-mint);
+  --accent-dark:  var(--c-mint-dark);
+  --accent-light: var(--c-mint-light);
+  --gray:         var(--c-gray);
+  --gray-light:   #F0F1F2;
+  --bg:           var(--surface-bg);
+  --dark:         var(--surface-dark);
+  --text:         var(--text-primary);
+  --muted:        var(--text-secondary);
+  --border:       var(--border-light);
+  --white:        var(--surface-white);
+  --green:        var(--c-mint);
+  --orange:       #E65100;
+  --yellow:       #F5A623;
+  --cyan:         var(--c-mint);
+  --violet:       var(--c-green);
+  --coral:        var(--c-green-dark);
+}
+
+/* ── RESET & BASE ────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--surface-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── TIPOGRAFIA ──────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: 'Clash Display', sans-serif;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+}
+
+/* ── CONTAINER ───────────────────────────────────────────────── */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+@media(max-width:600px) { .container { padding: 0 1.25rem; } }
+
+/* ── NAV ─────────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 72px;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 0 rgba(0,122,94,.06);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+
+/* Logo */
+.nav-logo {
+  display: block;
+  width: 194px; height: 55px; flex-shrink: 0;
+  background: url('logo-conecta-color.png') no-repeat left center / contain;
+  font-size: 0; color: transparent;
+  text-decoration: none;
+  transition: opacity var(--t-base);
+}
+.nav-logo:hover { opacity: .8; }
+
+/* Links centrais */
+.nav-links {
+  flex: 1;
+  display: flex; align-items: center;
+  justify-content: center;
+  gap: 2.25rem;
+}
+.nav-links a {
+  font-size: .875rem; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none;
+  transition: color var(--t-fast);
+  position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0; right: 0; height: 2px;
+  background: var(--c-mint); border-radius: 2px;
+  transform: scaleX(0); transition: transform var(--t-base);
+}
+.nav-links a:hover { color: var(--c-green); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a.active { color: var(--c-green); font-weight: 700; }
+.nav-links a.active::after { transform: scaleX(1); }
+
+/* CTA button */
+.nav-cta {
+  padding: .55rem 1.4rem;
+  background: var(--c-mint);
+  color: white; border: none; border-radius: var(--r-pill);
+  font-size: .875rem; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  transition: background var(--t-base), transform var(--t-base), box-shadow var(--t-base);
+  white-space: nowrap;
+}
+.nav-cta:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,168,142,.3);
+}
+
+/* Mobile hamburger */
+.nav-burger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none;
+  cursor: pointer; padding: .35rem;
+  margin-left: auto;
+}
+.nav-burger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text-primary); border-radius: 2px;
+  transition: all var(--t-base);
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 72px; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,.98);
+  backdrop-filter: blur(16px);
+  z-index: 99;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem;
+  gap: .25rem;
+  border-top: 1px solid var(--border-light);
+  transform: translateX(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.nav-mobile.open { transform: translateX(0); }
+.nav-mobile-link {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .9rem 1rem; border-radius: var(--r-md);
+  font-size: .95rem; font-weight: 600;
+  color: var(--text-primary); text-decoration: none;
+  transition: background var(--t-fast);
+}
+.nav-mobile-link:hover { background: var(--c-mint-light); color: var(--c-green); }
+.nav-mobile-link svg { color: var(--c-green); flex-shrink: 0; }
+
+/* ── HERO BASE (dark green) ──────────────────────────────────── */
+.hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(158deg, #002E22 0%, #006B52 55%, #003D2E 100%);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 5rem 2rem 0;
+  min-height: calc(100svh - 72px);
+}
+
+/* Listras diagonais sutis */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 28px,
+    rgba(255,255,255,.018) 28px, rgba(255,255,255,.018) 29px
+  );
+  pointer-events: none; z-index: 0;
+}
+
+/* Glow central */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 35%; left: 50%; transform: translate(-50%, -50%);
+  width: 70%; height: 320px;
+  background: radial-gradient(ellipse, rgba(0,168,142,.18) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Símbolo AM decorativo */
+.hero-deco {
+  position: absolute;
+  right: -2%; bottom: -4%;
+  width: min(260px, 26vw);
+  aspect-ratio: 700/762;
+  background: url('symbol-am-white.png') no-repeat right bottom / contain;
+  pointer-events: none; z-index: 0;
+  opacity: .9;
+}
+
+/* Conteúdo do hero */
+.hero-content {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 780px;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .4rem 1.1rem;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: var(--r-pill);
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: rgba(255,255,255,.82);
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  color: white; font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+.hero h1 .accent { color: var(--c-mint); }
+
+.hero-sub {
+  font-size: clamp(.95rem, 1.8vw, 1.1rem);
+  color: rgba(255,255,255,.68);
+  line-height: 1.75;
+  max-width: 520px; margin: 0 auto 2.5rem;
+}
+
+/* Hero CTAs */
+.hero-ctas {
+  display: flex; gap: 1rem;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+.btn-hero-primary {
+  padding: .9rem 2.25rem;
+  background: var(--c-mint); color: white;
+  border: none; border-radius: var(--r-pill);
+  font-weight: 700; font-size: .95rem;
+  text-decoration: none; cursor: pointer;
+  transition: background var(--t-base), transform var(--t-base), box-shadow var(--t-base);
+}
+.btn-hero-primary:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,168,142,.35);
+}
+.btn-hero-ghost {
+  padding: .9rem 2.25rem;
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.22);
+  color: white; border-radius: var(--r-pill);
+  font-weight: 600; font-size: .95rem;
+  text-decoration: none; cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all var(--t-base);
+}
+.btn-hero-ghost:hover {
+  background: rgba(255,255,255,.2);
+  transform: translateY(-2px);
+}
+
+/* Stats bar */
+.hero-stats {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  max-width: 480px; margin: 0 auto;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+.hero-stat {
+  padding: 1.4rem 1rem; text-align: center;
+  border-right: 1px solid rgba(255,255,255,.08);
+  transition: background var(--t-fast);
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat:hover { background: rgba(255,255,255,.07); }
+.hero-stat-val {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 2rem; font-weight: 700; color: white; line-height: 1;
+  margin-bottom: .3rem;
+}
+.hero-stat-lbl { font-size: .7rem; color: rgba(255,255,255,.5); font-weight: 500; }
+
+/* ── WAVE SEPARATOR ──────────────────────────────────────────── */
+/* Transição suave de seção: hero escuro → conteúdo branco */
+.section-transition {
+  display: block; line-height: 0;
+  overflow: hidden;
+  background: var(--surface-hero);  /* match seção acima */
+  margin-bottom: -2px;
+}
+.section-transition svg { display: block; width: 100%; }
+
+/* ── SECTION BASE ────────────────────────────────────────────── */
+.section {
+  padding: var(--space-2xl) 0;
+}
+.section-sm { padding: var(--space-xl) 0; }
+.section-dark {
+  background: var(--surface-dark);
+  padding: var(--space-2xl) 0;
+}
+
+/* Section header */
+.section-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem 1rem;
+  background: var(--c-mint-light);
+  border: 1px solid rgba(0,168,142,.2);
+  color: var(--c-green); border-radius: var(--r-pill);
+  font-size: .7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .09em;
+  margin-bottom: .875rem;
+}
+.section-badge-dark {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.75);
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+  color: var(--text-primary); margin-bottom: .75rem;
+}
+.section-title .accent { color: var(--c-mint); }
+.section-title-dark { color: white; }
+.section-title-dark .accent { color: var(--c-mint); }
+
+.section-desc {
+  font-size: 1rem; color: var(--text-secondary);
+  line-height: 1.75; max-width: 540px;
+}
+.section-desc-dark { color: rgba(255,255,255,.58); }
+
+/* ── CARDS ───────────────────────────────────────────────────── */
+.card {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--r-lg);
+  padding: var(--space-lg);
+  transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(0,168,142,.3);
+}
+
+/* Highlight card (gradiente verde) */
+.card-highlight {
+  background: linear-gradient(135deg, var(--c-green) 0%, var(--c-mint-dark) 100%);
+  border: none; border-radius: var(--r-lg);
+  padding: var(--space-lg);
+  color: white; position: relative; overflow: hidden;
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+.card-highlight::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 85% 15%, rgba(255,255,255,.12), transparent);
+  pointer-events: none;
+}
+.card-highlight:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px rgba(0,90,70,.3);
+}
+.card-highlight > * { position: relative; z-index: 1; }
+.card-highlight .card-icon { color: rgba(255,255,255,.65); margin-bottom: .875rem; }
+.card-highlight h3 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 1.25rem; font-weight: 700; margin-bottom: .4rem;
+}
+.card-highlight p { font-size: .85rem; opacity: .82; line-height: 1.65; }
+
+/* ── BUTTONS ─────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .75rem 1.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem; font-weight: 700;
+  border: none; border-radius: var(--r-pill);
+  cursor: pointer; text-decoration: none;
+  transition: all var(--t-base);
+}
+.btn-primary {
+  background: var(--c-mint); color: white;
+}
+.btn-primary:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,168,142,.32);
+}
+.btn-secondary {
+  background: white; color: var(--c-green);
+  border: 1.5px solid var(--border-card);
+}
+.btn-secondary:hover {
+  border-color: var(--c-mint);
+  color: var(--c-mint);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.btn-ghost-dark {
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.2);
+  color: white;
+  backdrop-filter: blur(8px);
+}
+.btn-ghost-dark:hover {
+  background: rgba(255,255,255,.2);
+  transform: translateY(-2px);
+}
+.btn-danger {
+  background: rgba(183,28,28,.08); color: #B71C1C;
+  border: 1.5px solid rgba(183,28,28,.2);
+}
+.btn-danger:hover { background: #B71C1C; color: white; }
+.btn-sm { padding: .5rem 1.1rem; font-size: .82rem; }
+.btn-lg { padding: 1rem 2.5rem; font-size: 1rem; }
+.btn-block { width: 100%; justify-content: center; }
+
+/* ── FORMS ───────────────────────────────────────────────────── */
+.form-group { margin-bottom: 1.25rem; }
+.form-label {
+  display: block;
+  font-size: .78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-secondary);
+  margin-bottom: .5rem;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: .8rem 1.1rem;
+  background: white;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--r-md);
+  font-size: .9rem; color: var(--text-primary);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--c-mint);
+  box-shadow: 0 0 0 3px rgba(0,168,142,.12);
+}
+.form-input::placeholder { color: var(--text-disabled); }
+
+/* ── BADGES / CHIPS ──────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .25rem .75rem;
+  border-radius: var(--r-pill);
+  font-size: .72rem; font-weight: 700;
+}
+.badge-green   { background: rgba(0,168,142,.12); color: var(--c-mint-dark); }
+.badge-primary { background: rgba(0,122,94,.1);   color: var(--c-green); }
+.badge-gray    { background: rgba(118,120,123,.12); color: var(--c-gray); }
+.badge-yellow  { background: rgba(245,166,35,.12);  color: #92620A; }
+.badge-red     { background: rgba(183,28,28,.1);   color: #B71C1C; }
+
+/* ── TOGGLE ──────────────────────────────────────────────────── */
+.toggle {
+  width: 44px; height: 24px; border-radius: 50px;
+  border: none; cursor: pointer; flex-shrink: 0;
+  background: var(--border-light);
+  position: relative; transition: background var(--t-base);
+}
+.toggle::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: white; top: 3px; left: 3px;
+  transition: transform var(--t-base);
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.toggle.on { background: var(--c-mint); }
+.toggle.on::after { transform: translateX(20px); }
+
+/* ── FADE-IN SCROLL ANIMATION ────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+}
+.fade-up.visible { opacity: 1; transform: none; }
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  padding: .875rem 1.25rem;
+  border-radius: var(--r-md);
+  font-size: .85rem; font-weight: 600; color: white;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  transform: translateY(80px); opacity: 0;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  z-index: 300; max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: var(--c-mint); }
+.toast.error   { background: #B71C1C; }
+.toast.info    { background: var(--c-green); }
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+.footer {
+  background: var(--surface-dark);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+.footer-logo {
+  height: 44px; object-fit: contain;
+  opacity: .92;
+  margin: 0 auto 1.25rem;
+}
+.footer-links {
+  display: flex; gap: 1.5rem;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: .75rem;
+}
+.footer-links a {
+  font-size: .82rem; color: rgba(255,255,255,.45);
+  text-decoration: none; transition: color var(--t-fast);
+}
+.footer-links a:hover { color: rgba(255,255,255,.85); }
+.footer-copy { font-size: .72rem; color: rgba(255,255,255,.22); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media(max-width: 768px) {
+  :root {
+    --space-xl:  3rem;
+    --space-2xl: 4rem;
+  }
+
+  .nav { padding: 0 1.25rem; height: 64px; }
+  .nav-logo { width: 130px; height: 40px; }
+  .nav-links { display: none !important; }
+  .nav-cta  { display: none !important; }
+  .nav-burger { display: flex !important; }
+  .nav-mobile { display: flex !important; }
+
+  .hero { padding: 3.5rem 1.25rem 0; min-height: 90svh; }
+  .hero h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .hero-ctas a, .hero-ctas button { width: 100%; max-width: 280px; text-align: center; justify-content: center; }
+  .hero-deco { width: min(160px, 38vw); right: -1%; }
+  .hero-stats { grid-template-columns: 1fr 1fr 1fr; max-width: 100%; }
+
+  .section { padding: 3rem 0; }
+  .section-dark { padding: 3rem 0; }
+
+  .section-title { font-size: 1.65rem; }
+}
+
+@media(max-width: 480px) {
+  .hero-stats { grid-template-columns: 1fr; }
+  .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .hero-stat:last-child { border-bottom: none; }
+}
+
+
+/* ═══ SOBRE — PAGE-SPECIFIC ═══ */
+
+/* Hero mais alto com espaçamento generoso */
+.hero { min-height: 85svh; padding: 5rem 2rem 0; }
+.hero h1 { font-size: clamp(2.4rem, 5vw, 4rem); }
+
+/* ── MISSÃO ── */
+.missao-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.missao-card-main {
+  background: linear-gradient(135deg, var(--c-green), var(--c-mint-dark));
+  border-radius: var(--r-xl); padding: 2.25rem;
+  color: white; position: relative; overflow: hidden;
+}
+.missao-card-main::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 80% 15%, rgba(255,255,255,.1), transparent);
+  pointer-events: none;
+}
+.missao-card-main h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: .75rem; }
+.missao-card-main p { font-size: .9rem; opacity: .82; line-height: 1.75; }
+.missao-card-float {
+  position: absolute; bottom: -1.25rem; right: -.75rem; z-index: 10;
+  background: white; border-radius: var(--r-md);
+  padding: .9rem 1.2rem;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-card);
+  max-width: 200px;
+}
+.missao-card-float .mf-title {
+  display: flex; align-items: center; gap: .4rem;
+  font-weight: 700; font-size: .85rem; color: var(--c-green);
+  margin-bottom: .15rem;
+}
+.missao-card-float .mf-sub { font-size: .72rem; color: var(--text-secondary); }
+.missao-visual { position: relative; padding-bottom: 2.5rem; }
+
+/* ── COMO FUNCIONA ── */
+.tabs-how {
+  display: flex; gap: .3rem; background: white;
+  padding: .3rem; border-radius: var(--r-md);
+  border: 1.5px solid var(--border-card);
+  max-width: 360px; margin-bottom: 2.25rem;
+}
+.tab-how {
+  flex: 1; padding: .6rem 1rem; border-radius: var(--r-sm);
+  border: none; cursor: pointer; font-family: 'DM Sans', sans-serif;
+  font-size: .875rem; font-weight: 700;
+  color: var(--text-secondary); background: transparent;
+  transition: all var(--t-fast);
+  display: flex; align-items: center; gap: .4rem; justify-content: center;
+}
+.tab-how:hover { background: var(--c-mint-light); color: var(--c-green); }
+.tab-how.active { background: var(--c-mint); color: white; }
+.how-section { display: none; }
+.how-section.show { display: block; }
+
+.steps-list { display: flex; flex-direction: column; gap: .875rem; max-width: 580px; }
+.step-item {
+  display: flex; gap: 1.1rem; align-items: flex-start;
+  background: white; border-radius: var(--r-md); padding: 1.25rem;
+  border: 1.5px solid var(--border-card);
+  transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+}
+.step-item:hover {
+  transform: translateX(5px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(0,168,142,.3);
+}
+.step-dot {
+  width: 44px; height: 44px; border-radius: var(--r-sm);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-dot-v { background: rgba(0,122,94,.1); color: var(--c-green); }
+.step-dot-e { background: rgba(0,168,142,.1); color: var(--c-mint); }
+.step-label { font-size: .68rem; font-weight: 800; text-transform: uppercase; letter-spacing: .1em; color: var(--c-mint); margin-bottom: .2rem; }
+.step-title { font-family: 'Clash Display', sans-serif; font-size: .95rem; font-weight: 700; color: var(--c-green); letter-spacing: -.01em; margin-bottom: .25rem; }
+.step-desc  { font-size: .84rem; color: var(--text-secondary); line-height: 1.65; }
+
+/* ── DIFERENCIAIS ── */
+.diff-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+.diff-card {
+  background: white; border-radius: var(--r-lg); padding: 1.75rem;
+  border: 1.5px solid var(--border-card);
+  transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+}
+.diff-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: rgba(0,168,142,.3); }
+.diff-icon { width: 48px; height: 48px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; margin-bottom: 1rem; }
+.diff-title { font-family: 'Clash Display', sans-serif; font-size: 1rem; font-weight: 700; letter-spacing: -.01em; margin-bottom: .5rem; color: var(--text-primary); }
+.diff-desc  { font-size: .875rem; color: var(--text-secondary); line-height: 1.7; }
+
+/* ── VALORES ── */
+.quem-bg { background: var(--surface-dark); }
+.quem-inner { max-width: 740px; margin: 0 auto; text-align: center; }
+.valores-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 2.5rem; }
+.valor-card {
+  background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+  border-radius: var(--r-md); padding: 1.5rem; text-align: center;
+  transition: background var(--t-fast), transform var(--t-fast);
+}
+.valor-card:hover { background: rgba(255,255,255,.13); transform: translateY(-3px); }
+.valor-icon { display: flex; justify-content: center; margin-bottom: .75rem; color: var(--c-mint); }
+.valor-name { font-family: 'Clash Display', sans-serif; font-size: .92rem; font-weight: 700; color: white; margin-bottom: .3rem; }
+.valor-desc { font-size: .78rem; color: rgba(255,255,255,.5); line-height: 1.6; }
+
+/* ── PARA EMPRESAS ── */
+.empresa-split { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5rem; align-items: center; }
+.empresa-benefits { display: flex; flex-direction: column; gap: .875rem; }
+.benefit-row { display: flex; align-items: flex-start; gap: .875rem; transition: transform var(--t-fast); }
+.benefit-row:hover { transform: translateX(4px); }
+.benefit-check {
+  width: 30px; height: 30px; border-radius: var(--r-sm);
+  background: var(--c-mint-light); color: var(--c-green);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.benefit-title { font-weight: 700; font-size: .88rem; color: var(--text-primary); margin-bottom: .12rem; }
+.benefit-desc  { font-size: .8rem; color: var(--text-secondary); line-height: 1.5; }
+.empresa-card {
+  background: linear-gradient(155deg, var(--surface-hero), var(--surface-dark));
+  border-radius: var(--r-xl); padding: 2.25rem;
+  position: relative; overflow: hidden;
+}
+.empresa-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: url('symbol-am-white.png') no-repeat right -20px bottom -20px / 180px;
+  opacity: .07; pointer-events: none;
+}
+.empresa-card h3 { font-family: 'Clash Display', sans-serif; font-size: 1.35rem; color: white; margin-bottom: 1.25rem; position: relative; z-index: 1; }
+.empresa-steps { display: flex; flex-direction: column; gap: .875rem; position: relative; z-index: 1; }
+.emp-step { display: flex; align-items: center; gap: .875rem; }
+.emp-step-num {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.22);
+  display: flex; align-items: center; justify-content: center;
+  font-size: .75rem; font-weight: 800; color: white; flex-shrink: 0;
+}
+.emp-step-text { font-size: .875rem; color: rgba(255,255,255,.75); }
+.emp-step-text strong { color: white; }
+
+/* ── FAQ ── */
+.faq-list { max-width: 680px; display: flex; flex-direction: column; gap: .625rem; }
+.faq-item {
+  background: white; border-radius: var(--r-md);
+  border: 1.5px solid var(--border-card);
+  overflow: hidden; transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.faq-item.open { border-color: rgba(0,168,142,.4); box-shadow: 0 4px 16px rgba(0,168,142,.1); }
+.faq-q {
+  padding: 1.1rem 1.25rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  font-family: 'Clash Display', sans-serif; font-weight: 700; font-size: .9rem;
+  color: var(--text-primary);
+}
+.faq-q svg { flex-shrink: 0; transition: transform var(--t-base); color: var(--text-secondary); }
+.faq-item.open .faq-q { color: var(--c-green); }
+.faq-item.open .faq-q svg { transform: rotate(180deg); color: var(--c-mint); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height .32s ease; }
+.faq-a p { padding: 0 1.25rem 1.1rem; font-size: .875rem; color: var(--text-secondary); line-height: 1.75; }
+
+/* ── CTA FINAL ── */
+.cta-final {
+  background: var(--surface-dark);
+  text-align: center; position: relative; overflow: hidden;
+}
+.cta-final::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,168,142,.2), transparent);
+  pointer-events: none;
+}
+.cta-final::after {
+  content: ''; position: absolute;
+  right: -3%; bottom: -6%;
+  width: min(260px, 28vw); aspect-ratio: 700/762;
+  background: url('symbol-am-white.png') no-repeat center / contain;
+  pointer-events: none;
+}
+.cta-final-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+.cta-final h2 { font-size: clamp(2rem, 5vw, 3.2rem); color: white; margin-bottom: 1rem; }
+.cta-final h2 span { color: var(--c-mint); }
+.cta-final p { color: rgba(255,255,255,.55); margin-bottom: 2.25rem; font-size: .98rem; line-height: 1.7; }
+.cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.cta-btn-a { background: var(--c-mint); color: white; border: none; border-radius: var(--r-pill); padding: .9rem 2.25rem; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 700; text-decoration: none; transition: all var(--t-base); }
+.cta-btn-a:hover { background: var(--c-mint-dark); transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0,168,142,.35); }
+.cta-btn-b { background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.22); color: white; border-radius: var(--r-pill); padding: .9rem 2.25rem; font-family: 'DM Sans', sans-serif; font-size: .95rem; font-weight: 600; text-decoration: none; transition: all var(--t-base); }
+.cta-btn-b:hover { background: rgba(255,255,255,.2); transform: translateY(-2px); }
+
+/* Wave sections */
+.section-wave { display: block; line-height: 0; overflow: hidden; margin-bottom: -2px; }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  .missao-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  .missao-card-float { position: static; margin-top: 1rem; }
+  .missao-visual { padding-bottom: 0; }
+  .empresa-split { grid-template-columns: 1fr; gap: 2rem; }
+  .valores-grid { grid-template-columns: 1fr 1fr; }
+  .diff-grid { grid-template-columns: 1fr 1fr; }
+  .cta-btns { flex-direction: column; align-items: center; }
+  .cta-btns a { width: 100%; max-width: 280px; text-align: center; }
+}
+@media(max-width:480px) {
+  .valores-grid { grid-template-columns: 1fr; }
+  .diff-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html" aria-label="Conecta — Página inicial"></a>
+  <div class="nav-links">
+    <a href="index.html">Ver Vagas</a>
+    <a href="sobre.html" class="active">Sobre</a>
+    <a href="cadastro-empresa.html">Para Empresas</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:.75rem">
+    <a class="btn-nav-cta" href="cadastro-candidato.html">Criar Perfil</a>
+    <button class="nav-burger" id="nav-burger" onclick="toggleMob()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="mob-drawer">
+  <a class="mob-link" href="index.html">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Ver Vagas
+  </a>
+  <a class="mob-link" href="cadastro-candidato.html">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Criar meu perfil
+  </a>
+  <a class="mob-link" href="cadastro-empresa.html">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+    Para Empresas
+  </a>
+  <a class="mob-link" href="termos.html">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    Termos & Privacidade
+  </a>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<div class="hero">
+  <div class="hero-deco" aria-hidden="true"></div>
+  <div class="hero-content" style="width:100%;max-width:780px;">
+    <div class="hero-badge">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+      Portal oficial — Anhembi Morumbi Bauru-Centro
+    </div>
+    <h1>O portal que coloca<br>o <span>estudante em primeiro</span></h1>
+    <p class="hero-sub">Conectamos jovens talentos com empresas que acreditam no potencial de quem está dando os primeiros passos na carreira.</p>
+    <div class="hero-ctas">
+      <a class="btn-hero-primary" href="cadastro-candidato.html">Criar meu perfil grátis →</a>
+      <a class="btn-hero-secondary" href="#como-funciona">Como funciona</a>
+    </div>
+  </div>
+  <div class="hero-numbers">
+    <div class="hero-num">
+      <div class="hero-num-val">100%</div>
+      <div class="hero-num-label">Gratuito para candidatos</div>
+    </div>
+    <div class="hero-num">
+      <div class="hero-num-val">24h</div>
+      <div class="hero-num-label">Prazo de revisão de vagas</div>
+    </div>
+    <div class="hero-num">
+      <div class="hero-num-val">LGPD</div>
+      <div class="hero-num-label">Dados protegidos por lei</div>
+    </div>
+  </div>
+</div>
+<svg class="section-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 40" preserveAspectRatio="none">
+  <path fill="white" d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z"/>
+</svg>
+
+<!-- ═══════ MISSÃO ═══════ -->
+<section>
+  <div class="container">
+    <div class="missao-grid">
+      <div class="fade-in">
+        <div class="section-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+          Nossa Missão
+        </div>
+        <h2 class="section-title">Democratizar o acesso às <span>primeiras oportunidades</span></h2>
+        <p class="section-sub" style="margin-bottom:1.25rem">No Brasil, conseguir o primeiro emprego ainda é um desafio enorme. Criamos o Conecta para mudar isso — conectando estudantes motivados com empresas que valorizam o potencial humano acima da experiência.</p>
+        <p class="section-sub">Acreditamos que todo jovem merece uma chance real. Nossa plataforma é o elo que faltava entre o talento de quem quer aprender e as empresas que precisam de gente comprometida.</p>
+      </div>
+      <div class="fade-in" style="padding-bottom:2.5rem">
+        <div class="missao-card-main">
+          <h3>Por que o Conecta existe?</h3>
+          <p>Milhões de estudantes brasileiros enfrentam o paradoxo cruel: precisam de experiência para conseguir emprego, mas precisam de emprego para ter experiência. O estágio e o Jovem Aprendiz são a porta de entrada — e nós abrimos ela.</p>
+        </div>
+        <div class="missao-card-float">
+          <div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Revisão manual de vagas
+          </div>
+          <div>Toda vaga é aprovada antes de publicar</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ COMO FUNCIONA ═══════ -->
+<section class="como-funciona" id="como-funciona">
+  <div class="container">
+    <div class="fade-in" style="margin-bottom:2.25rem">
+      <div class="section-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        Como Funciona
+      </div>
+      <h2 class="section-title">Simples para <span>candidatos</span> e <span>empresas</span></h2>
+    </div>
+    <div class="tabs-how">
+      <button class="tab-how active" onclick="switchHow('cand',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Candidatos
+      </button>
+      <button class="tab-how" onclick="switchHow('emp',this)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+        Empresas
+      </button>
+    </div>
+    <div class="how-section show" id="how-cand">
+      <div class="steps-list">
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-v"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg></div>
+          <div><div class="step-label">Passo 1</div><div class="step-title">Crie seu perfil em minutos</div><div class="step-desc">Cadastro gratuito com dados básicos, formação e objetivo profissional. Opcionalmente faça o teste de perfil DISC para se destacar.</div></div>
+        </div>
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-v"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+          <div><div class="step-label">Passo 2</div><div class="step-title">Explore vagas com filtros avançados</div><div class="step-desc">Filtre por área, modalidade, período, cidade e bolsa. Cada vaga tem página própria com todos os detalhes.</div></div>
+        </div>
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-v"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <div><div class="step-label">Passo 3</div><div class="step-title">Candidate-se com um clique</div><div class="step-desc">Sua candidatura chega diretamente para o RH da empresa. Acompanhe o status em tempo real no seu painel.</div></div>
+        </div>
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-v"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div><div class="step-label">Passo 4</div><div class="step-title">Receba o contato da empresa</div><div class="step-desc">Se aprovado, a empresa entra em contato pelo WhatsApp ou LinkedIn cadastrados no seu perfil. É só aparecer!</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="how-section" id="how-emp">
+      <div class="steps-list">
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-e"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+          <div><div class="step-label">Passo 1</div><div class="step-title">Cadastre sua empresa</div><div class="step-desc">Informe os dados da empresa e crie sua conta. O processo é rápido e completamente gratuito.</div></div>
+        </div>
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-e"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+          <div><div class="step-label">Passo 2</div><div class="step-title">Publique sua vaga</div><div class="step-desc">Preencha o formulário detalhado com cargo, benefícios, requisitos e bolsa. Pode manter confidencial se quiser.</div></div>
+        </div>
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-e"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg></div>
+          <div><div class="step-label">Passo 3</div><div class="step-title">Vaga revisada e publicada</div><div class="step-desc">Nossa equipe revisa e aprova em até 24h. Vagas com informações completas são aprovadas mais rápido.</div></div>
+        </div>
+        <div class="step-item fade-in">
+          <div class="step-dot step-dot-e"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+          <div><div class="step-label">Passo 4</div><div class="step-title">Gerencie candidatos no painel</div><div class="step-desc">Visualize currículos, perfis DISC, contacte diretamente pelo WhatsApp ou LinkedIn e registre o status de cada candidato.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ DIFERENCIAIS ═══════ -->
+<section>
+  <div class="container">
+    <div class="fade-in" style="margin-bottom:2.25rem">
+      <div class="section-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        Diferenciais
+      </div>
+      <h2 class="section-title">Por que escolher o <span>Conecta?</span></h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card fade-in">
+        <div class="diff-icon" style="background:rgba(0,122,94,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14z"/></svg></div>
+        <div class="diff-title">Teste de Perfil DISC</div>
+        <div class="diff-desc">Candidatos podem fazer o teste comportamental DISC. Empresas filtram por perfil ideal, tornando o match muito mais preciso.</div>
+      </div>
+      <div class="diff-card fade-in">
+        <div class="diff-icon" style="background:rgba(0,168,142,.1)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="diff-title">Vagas Revisadas Manualmente</div>
+        <div class="diff-desc">Nenhuma vaga entra no portal sem aprovação humana. Isso garante qualidade e evita anúncios falsos ou enganosos.</div>
+      </div>
+      <div class="diff-card fade-in">
+        <div class="diff-icon" style="background:rgba(0,122,94,.08)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="diff-title">Vagas Confidenciais</div>
+        <div class="diff-desc">Empresas podem publicar vagas sem revelar o nome, exibindo apenas "Empresa Confidencial" até o processo avançar.</div>
+      </div>
+      <div class="diff-card fade-in">
+        <div class="diff-icon" style="background:rgba(0,122,94,.08)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <div class="diff-title">Currículo PDF Integrado</div>
+        <div class="diff-desc">Candidatos fazem upload do currículo diretamente na plataforma. Empresas baixam com um clique, sem e-mail.</div>
+      </div>
+      <div class="diff-card fade-in">
+        <div class="diff-icon" style="background:rgba(0,122,94,.08)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="diff-title">Contato via WhatsApp</div>
+        <div class="diff-desc">Com um clique, a empresa abre o WhatsApp com mensagem pré-preenchida para o candidato. Rápido e direto ao ponto.</div>
+      </div>
+      <div class="diff-card fade-in">
+        <div class="diff-icon" style="background:rgba(0,122,94,.08)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2"><line x1="12" y1="3" x2="12" y2="21"/><path d="M3 9l9-6 9 6"/><path d="M6 12L3 9v6a3 3 0 0 0 6 0V9L6 12z"/><path d="M18 12l3-3v6a3 3 0 0 1-6 0V9l3 3z"/></svg></div>
+        <div class="diff-title">Feito para a Lei Brasileira</div>
+        <div class="diff-desc">Focado em estágio (Lei 11.788/2008) e Jovem Aprendiz (Lei 10.097/2000), seguindo a legislação trabalhista vigente.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<svg class="section-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 40" preserveAspectRatio="none">
+  <path fill="#004D3D" d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z"/>
+</svg>
+<!-- ═══════ NOSSOS VALORES ═══════ -->
+<section class="quem-bg">
+  <div class="container">
+    <div class="quem-inner fade-in">
+      <div class="section-badge" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.15)">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        Nossos Valores
+      </div>
+      <h2 class="section-title">Guiados por propósito,<br><span>movidos por impacto</span></h2>
+      <p class="section-sub">Construímos o Conecta com valores que acreditamos de verdade — não como decoração de site, mas como critérios que guiam cada decisão que tomamos.</p>
+    </div>
+    <div class="valores-grid fade-in">
+      <div class="valor-card">
+        <div class="valor-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div>
+        <div class="valor-name">Oportunidade Igual</div>
+        <div class="valor-desc">Acreditamos que todo jovem merece acesso às melhores oportunidades, independentemente de onde vem.</div>
+      </div>
+      <div class="valor-card">
+        <div class="valor-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="valor-name">Privacidade Primeiro</div>
+        <div class="valor-desc">Dados pessoais são sagrados. Seguimos a LGPD à risca e nunca vendemos informações de ninguém.</div>
+      </div>
+      <div class="valor-card">
+        <div class="valor-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></div>
+        <div class="valor-name">Transparência Total</div>
+        <div class="valor-desc">Vagas claras, processos visíveis, sem surpresas. Estudantes merecem saber exatamente para onde estão se candidatando.</div>
+      </div>
+      <div class="valor-card">
+        <div class="valor-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l7.42 7.42 7.42-7.42a5.4 5.4 0 0 0 1-7.65z"/></svg></div>
+        <div class="valor-name">Parceria Genuína</div>
+        <div class="valor-desc">Não somos só um quadro de vagas — somos parceiros de empresas comprometidas com o desenvolvimento jovem.</div>
+      </div>
+      <div class="valor-card">
+        <div class="valor-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg></div>
+        <div class="valor-name">Evolução Constante</div>
+        <div class="valor-desc">A plataforma cresce com o feedback de quem usa. Cada sugestão é uma oportunidade de melhorar.</div>
+      </div>
+      <div class="valor-card">
+        <div class="valor-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        <div class="valor-name">Impacto Social Real</div>
+        <div class="valor-desc">Cada contratação via Conecta representa uma família que mudou de patamar. Isso nos motiva todo dia.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<svg class="section-wave" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 40" preserveAspectRatio="none">
+  <path fill="white" d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40 Z"/>
+</svg>
+<!-- ═══════ PARA EMPRESAS ═══════ -->
+<section>
+  <div class="container">
+    <div class="empresa-split">
+      <div class="fade-in">
+        <div class="section-badge">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          Para Empresas
+        </div>
+        <h2 class="section-title">Encontre o candidato <span>certo mais rápido</span></h2>
+        <p class="section-sub" style="margin-bottom:2rem">Publicar vagas é gratuito. Nossa plataforma entrega candidatos qualificados e motivados, com perfil DISC e currículo à disposição.</p>
+        <div class="empresa-benefits">
+          <div class="benefit-row">
+            <div class="benefit-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div><div class="benefit-title">Publicação gratuita e ilimitada</div><div class="benefit-desc">Sem mensalidades ou planos pagos. Publique quantas vagas precisar.</div></div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div><div class="benefit-title">Filtro por perfil DISC</div><div class="benefit-desc">Encontre candidatos com o comportamento ideal para cada função.</div></div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div><div class="benefit-title">Contato direto via WhatsApp</div><div class="benefit-desc">Zero burocracia. Fale com o candidato com um clique.</div></div>
+          </div>
+          <div class="benefit-row">
+            <div class="benefit-check"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
+            <div><div class="benefit-title">Modo confidencial disponível</div><div class="benefit-desc">Oculte o nome da empresa durante o processo seletivo.</div></div>
+          </div>
+        </div>
+        <a href="cadastro-empresa.html" style="display:inline-flex;align-items:center;gap:.5rem;margin-top:2rem;padding:.9rem 2rem;background:var(--accent);color:white;border-radius:50px;font-weight:700;font-size:.9rem;text-decoration:none;transition:all .2s" onmouseover="this.style.background='var(--accent-dark)';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--accent)';this.style.transform='none'">
+          Cadastrar minha empresa →
+        </a>
+      </div>
+      <div class="empresa-card fade-in">
+        <h3>Como publicar uma vaga</h3>
+        <div class="empresa-steps">
+          <div class="emp-step"><div class="emp-step-num">1</div><div class="emp-step-text"><strong>Crie sua conta</strong> com CNPJ e e-mail corporativo</div></div>
+          <div class="emp-step"><div class="emp-step-num">2</div><div class="emp-step-text"><strong>Preencha os dados</strong> da empresa e da vaga em 4 etapas</div></div>
+          <div class="emp-step"><div class="emp-step-num">3</div><div class="emp-step-text"><strong>Aguarde a revisão</strong> — publicamos em até 24 horas</div></div>
+          <div class="emp-step"><div class="emp-step-num">4</div><div class="emp-step-text"><strong>Gerencie candidatos</strong> no painel exclusivo da empresa</div></div>
+          <div class="emp-step"><div class="emp-step-num">5</div><div class="emp-step-text"><strong>Contrate</strong> e encerre a vaga quando preencher</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FAQ ═══════ -->
+<section style="background:var(--bg)">
+  <div class="container">
+    <div class="fade-in" style="margin-bottom:2.25rem">
+      <div class="section-badge">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Dúvidas Frequentes
+      </div>
+      <h2 class="section-title">Perguntas que <span>todo mundo faz</span></h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">O Conecta é gratuito para candidatos?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>Sim, 100% gratuito para candidatos, sem exceções. Criar perfil, fazer o teste DISC, se candidatar a vagas e fazer upload do currículo — tudo sem custo nenhum.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Quanto tempo leva para minha vaga ser publicada?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>Vagas são revisadas em até 24 horas úteis. Vagas com informações completas e bem descritas costumam ser aprovadas mais rápido. Você recebe notificação assim que for publicada.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">O que é o teste DISC e por que fazer?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>O DISC é um teste comportamental muito usado em RH que classifica seu perfil em Dominante, Influente, Estável ou Conscencioso. Candidatos com DISC têm seu badge exibido no perfil, o que aumenta muito as chances de ser encontrado por empresas que buscam um perfil específico. Leva apenas 3 minutos.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">O Conecta garante contratação?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>Não garantimos contratação — somos um portal de conexão. O processo seletivo é conduzido pela empresa. O que garantimos é que todas as vagas são reais, revisadas e publicadas por empresas verificadas.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Meus dados estão seguros na plataforma?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>Sim. Seguimos rigorosamente a LGPD (Lei Geral de Proteção de Dados). Senhas são armazenadas com hash criptográfico, nunca em texto simples. Seus dados só são compartilhados com empresas quando você se candidata a uma vaga delas. Nunca vendemos dados.</p></div>
+      </div>
+      <div class="faq-item" onclick="toggleFaq(this)">
+        <div class="faq-q">Posso publicar vaga confidencial?<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="faq-a"><p>Sim! Ao cadastrar a vaga, basta ativar a opção "Vaga Confidencial". O nome da empresa ficará oculto no portal, aparecendo como "Empresa Confidencial". Você ainda gerencia tudo normalmente pelo painel interno.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CTA FINAL ═══════ -->
+<section class="cta-final">
+  <div class="cta-final-inner fade-in">
+    <h2>Pronto para dar o<br><span>primeiro passo?</span></h2>
+    <p>Milhares de estudantes já encontraram sua oportunidade aqui. Sua vez pode ser agora.</p>
+    <div class="cta-btns">
+      <a class="cta-btn-a" href="cadastro-candidato.html">Criar perfil grátis</a>
+      <a class="cta-btn-b" href="cadastro-empresa.html">Cadastrar empresa</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div><img src="logo-conecta-white.png" alt="Conecta — Polo Bauru-Centro"></div>
+  <p>
+    <a href="index.html">Ver vagas</a> &nbsp;·&nbsp;
+    <a href="sobre.html">Sobre</a> &nbsp;·&nbsp;
+    <a href="termos.html">Termos & Privacidade</a>
+  </p>
+  <p style="margin-top:.5rem;font-size:.72rem;color:rgba(255,255,255,.2)">© 2025 Universidade Anhembi Morumbi — Polo Bauru-Centro. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+function switchHow(tab, el) {
+  document.querySelectorAll('.how-section').forEach(s => s.classList.remove('show'));
+  document.querySelectorAll('.tab-how').forEach(b => b.classList.remove('active'));
+  document.getElementById('how-' + tab).classList.add('show');
+  el.classList.add('active');
+}
+
+function toggleFaq(el) {
+  const isOpen = el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(f => {
+    f.classList.remove('open');
+    f.querySelector('.faq-a').style.maxHeight = '0';
+  });
+  if (!isOpen) {
+    el.classList.add('open');
+    const a = el.querySelector('.faq-a');
+    a.style.maxHeight = a.scrollHeight + 'px';
+  }
+}
+
+const obs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+
+function toggleMob() {
+  document.getElementById('nav-burger').classList.toggle('open');
+  const dr = document.getElementById('nav-mobile');
+  dr.classList.toggle('open');
+  document.body.style.overflow = dr.classList.contains('open') ? 'hidden' : '';
+}
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    document.getElementById('nav-burger').classList.remove('open');
+    document.getElementById('nav-mobile').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+});
+</script>
+
+<script>
+(async () => {
+  try {
+    const res = await fetch('https://hnhxxchhwhdlpuiceirz.supabase.co/rest/v1/configuracoes?select=chave,valor', {
+      headers: {
+        'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaHh4Y2hod2hkbHB1aWNlaXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MjY4MDMsImV4cCI6MjA4OTAwMjgwM30._N9DBrCq7lXW6tpfpcXHHcaH21AqEAcinPPIE-_-Ik8',
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaHh4Y2hod2hkbHB1aWNlaXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MjY4MDMsImV4cCI6MjA4OTAwMjgwM30._N9DBrCq7lXW6tpfpcXHHcaH21AqEAcinPPIE-_-Ik8'
+      }
+    });
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    const cfg = Object.fromEntries(data.map(r => [r.chave, r.valor]));
+    if (cfg.logo_url && cfg.logo_url !== '') {
+      document.querySelectorAll('.logo').forEach(el => {
+        el.style.backgroundImage = `url('${cfg.logo_url}')`;
+      });
+    }
+    if (cfg.cor_primary && /^#[0-9A-Fa-f]{6}$/.test(cfg.cor_primary)) {
+      document.documentElement.style.setProperty('--primary', cfg.cor_primary);
+    }
+  } catch(e) {}
+})();
+</script>
+
+</body>
+</html>

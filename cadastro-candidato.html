@@ -1,0 +1,2310 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conecta — Área do Candidato</title>
+<meta name="description" content="Crie seu perfil, candidate-se a vagas e acompanhe suas candidaturas no Conecta.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Conecta">
+<meta name="theme-color" content="var(--primary)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Conecta">
+<meta property="og:locale" content="pt_BR">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:site" content="@iniciaaí">
+<meta property="og:title" content="Conecta — Área do Candidato">
+<meta property="og:description" content="Crie seu perfil, candidate-se a vagas e acompanhe suas candidaturas no Conecta.">
+<meta property="og:image" content="https://mantoniogamaa.github.io/iniciaaí/og-image.png">
+<meta property="og:url" content="https://mantoniogamaa.github.io/iniciaaí/cadastro-candidato.html">
+<meta property="twitter:title" content="Conecta — Área do Candidato">
+<meta property="twitter:description" content="Crie seu perfil, candidate-se a vagas e acompanhe suas candidaturas no Conecta.">
+<meta property="twitter:image" content="https://mantoniogamaa.github.io/iniciaaí/og-image.png">
+<link rel="canonical" href="https://mantoniogamaa.github.io/iniciaaí/cadastro-candidato.html">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/*
+ * ════════════════════════════════════════════════════════════════
+ *  INICIAAÍ — DESIGN SYSTEM UNIFICADO
+ *  Paleta oficial Anhembi Morumbi — Polo Bauru-Centro
+ *  PANTONE 7719C (#007A5E) · PANTONE 3285C (#00A88E) · Gray 10C (#76787B)
+ * ════════════════════════════════════════════════════════════════
+ */
+
+/* ── TOKENS ──────────────────────────────────────────────────── */
+:root {
+  /* Cores Pantone */
+  --c-green:        #007A5E;   /* PANTONE 7719C */
+  --c-green-dark:   #005C47;
+  --c-green-mid:    #006B52;
+  --c-mint:         #00A88E;   /* PANTONE 3285C */
+  --c-mint-dark:    #008C76;
+  --c-mint-light:   #E6F7F4;
+  --c-gray:         #76787B;   /* PANTONE Cool Gray 10C */
+
+  /* Superfícies */
+  --surface-hero:   #003528;   /* hero background base */
+  --surface-dark:   #004D3D;   /* dark sections */
+  --surface-bg:     #F4F8F7;   /* page background */
+  --surface-white:  #FFFFFF;
+  --surface-card:   #FFFFFF;
+
+  /* Texto */
+  --text-primary:   #1A2E28;
+  --text-secondary: #76787B;
+  --text-disabled:  #B0BFB8;
+  --text-on-dark:   rgba(255,255,255,.9);
+  --text-muted-dark:rgba(255,255,255,.6);
+
+  /* Bordas */
+  --border-light:   #D4E5DF;
+  --border-card:    #E0EDEA;
+
+  /* Sombras */
+  --shadow-sm:  0 2px 8px rgba(0,90,70,.07);
+  --shadow-md:  0 8px 24px rgba(0,90,70,.1);
+  --shadow-lg:  0 20px 48px rgba(0,90,70,.14);
+  --shadow-xl:  0 32px 64px rgba(0,90,70,.18);
+
+  /* Bordas arredondadas */
+  --r-sm:  8px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-pill:50px;
+
+  /* Espaçamento */
+  --space-xs:  .375rem;
+  --space-sm:  .75rem;
+  --space-md:  1.5rem;
+  --space-lg:  2.5rem;
+  --space-xl:  4rem;
+  --space-2xl: 6rem;
+
+  /* Transições */
+  --t-fast:   .15s ease;
+  --t-base:   .25s ease;
+  --t-slow:   .4s ease;
+
+  /* Aliases para compatibilidade com código existente */
+  --primary:      var(--c-green);
+  --primary-dark: var(--c-green-dark);
+  --primary-mid:  var(--c-green-mid);
+  --accent:       var(--c-mint);
+  --accent-dark:  var(--c-mint-dark);
+  --accent-light: var(--c-mint-light);
+  --gray:         var(--c-gray);
+  --gray-light:   #F0F1F2;
+  --bg:           var(--surface-bg);
+  --dark:         var(--surface-dark);
+  --text:         var(--text-primary);
+  --muted:        var(--text-secondary);
+  --border:       var(--border-light);
+  --white:        var(--surface-white);
+  --green:        var(--c-mint);
+  --orange:       #E65100;
+  --yellow:       #F5A623;
+  --cyan:         var(--c-mint);
+  --violet:       var(--c-green);
+  --coral:        var(--c-green-dark);
+}
+
+/* ── RESET & BASE ────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--surface-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── TIPOGRAFIA ──────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: 'Clash Display', sans-serif;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+}
+
+/* ── CONTAINER ───────────────────────────────────────────────── */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+@media(max-width:600px) { .container { padding: 0 1.25rem; } }
+
+/* ── NAV ─────────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 72px;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 0 rgba(0,122,94,.06);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+
+/* Logo */
+.nav-logo {
+  display: block;
+  width: 194px; height: 55px; flex-shrink: 0;
+  background: url('logo-conecta-color.png') no-repeat left center / contain;
+  font-size: 0; color: transparent;
+  text-decoration: none;
+  transition: opacity var(--t-base);
+}
+.nav-logo:hover { opacity: .8; }
+
+/* Links centrais */
+.nav-links {
+  flex: 1;
+  display: flex; align-items: center;
+  justify-content: center;
+  gap: 2.25rem;
+}
+.nav-links a {
+  font-size: .875rem; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none;
+  transition: color var(--t-fast);
+  position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0; right: 0; height: 2px;
+  background: var(--c-mint); border-radius: 2px;
+  transform: scaleX(0); transition: transform var(--t-base);
+}
+.nav-links a:hover { color: var(--c-green); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a.active { color: var(--c-green); font-weight: 700; }
+.nav-links a.active::after { transform: scaleX(1); }
+
+/* CTA button */
+.nav-cta {
+  padding: .55rem 1.4rem;
+  background: var(--c-mint);
+  color: white; border: none; border-radius: var(--r-pill);
+  font-size: .875rem; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  transition: background var(--t-base), transform var(--t-base), box-shadow var(--t-base);
+  white-space: nowrap;
+}
+.nav-cta:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,168,142,.3);
+}
+
+/* Mobile hamburger */
+.nav-burger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none;
+  cursor: pointer; padding: .35rem;
+  margin-left: auto;
+}
+.nav-burger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text-primary); border-radius: 2px;
+  transition: all var(--t-base);
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 72px; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,.98);
+  backdrop-filter: blur(16px);
+  z-index: 99;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem;
+  gap: .25rem;
+  border-top: 1px solid var(--border-light);
+  transform: translateX(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.nav-mobile.open { transform: translateX(0); }
+.nav-mobile-link {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .9rem 1rem; border-radius: var(--r-md);
+  font-size: .95rem; font-weight: 600;
+  color: var(--text-primary); text-decoration: none;
+  transition: background var(--t-fast);
+}
+.nav-mobile-link:hover { background: var(--c-mint-light); color: var(--c-green); }
+.nav-mobile-link svg { color: var(--c-green); flex-shrink: 0; }
+
+/* ── HERO BASE (dark green) ──────────────────────────────────── */
+.hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(158deg, #002E22 0%, #006B52 55%, #003D2E 100%);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 5rem 2rem 0;
+  min-height: calc(100svh - 72px);
+}
+
+/* Listras diagonais sutis */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 28px,
+    rgba(255,255,255,.018) 28px, rgba(255,255,255,.018) 29px
+  );
+  pointer-events: none; z-index: 0;
+}
+
+/* Glow central */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 35%; left: 50%; transform: translate(-50%, -50%);
+  width: 70%; height: 320px;
+  background: radial-gradient(ellipse, rgba(0,168,142,.18) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Símbolo AM decorativo */
+.hero-deco {
+  position: absolute;
+  right: -2%; bottom: -4%;
+  width: min(260px, 26vw);
+  aspect-ratio: 700/762;
+  background: url('symbol-am-white.png') no-repeat right bottom / contain;
+  pointer-events: none; z-index: 0;
+  opacity: .9;
+}
+
+/* Conteúdo do hero */
+.hero-content {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 780px;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .4rem 1.1rem;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: var(--r-pill);
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: rgba(255,255,255,.82);
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  color: white; font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+.hero h1 .accent { color: var(--c-mint); }
+
+.hero-sub {
+  font-size: clamp(.95rem, 1.8vw, 1.1rem);
+  color: rgba(255,255,255,.68);
+  line-height: 1.75;
+  max-width: 520px; margin: 0 auto 2.5rem;
+}
+
+/* Hero CTAs */
+.hero-ctas {
+  display: flex; gap: 1rem;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+.btn-hero-primary {
+  padding: .9rem 2.25rem;
+  background: var(--c-mint); color: white;
+  border: none; border-radius: var(--r-pill);
+  font-weight: 700; font-size: .95rem;
+  text-decoration: none; cursor: pointer;
+  transition: background var(--t-base), transform var(--t-base), box-shadow var(--t-base);
+}
+.btn-hero-primary:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,168,142,.35);
+}
+.btn-hero-ghost {
+  padding: .9rem 2.25rem;
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.22);
+  color: white; border-radius: var(--r-pill);
+  font-weight: 600; font-size: .95rem;
+  text-decoration: none; cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all var(--t-base);
+}
+.btn-hero-ghost:hover {
+  background: rgba(255,255,255,.2);
+  transform: translateY(-2px);
+}
+
+/* Stats bar */
+.hero-stats {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  max-width: 480px; margin: 0 auto;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+.hero-stat {
+  padding: 1.4rem 1rem; text-align: center;
+  border-right: 1px solid rgba(255,255,255,.08);
+  transition: background var(--t-fast);
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat:hover { background: rgba(255,255,255,.07); }
+.hero-stat-val {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 2rem; font-weight: 700; color: white; line-height: 1;
+  margin-bottom: .3rem;
+}
+.hero-stat-lbl { font-size: .7rem; color: rgba(255,255,255,.5); font-weight: 500; }
+
+/* ── WAVE SEPARATOR ──────────────────────────────────────────── */
+/* Transição suave de seção: hero escuro → conteúdo branco */
+.section-transition {
+  display: block; line-height: 0;
+  overflow: hidden;
+  background: var(--surface-hero);  /* match seção acima */
+  margin-bottom: -2px;
+}
+.section-transition svg { display: block; width: 100%; }
+
+/* ── SECTION BASE ────────────────────────────────────────────── */
+.section {
+  padding: var(--space-2xl) 0;
+}
+.section-sm { padding: var(--space-xl) 0; }
+.section-dark {
+  background: var(--surface-dark);
+  padding: var(--space-2xl) 0;
+}
+
+/* Section header */
+.section-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem 1rem;
+  background: var(--c-mint-light);
+  border: 1px solid rgba(0,168,142,.2);
+  color: var(--c-green); border-radius: var(--r-pill);
+  font-size: .7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .09em;
+  margin-bottom: .875rem;
+}
+.section-badge-dark {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.75);
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+  color: var(--text-primary); margin-bottom: .75rem;
+}
+.section-title .accent { color: var(--c-mint); }
+.section-title-dark { color: white; }
+.section-title-dark .accent { color: var(--c-mint); }
+
+.section-desc {
+  font-size: 1rem; color: var(--text-secondary);
+  line-height: 1.75; max-width: 540px;
+}
+.section-desc-dark { color: rgba(255,255,255,.58); }
+
+/* ── CARDS ───────────────────────────────────────────────────── */
+.card {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--r-lg);
+  padding: var(--space-lg);
+  transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(0,168,142,.3);
+}
+
+/* Highlight card (gradiente verde) */
+.card-highlight {
+  background: linear-gradient(135deg, var(--c-green) 0%, var(--c-mint-dark) 100%);
+  border: none; border-radius: var(--r-lg);
+  padding: var(--space-lg);
+  color: white; position: relative; overflow: hidden;
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+.card-highlight::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 85% 15%, rgba(255,255,255,.12), transparent);
+  pointer-events: none;
+}
+.card-highlight:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px rgba(0,90,70,.3);
+}
+.card-highlight > * { position: relative; z-index: 1; }
+.card-highlight .card-icon { color: rgba(255,255,255,.65); margin-bottom: .875rem; }
+.card-highlight h3 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 1.25rem; font-weight: 700; margin-bottom: .4rem;
+}
+.card-highlight p { font-size: .85rem; opacity: .82; line-height: 1.65; }
+
+/* ── BUTTONS ─────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .75rem 1.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem; font-weight: 700;
+  border: none; border-radius: var(--r-pill);
+  cursor: pointer; text-decoration: none;
+  transition: all var(--t-base);
+}
+.btn-primary {
+  background: var(--c-mint); color: white;
+}
+.btn-primary:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,168,142,.32);
+}
+.btn-secondary {
+  background: white; color: var(--c-green);
+  border: 1.5px solid var(--border-card);
+}
+.btn-secondary:hover {
+  border-color: var(--c-mint);
+  color: var(--c-mint);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.btn-ghost-dark {
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.2);
+  color: white;
+  backdrop-filter: blur(8px);
+}
+.btn-ghost-dark:hover {
+  background: rgba(255,255,255,.2);
+  transform: translateY(-2px);
+}
+.btn-danger {
+  background: rgba(183,28,28,.08); color: #B71C1C;
+  border: 1.5px solid rgba(183,28,28,.2);
+}
+.btn-danger:hover { background: #B71C1C; color: white; }
+.btn-sm { padding: .5rem 1.1rem; font-size: .82rem; }
+.btn-lg { padding: 1rem 2.5rem; font-size: 1rem; }
+.btn-block { width: 100%; justify-content: center; }
+
+/* ── FORMS ───────────────────────────────────────────────────── */
+.form-group { margin-bottom: 1.25rem; }
+.form-label {
+  display: block;
+  font-size: .78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-secondary);
+  margin-bottom: .5rem;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: .8rem 1.1rem;
+  background: white;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--r-md);
+  font-size: .9rem; color: var(--text-primary);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--c-mint);
+  box-shadow: 0 0 0 3px rgba(0,168,142,.12);
+}
+.form-input::placeholder { color: var(--text-disabled); }
+
+/* ── BADGES / CHIPS ──────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .25rem .75rem;
+  border-radius: var(--r-pill);
+  font-size: .72rem; font-weight: 700;
+}
+.badge-green   { background: rgba(0,168,142,.12); color: var(--c-mint-dark); }
+.badge-primary { background: rgba(0,122,94,.1);   color: var(--c-green); }
+.badge-gray    { background: rgba(118,120,123,.12); color: var(--c-gray); }
+.badge-yellow  { background: rgba(245,166,35,.12);  color: #92620A; }
+.badge-red     { background: rgba(183,28,28,.1);   color: #B71C1C; }
+
+/* ── TOGGLE ──────────────────────────────────────────────────── */
+.toggle {
+  width: 44px; height: 24px; border-radius: 50px;
+  border: none; cursor: pointer; flex-shrink: 0;
+  background: var(--border-light);
+  position: relative; transition: background var(--t-base);
+}
+.toggle::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: white; top: 3px; left: 3px;
+  transition: transform var(--t-base);
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.toggle.on { background: var(--c-mint); }
+.toggle.on::after { transform: translateX(20px); }
+
+/* ── FADE-IN SCROLL ANIMATION ────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+}
+.fade-up.visible { opacity: 1; transform: none; }
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  padding: .875rem 1.25rem;
+  border-radius: var(--r-md);
+  font-size: .85rem; font-weight: 600; color: white;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  transform: translateY(80px); opacity: 0;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  z-index: 300; max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: var(--c-mint); }
+.toast.error   { background: #B71C1C; }
+.toast.info    { background: var(--c-green); }
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+.footer {
+  background: var(--surface-dark);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+.footer-logo {
+  height: 44px; object-fit: contain;
+  opacity: .92;
+  margin: 0 auto 1.25rem;
+}
+.footer-links {
+  display: flex; gap: 1.5rem;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: .75rem;
+}
+.footer-links a {
+  font-size: .82rem; color: rgba(255,255,255,.45);
+  text-decoration: none; transition: color var(--t-fast);
+}
+.footer-links a:hover { color: rgba(255,255,255,.85); }
+.footer-copy { font-size: .72rem; color: rgba(255,255,255,.22); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media(max-width: 768px) {
+  :root {
+    --space-xl:  3rem;
+    --space-2xl: 4rem;
+  }
+
+  .nav { padding: 0 1.25rem; height: 64px; }
+  .nav-logo { width: 130px; height: 40px; }
+  .nav-links { display: none !important; }
+  .nav-cta  { display: none !important; }
+  .nav-burger { display: flex !important; }
+  .nav-mobile { display: flex !important; }
+
+  .hero { padding: 3.5rem 1.25rem 0; min-height: 90svh; }
+  .hero h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .hero-ctas a, .hero-ctas button { width: 100%; max-width: 280px; text-align: center; justify-content: center; }
+  .hero-deco { width: min(160px, 38vw); right: -1%; }
+  .hero-stats { grid-template-columns: 1fr 1fr 1fr; max-width: 100%; }
+
+  .section { padding: 3rem 0; }
+  .section-dark { padding: 3rem 0; }
+
+  .section-title { font-size: 1.65rem; }
+}
+
+@media(max-width: 480px) {
+  .hero-stats { grid-template-columns: 1fr; }
+  .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .hero-stat:last-child { border-bottom: none; }
+}
+
+
+/* ═══ CANDIDATO PAGE CSS ═══ */
+
+  /* ─ NAV FIX: override old nav rules ─ */
+  nav { position:sticky!important; top:0!important; z-index:100!important; height:72px!important; background:rgba(255,255,255,.97)!important; border-bottom:1px solid var(--border-light)!important; box-shadow:0 1px 0 rgba(0,122,94,.06)!important; backdrop-filter:blur(12px)!important; display:flex!important; align-items:center!important; padding:0 2rem!important; gap:2rem!important; }
+  .nav-logo { display:block!important; width:148px!important; height:44px!important; flex-shrink:0!important; background:url('logo-conecta-color.png') no-repeat left center/contain!important; font-size:0!important; color:transparent!important; text-decoration:none!important; }
+  .nav-logo::before { display:none!important; }
+  /* Also fix old .logo class if still present */
+  .logo { display:block!important; width:148px!important; height:44px!important; flex-shrink:0!important; background:url('logo-conecta-color.png') no-repeat left center/contain!important; font-size:0!important; color:transparent!important; -webkit-text-fill-color:transparent!important; text-decoration:none!important; }
+  .logo::before { display:none!important; }
+
+
+  /* ════ DESIGN TOKENS UNIFICADOS ════ */
+  :root {
+    --primary:       #007A5E;
+    --primary-dark:  #005C47;
+    --accent:        #00A88E;
+    --accent-dark:   #008C76;
+    --accent-light:  #E6F7F4;
+    --bg:            #F4F8F7;
+    --white:         #FFFFFF;
+    --dark:          #003D2E;
+    --text:          #1A2E28;
+    --muted:         #5C7A6E;
+    --subtle:        #8FA89E;
+    --border:        #C8DDD9;
+    --shadow-sm:     0 1px 4px rgba(0,0,0,.06);
+    --shadow-md:     0 4px 16px rgba(0,80,60,.08);
+    --shadow-lg:     0 12px 40px rgba(0,80,60,.12);
+    --shadow-accent: 0 8px 28px rgba(0,168,142,.35);
+    --t:             .25s ease;
+    --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px; --r-full: 9999px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  nav { background:rgba(245,243,255,.9); backdrop-filter:blur(12px); border-bottom:1px solid var(--border);
+    padding:0 2rem; height:64px; display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:10; }
+  .logo { font-family:'Clash Display',sans-serif; font-size:1.4rem; font-weight:700;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    -webkit-background-clip:text; -webkit-text-fill-color:var(--primary); background-clip:text; text-decoration:none; }
+  .nav-back { color:var(--muted); text-decoration:none; font-size:.875rem; font-weight:500;
+    display:flex; align-items:center; gap:.4rem; transition:color .2s; }
+  .nav-back:hover { color:var(--violet); }
+
+  .page-wrap { max-width:680px; margin:0 auto; padding:3rem 1.5rem 5rem; }
+
+  .tabs { display:flex; background:white; border-radius:14px; padding:.35rem; gap:.35rem;
+    border:1px solid var(--border); margin-bottom:2rem; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+  .tab-btn { flex:1; padding:.65rem; border-radius:10px; border:none; cursor:pointer; font-size:.9rem;
+    font-weight:600; font-family:'Plus Jakarta Sans',sans-serif; transition:all .2s; color:var(--muted); background:transparent; }
+  .tab-btn.active { background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:white; }
+
+  .form-card { background:white; border-radius:20px; padding:2rem; border:1.5px solid var(--border);
+    box-shadow:0 4px 24px rgba(0,0,0,.06); animation:fadeUp .4s ease both; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  .section-label { font-family:'Clash Display',sans-serif; font-size:1rem; font-weight:700;
+    margin-bottom:1.25rem; padding-bottom:.75rem; border-bottom:1.5px solid var(--bg);
+    color:var(--dark); display:flex; align-items:center; gap:.5rem; }
+  .form-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .form-group { display:flex; flex-direction:column; gap:.4rem; }
+  .form-group.full { grid-column:1/-1; }
+  label { font-size:.8rem; font-weight:600; color:var(--text); }
+  label .req { color:var(--coral); }
+  input, select, textarea {
+    width:100%; padding:.75rem 1rem; border:1.5px solid var(--border); border-radius:10px;
+    font-size:.9rem; font-family:'Plus Jakarta Sans',sans-serif; outline:none;
+    transition:border-color .2s,box-shadow .2s; background:var(--bg); color:var(--text);
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color:var(--violet); box-shadow:0 0 0 3px rgba(12,61,48,.1); background:white;
+  }
+  textarea { resize:vertical; min-height:80px; }
+  .divider { border:none; border-top:1.5px solid var(--bg); margin:1.5rem 0; }
+  .btn-submit { width:100%; padding:1rem; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:white; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;
+    font-family:'Plus Jakarta Sans',sans-serif; transition:transform .2s,box-shadow .2s; margin-top:1.5rem; }
+  .btn-submit:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(12,61,48,.45); }
+  .btn-submit:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+
+  .msg-box { padding:.85rem 1rem; border-radius:10px; font-size:.875rem; font-weight:600;
+    margin-top:1rem; text-align:center; display:none; }
+  .msg-box.success { background:rgba(16,185,129,.1); color:var(--green); display:block; }
+  .msg-box.error   { background:rgba(255,92,92,.1); color:var(--coral); display:block; }
+
+
+  /* ── HERO INTERNO PADRÃO ── */
+  .page-hero {
+    background:var(--dark); padding:3rem 2rem 2.5rem; position:relative; overflow:hidden;
+  }
+  .page-hero::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 70% 60% at 70% 0%, rgba(12,61,48,.4) 0%, transparent 65%),
+               radial-gradient(ellipse 40% 40% at 10% 100%, rgba(255,92,92,.15) 0%, transparent 60%);
+    pointer-events:none;
+  }
+  .page-hero-inner { max-width:860px; margin:0 auto; position:relative; z-index:1; }
+  .page-hero-badge {
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+    border-radius:50px; padding:.3rem .9rem; font-size:.72rem; font-weight:700;
+    color:rgba(255,255,255,.55); margin-bottom:1rem; letter-spacing:.04em; text-transform:uppercase;
+  }
+  .page-hero h1 {
+    font-family:'Clash Display',sans-serif; font-size:clamp(1.75rem,4vw,2.75rem);
+    font-weight:700; color:white; line-height:1.15; margin-bottom:.6rem;
+  }
+  .page-hero h1 span {
+    background:linear-gradient(135deg,#80DFCC,var(--accent));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .page-hero p { font-size:.95rem; color:rgba(255,255,255,.5); line-height:1.7; max-width:520px; }
+
+  /* PAINEL CANDIDATO */
+  .painel { display:none; }
+  .painel.show { display:block; }
+
+  .welcome-card { background:linear-gradient(135deg,var(--accent),var(--accent-dark)); border-radius:20px;
+    padding:1.75rem; color:white; margin-bottom:1.5rem; position:relative; overflow:hidden; }
+  .welcome-card::after { content:''; position:absolute; right:1.5rem; top:50%; transform:translateY(-50%);
+    font-size:4rem; opacity:.2; }
+  .welcome-card h2 { font-family:'Clash Display',sans-serif; font-size:1.5rem; margin-bottom:.25rem; }
+  .welcome-card p { opacity:.85; font-size:.9rem; }
+
+  .btn-logout { margin-top:1rem; padding:.5rem 1.2rem; background:rgba(255,255,255,.2);
+    border:1px solid rgba(255,255,255,.3); border-radius:8px; color:white; font-size:.8rem;
+    font-weight:600; cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:background .2s; }
+  .btn-logout:hover { background:rgba(255,255,255,.3); }
+
+  .cands-title { font-family:'Clash Display',sans-serif; font-size:1.2rem; font-weight:700; margin-bottom:1rem; }
+
+  .cand-card { background:white; border-radius:14px; padding:1.25rem; border:1.5px solid var(--border);
+    margin-bottom:.75rem; display:flex; align-items:center; gap:1rem; }
+  .cand-logo { width:44px; height:44px; border-radius:10px; background:rgba(12,61,48,.1);
+    display:flex; align-items:center; justify-content:center; color:var(--violet);
+    font-family:'Clash Display',sans-serif; font-weight:700; font-size:1.2rem; flex-shrink:0; }
+  .cand-info { flex:1; }
+  .cand-title { font-weight:700; font-size:.9rem; margin-bottom:.2rem; }
+  .cand-meta  { font-size:.78rem; color:var(--muted); }
+  .status-badge { padding:.25rem .75rem; border-radius:50px; font-size:.72rem; font-weight:700; flex-shrink:0; }
+  .s-em_analise { background:rgba(251,191,36,.15); color:#B45309; }
+  .s-aprovado   { background:rgba(16,185,129,.15); color:var(--green); }
+  .s-recusado   { background:rgba(255,92,92,.15); color:var(--coral); }
+
+  .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--violet);
+    border-radius:50%; animation:spin .8s linear infinite; margin:2rem auto; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+
+  .empty-cands { text-align:center; padding:2.5rem 1rem; color:var(--muted); }
+  .empty-cands div { font-size:2.5rem; margin-bottom:.5rem; }
+
+
+  /* PAINEL TABS */
+  .painel-tabs { display:flex; background:white; border-radius:12px; padding:.3rem; gap:.3rem;
+    border:1px solid var(--border); margin-bottom:1.5rem; box-shadow:0 2px 8px rgba(0,0,0,.04); }
+  .painel-tab-btn { flex:1; padding:.55rem; border-radius:8px; border:none; cursor:pointer;
+    font-size:.82rem; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;
+    transition:all .2s; color:var(--muted); background:transparent; }
+  .painel-tab-btn.active { background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:white; }
+
+  /* EDIT FORM */
+  .edit-section { display:none; animation:fadeUp .35s ease both; }
+  .edit-section.show { display:block; }
+  .save-bar { display:flex; justify-content:flex-end; gap:.75rem; margin-top:1.5rem; padding-top:1.25rem; border-top:1.5px solid var(--bg); }
+  .btn-save { padding:.7rem 1.75rem; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:white; border:none; border-radius:10px; font-size:.9rem; font-weight:700;
+    cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:transform .2s,box-shadow .2s; }
+  .btn-save:hover { transform:translateY(-2px); box-shadow:0 6px 18px rgba(12,61,48,.4); }
+  .btn-save:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+  .btn-cancel { padding:.7rem 1.25rem; background:var(--bg); color:var(--muted); border:1.5px solid var(--border);
+    border-radius:10px; font-size:.9rem; font-weight:600; cursor:pointer;
+    font-family:'Plus Jakarta Sans',sans-serif; transition:all .2s; }
+  .btn-cancel:hover { border-color:var(--coral); color:var(--coral); }
+
+  /* PROFILE HEADER */
+  .profile-header { background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    border-radius:16px; padding:1.5rem; color:white; margin-bottom:1.5rem;
+    display:flex; align-items:center; gap:1rem; position:relative; overflow:hidden; }
+  .profile-header::after { content:''; position:absolute; right:1.25rem; top:50%;
+    transform:translateY(-50%); font-size:2rem; opacity:.25; }
+  .profile-avatar { width:56px; height:56px; border-radius:50%;
+    background:rgba(255,255,255,.25); display:flex; align-items:center; justify-content:center;
+    font-family:'Clash Display',sans-serif; font-weight:700; font-size:1.5rem; flex-shrink:0; }
+  .profile-info h3 { font-family:'Clash Display',sans-serif; font-size:1.2rem; margin-bottom:.15rem; }
+  .profile-info p  { font-size:.82rem; opacity:.8; }
+
+  .msg-inline { padding:.7rem 1rem; border-radius:9px; font-size:.82rem; font-weight:600;
+    margin-top:.75rem; display:none; }
+  .msg-inline.success { background:rgba(16,185,129,.1); color:var(--green); display:block; }
+  .msg-inline.error   { background:rgba(255,92,92,.1); color:var(--coral); display:block; }
+
+  /* ---- DISC STEP ---- */
+  .disc-step { display:none; animation:fadeUp .4s ease both; }
+  .disc-step.show { display:block; }
+
+  .disc-intro { text-align:center; padding:1.5rem 0 2rem; }
+  .disc-intro .disc-icon { font-size:3rem; margin-bottom:.75rem; }
+  .disc-intro h2 { font-family:'Clash Display',sans-serif; font-size:1.5rem; font-weight:700; margin-bottom:.5rem; }
+  .disc-intro p { color:var(--muted); font-size:.9rem; line-height:1.7; max-width:440px; margin:0 auto 1.5rem; }
+
+  .disc-progress-wrap { margin-bottom:2rem; }
+  .disc-progress-bar { height:6px; background:var(--border); border-radius:50px; overflow:hidden; margin-bottom:.5rem; }
+  .disc-progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-dark));
+    border-radius:50px; transition:width .4s ease; }
+  .disc-progress-text { font-size:.78rem; color:var(--muted); font-weight:600; text-align:right; }
+
+  .disc-question-card { background:white; border-radius:20px; padding:2rem;
+    border:1.5px solid var(--border); box-shadow:0 4px 24px rgba(0,0,0,.06);
+    margin-bottom:1.25rem; animation:fadeUp .3s ease both; }
+  .disc-q-num { font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em;
+    color:var(--muted); margin-bottom:.6rem; }
+  .disc-q-text { font-family:'Clash Display',sans-serif; font-size:1.15rem; font-weight:600;
+    color:var(--dark); line-height:1.35; margin-bottom:1.5rem; }
+
+  .disc-options { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; }
+  .disc-opt { padding:.85rem 1rem; border:1.5px solid var(--border); border-radius:12px;
+    cursor:pointer; transition:all .2s; background:white; font-size:.875rem; font-weight:500;
+    color:var(--text); font-family:'Plus Jakarta Sans',sans-serif; text-align:left; line-height:1.4; }
+  .disc-opt:hover { border-color:var(--violet); background:rgba(46,207,168,.05); }
+  .disc-opt.selected { border-color:var(--violet); background:rgba(46,207,168,.08);
+    color:var(--violet); font-weight:700; }
+
+  /* RESULTADO DISC */
+  .disc-result-card { border-radius:20px; padding:2rem; text-align:center;
+    margin-bottom:1.25rem; position:relative; overflow:hidden; color:white; }
+  .disc-result-card::before { content:''; position:absolute; inset:0; opacity:.15;
+    background:radial-gradient(circle at 70% 30%, white, transparent); }
+  .disc-result-letter { font-family:'Clash Display',sans-serif; font-size:5rem; font-weight:700;
+    line-height:1; margin-bottom:.25rem; position:relative; z-index:1; }
+  .disc-result-name { font-family:'Clash Display',sans-serif; font-size:1.5rem; font-weight:700;
+    margin-bottom:.5rem; position:relative; z-index:1; }
+  .disc-result-desc { font-size:.9rem; opacity:.9; line-height:1.7;
+    max-width:400px; margin:0 auto; position:relative; z-index:1; }
+
+  .disc-bars { background:white; border-radius:16px; padding:1.5rem;
+    border:1.5px solid var(--border); margin-bottom:1.25rem; }
+  .disc-bars-title { font-size:.78rem; font-weight:700; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--muted); margin-bottom:1rem; }
+  .disc-bar-row { display:flex; align-items:center; gap:.75rem; margin-bottom:.6rem; }
+  .disc-bar-label { font-weight:700; font-size:.85rem; width:100px; flex-shrink:0; }
+  .disc-bar-track { flex:1; height:10px; background:var(--bg); border-radius:50px; overflow:hidden; }
+  .disc-bar-fill { height:100%; border-radius:50px; transition:width .8s ease; }
+  .disc-bar-score { font-size:.78rem; font-weight:700; color:var(--muted); width:28px; text-align:right; flex-shrink:0; }
+
+  .disc-traits { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:1rem; }
+  .disc-trait { padding:.3rem .85rem; border-radius:50px; font-size:.75rem; font-weight:600;
+    background:var(--bg); color:var(--text); }
+
+  /* BADGE DISC nos cards */
+  .disc-badge { display:inline-flex; align-items:center; gap:.3rem; padding:.22rem .65rem;
+    border-radius:50px; font-size:.7rem; font-weight:700; flex-shrink:0; }
+  .disc-D { background:rgba(239,68,68,.12); color:#DC2626; }
+  .disc-I { background:rgba(251,191,36,.15); color:#B45309; }
+  .disc-S { background:rgba(16,185,129,.12); color:#059669; }
+  .disc-C { background:rgba(59,130,246,.12); color:#2563EB; }
+  @media(max-width:768px) { .nav-links { display:none; } .hamburger { display:flex; } }
+
+  /* UPLOAD CURRÍCULO */
+  .upload-area { border:2px dashed var(--border); border-radius:14px; padding:1.75rem;
+    text-align:center; cursor:pointer; transition:all .25s; background:var(--bg);
+    position:relative; }
+  .upload-area:hover, .upload-area.drag { border-color:var(--violet);
+    background:rgba(46,207,168,.05); }
+  .upload-area input[type=file] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
+  .upload-icon { font-size:2.2rem; margin-bottom:.5rem; }
+  .upload-title { font-weight:700; font-size:.9rem; color:var(--dark); margin-bottom:.2rem; }
+  .upload-sub   { font-size:.78rem; color:var(--muted); }
+
+  .cv-preview { display:flex; align-items:center; gap:.85rem; padding:1rem;
+    background:white; border:1.5px solid var(--border); border-radius:12px;
+    margin-top:.75rem; }
+  .cv-icon { width:40px; height:40px; border-radius:10px; background:rgba(239,68,68,.1);
+    display:flex; align-items:center; justify-content:center; font-size:1.3rem; flex-shrink:0; }
+  .cv-name { font-size:.875rem; font-weight:600; color:var(--dark); flex:1;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cv-size { font-size:.72rem; color:var(--muted); margin-top:.1rem; }
+  .btn-cv-remove { background:none; border:none; cursor:pointer; color:var(--muted);
+    font-size:1rem; padding:.25rem; transition:color .2s; flex-shrink:0; }
+  .btn-cv-remove:hover { color:var(--coral); }
+  .btn-cv-download { display:inline-flex; align-items:center; gap:.35rem; padding:.4rem .9rem;
+    border-radius:8px; border:1.5px solid rgba(124,58,237,.25); color:var(--violet);
+    background:rgba(46,207,168,.07); font-size:.78rem; font-weight:700;
+    text-decoration:none; transition:all .2s; flex-shrink:0; }
+  .btn-cv-download:hover { background:var(--violet); color:white; }
+
+  .upload-progress { height:4px; background:var(--border); border-radius:50px; margin-top:.6rem; overflow:hidden; display:none; }
+  .upload-progress-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent-dark));
+    border-radius:50px; width:0%; transition:width .3s; }
+  @media(max-width:600px) { .form-grid{grid-template-columns:1fr} }
+
+  /* HAMBURGUER MOBILE */
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer;
+    background:none; border:none; padding:.4rem; }
+  .hamburger span { display:block; width:22px; height:2px; background:var(--text);
+    border-radius:2px; transition:all .3s; }
+  .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity:0; }
+  .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .mobile-drawer { display:none; position:fixed; top:64px; left:0; right:0; bottom:0;
+    background:rgba(245,243,255,.98); backdrop-filter:blur(16px); z-index:99;
+    flex-direction:column; padding:1.5rem 2rem; border-top:1px solid var(--border);
+    overflow-y:auto; transform:translateX(100%); transition:transform .3s ease; }
+  .mobile-drawer.open { transform:translateX(0); }
+  .mobile-nav-link { display:block; padding:.85rem 1rem; border-radius:12px; font-size:1rem;
+    font-weight:600; color:var(--text); text-decoration:none; transition:background .2s; margin-bottom:.2rem; }
+  .mobile-nav-link:hover { background:white; }
+  @media(max-width:768px) { .hamburger { display:flex; } .mobile-drawer { display:flex; } }
+
+
+  
+  .hero, .page-hero, .vaga-hero, .doc-hero {
+    background: linear-gradient(135deg, #004D3D 0%, var(--primary) 50%, #0A3528 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Padrão de pontos/grid sutil */
+  .hero::after, .page-hero::after, .vaga-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(46,207,168,.15) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Linhas diagonais sutis */
+  .hero::before, .page-hero::before, .vaga-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(46,207,168,.08) 25%, transparent 25%,
+        transparent 50%, rgba(46,207,168,.08) 50%, rgba(46,207,168,.08) 75%,
+        transparent 75%, transparent),
+      radial-gradient(ellipse 80% 50% at 80% 50%, rgba(46,207,168,.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(12,61,48,.6) 0%, transparent 60%);
+    background-size: 60px 60px, 100% 100%, 100% 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Garante conteúdo interno acima dos pseudoelementos */
+  .hero > *, .page-hero > *, .vaga-hero > * {
+    position: relative;
+    z-index: 1;
+  }
+  .hero-inner, .page-hero-inner, .hero-inner * {
+    position: relative;
+    z-index: 2;
+  }
+
+
+  
+  /* ── PAGE HERO PANTONE ANHEMBI ── */
+  .page-hero, .vaga-hero, .doc-hero {
+    background-image: linear-gradient(155deg, rgba(0,40,30,.87) 0%, rgba(0,100,75,.8) 55%, rgba(0,55,42,.87) 100%), url("bg-tech-green.jpg");
+    background-size: cover;
+    background-position: center top;
+    position: relative; overflow: hidden;
+  }
+  .page-hero::before, .vaga-hero::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(0,168,142,.12) 1px, transparent 1px);
+    background-size: 38px 38px; pointer-events: none; z-index: 0;
+  }
+  .page-hero::after, .vaga-hero::after {
+    content: ''; position: absolute;
+    top: -40px; right: -40px;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(0,168,142,.25) 0%, transparent 65%);
+    pointer-events: none; z-index: 0;
+  }
+  .page-hero > *, .vaga-hero > * { position: relative; z-index: 1; }
+  .page-hero h1, .vaga-hero h1 { color: white; }
+  .page-hero h1 span, .vaga-hero h1 span {
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+  }
+  .page-hero p, .vaga-hero p { color: rgba(255,255,255,.65); }
+  .page-hero-badge {
+    background: rgba(255,255,255,.1);
+    border: 1px solid rgba(255,255,255,.18);
+    color: rgba(255,255,255,.8);
+  }
+  .logo { color: var(--primary); -webkit-text-fill-color: var(--primary); background: none; }
+  nav { background: rgba(255,255,255,.97); box-shadow: 0 1px 12px rgba(0,122,94,.1); }
+
+
+  /* ── LOGO IMAGEM ANHEMBI ── */
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: none;
+    font-size: 0;
+  }
+  .logo::before {
+    content: '';
+    display: block;
+    width: 160px;
+    height: 44px;
+    background: url('logo-conecta-color.png') no-repeat center/contain;
+  }
+  /* Logo branca nos heróis (quando nav está sobre fundo escuro) */
+  .hero-logo-wrap .logo::before,
+  .vaga-hero .logo::before {
+    background-image: url('logo-conecta-white.png');
+  }
+
+
+  /* ── FIX GLOBAL: eliminar vermelho, logo correta, marca d'água ── */
+  .logo {
+    display: inline-flex; align-items: center;
+    text-decoration: none; cursor: pointer;
+    font-size: 0; color: transparent;
+    -webkit-text-fill-color: transparent; background: none;
+  }
+  .logo::before {
+    content: '';
+    display: block;
+    width: 140px; height: 44px;
+    background: url('logo-conecta-color.png') no-repeat left center / contain;
+  }
+  nav {
+    background: rgba(255,255,255,.97);
+    box-shadow: 0 1px 16px rgba(0,122,94,.1);
+    height: 72px;
+  }
+
+  /* Todos os botões CTA → verde accent */
+  .btn-submit, .btn-save, .btn-modal-save, .lm-btn,
+  .btn-apply-full, .btn-apply, .btn-search, .btn-buscar,
+  .btn-nova-vaga, .btn-nav-cta, .btn-hero-primary, .btn-nav-primary,
+  .cta-btn-a, .btn-primary {
+    background: var(--accent);
+    background-image: none;
+  }
+  .btn-submit:hover, .btn-save:hover, .btn-apply-full:hover,
+  .btn-search:hover, .btn-buscar:hover, .btn-hero-primary:hover {
+    background: var(--accent-dark);
+    box-shadow: 0 8px 20px rgba(0,168,142,.3);
+  }
+
+  /* Input focus → accent */
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,168,142,.1);
+  }
+
+  /* Section badge */
+  .section-badge {
+    background: var(--accent-light);
+    color: var(--primary);
+  }
+
+  /* Section title span highlight */
+  .section-title span, h1 span, h2 span {
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+    background: none;
+  }
+
+  /* Stat nums brancos dentro de heróis */
+  .hero .stat-num, .page-hero .stat-num {
+    color: white;
+    font-weight: 800;
+  }
+
+  /* Remove qualquer gradiente texto residual */
+  *[style*="background-clip:text"] {
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+  }
+
+
+  /* ── UPGRADE TIPOGRAFIA GLOBAL ── */
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
+
+  body { font-family: 'DM Sans', 'Plus Jakarta Sans', sans-serif; }
+
+  h1, h2, h3, .section-title, .panel-title, .modal-title {
+    font-family: 'Clash Display', sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Forms mais elegantes */
+  input, select, textarea, button {
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Labels mais profissionais */
+  label { font-size: .8rem; font-weight: 700; letter-spacing: .03em; }
+
+  /* Botões — tipografia impactante */
+  .btn-submit, .btn-save, .btn-primary, .btn-login,
+  .btn-apply-full, .btn-search, .btn-buscar, .btn-nav-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+
+  /* Nav links */
+  .nav-links a, .nav-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .875rem;
+  }
+
+  /* Form cards */
+  .form-card { border-radius: 20px; }
+  .section-label { letter-spacing: -.01em; }
+
+
+  @media(max-width:768px) {
+    nav { padding:0 1rem; height:60px; }
+    .logo::before { width:110px; height:38px; }
+    .nav-back { display:none; }
+    .page-wrap { padding:1.5rem 1rem 4rem; }
+    .form-grid { grid-template-columns:1fr; }
+    .page-hero { padding:2rem 1rem 1.75rem; }
+    .page-hero h1 { font-size:1.75rem; }
+    .painel-tabs { flex-wrap:wrap; gap:.3rem; }
+    .painel-tab-btn { font-size:.78rem; padding:.5rem; }
+    .disc-options { grid-template-columns:1fr; }
+    .disc-result-letter { font-size:3.5rem; }
+    .edit-section { animation:none; }
+  }
+
+
+  /* ══ DISC MOBILE COMPLETO ══ */
+  @media(max-width: 600px) {
+
+    /* Intro do DISC */
+    .disc-step .form-card { padding: 1.25rem; }
+    .disc-intro .disc-icon { font-size: 2.5rem; }
+    .disc-intro h2 { font-size: 1.4rem; }
+    .disc-intro p  { font-size: .85rem; }
+
+    /* Progress */
+    .disc-progress-wrap { margin-bottom: 1.25rem; }
+    .disc-progress-text { font-size: .72rem; }
+
+    /* Question card */
+    .disc-question-card { padding: 1.1rem; border-radius: 14px; }
+    .disc-q-num  { font-size: .68rem; }
+    .disc-q-text { font-size: .95rem; line-height: 1.45; margin-bottom: 1.1rem; }
+
+    /* Options — coluna única no mobile */
+    .disc-options {
+      grid-template-columns: 1fr;
+      gap: .5rem;
+    }
+    .disc-opt {
+      padding: .75rem 1rem;
+      font-size: .85rem;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    /* Prev/Next buttons */
+    #disc-prev-btn { font-size: .82rem; padding: .55rem 1rem; }
+    #disc-next-btn { font-size: .82rem; padding: .55rem 1.25rem; }
+
+    /* Resultado DISC */
+    .disc-result-card { padding: 1.5rem 1rem; border-radius: 16px; }
+    .disc-result-letter { font-size: 4rem; }
+    .disc-result-name   { font-size: 1.3rem; }
+    .disc-result-desc   { font-size: .82rem; }
+
+    /* Barras */
+    .disc-bars { padding: 1.1rem; border-radius: 14px; }
+    .disc-bar-row { gap: .5rem; }
+    .disc-bar-label { font-size: .78rem; width: 80px; }
+    .disc-bar-score { font-size: .72rem; }
+
+    /* Traits */
+    .disc-traits { gap: .3rem; }
+    .disc-trait  { font-size: .72rem; padding: .25rem .65rem; }
+
+    /* Painel DISC tab */
+    #tab-disc .form-card, #painel-disc-content .form-card { padding: 1.1rem; }
+    #painel-disc-content .disc-result-card { border-radius: 14px; }
+
+    /* DISC step wrap */
+    .disc-step { padding: 0; }
+    .disc-step .form-card { margin: 0; }
+  }
+
+
+  /* ── SÍMBOLO AM — página interna ── */
+  .page-hero, .vaga-hero { position:relative; overflow:hidden; }
+  .page-am-deco {
+    position:absolute; right:-4%; bottom:-8%;
+    width:min(260px, 28vw); aspect-ratio:700/762;
+    background:url('symbol-am-white.png') no-repeat center/contain;
+    pointer-events:none; z-index:0;
+  }
+  @media(max-width:768px){
+    .page-am-deco { width:min(140px, 35vw); right:-2%; }
+  }
+
+
+  /* ── ANIMAÇÕES HOVER GLOBAIS ── */
+  /* Botões primários */
+  .btn-submit, .btn-save, .btn-apply-full, .btn-next,
+  .btn-nova-vaga, .btn-modal-approve {
+    transition: all .25s ease;
+  }
+  .btn-submit:hover, .btn-save:hover, .btn-apply-full:hover,
+  .btn-next:hover, .btn-nova-vaga:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,168,142,.35);
+  }
+
+  /* Cards genéricos */
+  .form-card, .card, .stat-card {
+    transition: box-shadow .25s ease;
+  }
+
+  /* Nav links */
+  .nav-links a, .nav-back, .mob-link {
+    transition: color .2s ease;
+  }
+
+  /* Input focus glow */
+  input:focus, select:focus, textarea:focus {
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+
+  /* ── LOGO BULLET-PROOF ── */
+  .logo {
+    display: inline-block;
+    width: 150px;
+    height: 48px;
+    background: url('logo-conecta-color.png') no-repeat left center / contain;
+    text-decoration: none;
+    font-size: 0;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .logo::before { display: none; }
+  /* Only the CSS background-image, no ::before pseudo */
+
+
+
+  /* ─ PAGE HERO DECO ─ */
+  .page-hero { position:relative; overflow:hidden; }
+  .page-hero .hero-deco {
+    position:absolute; right:-2%; bottom:-4%;
+    width:min(220px, 24vw); aspect-ratio:700/762;
+    background:url('symbol-am-white.png') no-repeat right bottom/contain;
+    pointer-events:none; z-index:0; opacity:.85;
+  }
+  @media(max-width:768px) { .page-hero .hero-deco { width:min(130px,32vw); } }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"></a>
+  <div class="nav-links" style="display:flex;gap:1.75rem;align-items:center">
+    <a href="index.html" style="color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500">Ver Vagas</a>
+    <a href="sobre.html" style="color:var(--muted);text-decoration:none;font-size:.875rem;font-weight:500">Sobre</a>
+  </div>
+  <a class="nav-back" href="index.html">← Ver vagas</a>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+    <a class="nav-mobile-link" href="index.html">Portal de Vagas</a>
+    <a class="nav-mobile-link" href="cadastro-empresa.html">Para Empresas</a>
+</div>
+
+<div class="page-hero" id="auth-hero">
+  <div class="page-hero-inner">
+  <div class="page-am-deco" aria-hidden="true"></div>
+    <div class="page-hero-badge"><svg style="vertical-align:middle;flex-shrink:0" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Área do candidato</div>
+    <h1>Sua carreira começa <span>aqui</span></h1>
+    <p>Crie seu perfil, encontre vagas de estágio e Jovem Aprendiz, e dê o primeiro passo.</p>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <!-- TABS -->
+  <div class="tabs" id="tabs">
+    <button class="tab-btn active" onclick="switchTab('cadastro')">Criar conta</button>
+    <button class="tab-btn" onclick="switchTab('login')">Entrar</button>
+  </div>
+
+  <!-- CADASTRO -->
+  <div id="tab-cadastro">
+    <div class="form-card">
+      <div class="section-label"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Dados Pessoais</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Nome completo <span class="req">*</span></label><input type="text" id="c-nome" placeholder="Seu nome completo"></div>
+        <div class="form-group"><label>E-mail <span class="req">*</span></label><input type="email" id="c-email" placeholder="seu@email.com"></div>
+        <div class="form-group"><label>Senha <span class="req">*</span></label><input type="password" id="c-senha" placeholder="Mínimo 6 caracteres"></div>
+        <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" id="c-tel" placeholder="(11) 99999-9999"></div>
+        <div class="form-group"><label>Data de Nascimento</label><input type="date" id="c-nasc"></div>
+        <div class="form-group"><label>Estado</label>
+          <select id="c-estado">
+            <option value="">Selecione...</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
+            <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
+            <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
+            <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
+            <option>SE</option><option>TO</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Cidade</label><input type="text" id="c-cidade" placeholder="Ex.: São Paulo"></div>
+        <div class="form-group"><label>Período disponível</label>
+          <select id="c-periodo">
+            <option value="">Selecione...</option>
+            <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>Flexível</option>
+          </select>
+        </div>
+      </div>
+      <hr class="divider">
+      <div class="section-label"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> Formação</div>
+      <div class="form-grid">
+        <div class="form-group"><label>Escolaridade</label>
+          <select id="c-esc">
+            <option value="">Selecione...</option>
+            <option>Ensino Médio Incompleto</option><option>Ensino Médio Completo</option>
+            <option>Superior Incompleto</option><option>Superior Completo</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Curso</label><input type="text" id="c-curso" placeholder="Ex.: Ciência da Computação"></div>
+        <div class="form-group full"><label>Instituição de Ensino</label><input type="text" id="c-inst" placeholder="Ex.: USP, FATEC, ETEC..."></div>
+        <div class="form-group full"><label>LinkedIn (opcional)</label><input type="text" id="c-linkedin" placeholder="linkedin.com/in/seuperfil"></div>
+        <div class="form-group full"><label>Sobre você (objetivo profissional)</label>
+          <textarea id="c-sobre" rows="3" placeholder="Fale um pouco sobre seus objetivos, habilidades e o que busca numa oportunidade..."></textarea>
+        </div>
+      </div>
+      <button class="btn-submit" id="btn-cadastrar" onclick="cadastrar()">Criar minha conta</button>
+      <div class="msg-box" id="msg-cadastro"></div>
+    </div>
+  </div>
+
+  <!-- DISC STEP (aparece após cadastro) -->
+  <div class="disc-step" id="disc-step">
+    <div class="form-card">
+      <div class="disc-intro" id="disc-intro">
+        <div class="disc-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14z"/></svg></div>
+        <h2>Teste de Perfil DISC</h2>
+        <p>20 perguntas rápidas para identificar seu perfil comportamental. Empresas usam isso para encontrar o candidato certo. Leva cerca de <strong>3 minutos</strong>.</p>
+        <button class="btn-submit" style="max-width:280px;margin:0 auto" onclick="iniciarDISC()">Começar teste →</button>
+        <button onclick="pularDISC()" style="display:block;margin:.75rem auto 0;background:none;border:none;cursor:pointer;color:var(--muted);font-size:.85rem;font-family:'Plus Jakarta Sans',sans-serif;text-decoration:underline">Pular por agora</button>
+      </div>
+
+      <div id="disc-quiz" style="display:none">
+        <div class="disc-progress-wrap">
+          <div class="disc-progress-bar"><div class="disc-progress-fill" id="disc-bar" style="width:0%"></div></div>
+          <div class="disc-progress-text"><span id="disc-q-current">1</span> de 20</div>
+        </div>
+        <div id="disc-question-wrap"></div>
+        <div style="display:flex;justify-content:space-between;margin-top:1rem">
+          <button id="disc-prev-btn" onclick="discPrev()" style="padding:.6rem 1.25rem;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;display:none">← Anterior</button>
+          <button id="disc-next-btn" onclick="discNext()" disabled style="margin-left:auto;padding:.6rem 1.5rem;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:white;border:none;border-radius:10px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;opacity:.5">Próxima →</button>
+        </div>
+      </div>
+
+      <div id="disc-resultado" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- LOGIN -->
+  <div id="tab-login" style="display:none">
+    <div class="form-card">
+      <div class="section-label"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Entrar na sua conta</div>
+      <div class="form-grid full" style="grid-template-columns:1fr">
+        <div class="form-group"><label>E-mail <span class="req">*</span></label><input type="email" id="l-email" placeholder="seu@email.com" onkeydown="if(event.key==='Enter')login()"></div>
+        <div class="form-group"><label>Senha <span class="req">*</span></label><input type="password" id="l-senha" placeholder="Sua senha" onkeydown="if(event.key==='Enter')login()"></div>
+      </div>
+      <button class="btn-submit" id="btn-login" onclick="login()">Entrar →</button>
+      <div class="msg-box" id="msg-login"></div>
+    </div>
+  </div>
+
+  <!-- PAINEL LOGADO -->
+  <div class="painel" id="painel">
+    <div class="welcome-card">
+      <h2>Olá, <span id="painel-nome">Candidato</span>!</h2>
+      <p>Gerencie seu perfil e acompanhe suas candidaturas.</p>
+      <button class="btn-logout" onclick="logout()">Sair da conta</button>
+    </div>
+
+    <!-- TABS INTERNAS -->
+    <div class="painel-tabs" style="flex-wrap:wrap">
+      <button class="painel-tab-btn active" onclick="switchPainelTab('candidaturas',this)"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg> Candidaturas</button>
+      <button class="painel-tab-btn" onclick="switchPainelTab('disc',this)"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14z"/></svg> Perfil DISC</button>
+      <button class="painel-tab-btn" onclick="switchPainelTab('perfil',this)"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Editar Perfil</button>
+      <button class="painel-tab-btn" onclick="switchPainelTab('senha',this)"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Alterar Senha</button>
+    </div>
+
+    <!-- CANDIDATURAS -->
+    <div class="edit-section show" id="tab-candidaturas">
+      <div class="cands-title" style="margin-bottom:1rem">Minhas Candidaturas</div>
+      <div id="cands-loading"><div class="spinner"></div></div>
+      <div id="cands-list"></div>
+    </div>
+
+    <!-- DISC PAINEL -->
+    <div class="edit-section" id="tab-disc">
+      <div id="painel-disc-content"></div>
+    </div>
+
+    <!-- EDITAR PERFIL -->
+    <div class="edit-section" id="tab-perfil">
+      <div class="profile-header">
+        <div class="profile-avatar" id="edit-avatar">?</div>
+        <div class="profile-info">
+          <h3 id="edit-nome-display">—</h3>
+          <p id="edit-email-display">—</p>
+        </div>
+      </div>
+      <div class="form-card">
+        <div class="section-label"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Dados Pessoais</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Nome completo <span class="req">*</span></label><input type="text" id="e-nome"></div>
+          <div class="form-group"><label>Telefone / WhatsApp</label><input type="tel" id="e-tel"></div>
+          <div class="form-group"><label>Data de Nascimento</label><input type="date" id="e-nasc"></div>
+          <div class="form-group"><label>Estado</label>
+            <select id="e-estado">
+              <option value="">Selecione...</option>
+              <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
+              <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
+              <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
+              <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+              <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
+              <option>SE</option><option>TO</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Cidade</label><input type="text" id="e-cidade"></div>
+          <div class="form-group"><label>Período disponível</label>
+            <select id="e-periodo">
+              <option value="">Selecione...</option>
+              <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>Flexível</option>
+            </select>
+          </div>
+        </div>
+        <hr class="divider">
+        <div class="section-label"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg> Formação</div>
+        <div class="form-grid">
+          <div class="form-group"><label>Escolaridade</label>
+            <select id="e-esc">
+              <option value="">Selecione...</option>
+              <option>Ensino Médio Incompleto</option><option>Ensino Médio Completo</option>
+              <option>Superior Incompleto</option><option>Superior Completo</option>
+            </select>
+          </div>
+          <div class="form-group"><label>Curso</label><input type="text" id="e-curso"></div>
+          <div class="form-group full"><label>Instituição de Ensino</label><input type="text" id="e-inst"></div>
+          <div class="form-group full"><label>LinkedIn (opcional)</label><input type="text" id="e-linkedin"></div>
+          <div class="form-group full"><label>Sobre você</label>
+            <textarea id="e-sobre" rows="3" placeholder="Objetivo profissional, habilidades..."></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Currículo (PDF) <span style="color:var(--muted);font-weight:400">— máx. 5MB</span></label>
+            <div class="upload-area" id="cv-upload-area"
+              ondragover="event.preventDefault();this.classList.add('drag')"
+              ondragleave="this.classList.remove('drag')"
+              ondrop="handleCvDrop(event)">
+              <input type="file" id="cv-file-input" accept=".pdf" onchange="handleCvSelect(event)">
+              <div class="upload-icon"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+              <div class="upload-title">Arraste seu PDF aqui ou clique para selecionar</div>
+              <div class="upload-sub">Apenas arquivos PDF · Máximo 5MB</div>
+            </div>
+            <div class="upload-progress" id="cv-progress">
+              <div class="upload-progress-fill" id="cv-progress-fill"></div>
+            </div>
+            <div id="cv-preview-wrap"></div>
+          </div>
+        </div>
+        <div class="msg-inline" id="msg-perfil"></div>
+        <div class="save-bar">
+          <button class="btn-cancel" onclick="cancelEditPerfil()">Cancelar</button>
+          <button class="btn-save" id="btn-salvar-perfil" onclick="salvarPerfil()">Salvar alterações ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALTERAR SENHA -->
+    <div class="edit-section" id="tab-senha">
+      <div class="form-card">
+        <div class="section-label"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Alterar Senha</div>
+        <div class="form-grid" style="grid-template-columns:1fr">
+          <div class="form-group"><label>Senha atual <span class="req">*</span></label>
+            <input type="password" id="s-atual" placeholder="Digite sua senha atual">
+          </div>
+          <div class="form-group"><label>Nova senha <span class="req">*</span></label>
+            <input type="password" id="s-nova" placeholder="Mínimo 6 caracteres">
+          </div>
+          <div class="form-group"><label>Confirmar nova senha <span class="req">*</span></label>
+            <input type="password" id="s-confirma" placeholder="Repita a nova senha">
+          </div>
+        </div>
+        <div class="msg-inline" id="msg-senha"></div>
+        <div class="save-bar">
+          <button class="btn-save" id="btn-salvar-senha" onclick="alterarSenha()">Alterar senha ✓</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const SUPABASE_URL = 'https://hnhxxchhwhdlpuiceirz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaHh4Y2hod2hkbHB1aWNlaXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MjY4MDMsImV4cCI6MjA4OTAwMjgwM30._N9DBrCq7lXW6tpfpcXHHcaH21AqEAcinPPIE-_-Ik8';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── LOGO & COR DINÂMICA ──────────────────────────────────────────
+async function carregarIdentidade() {
+  try {
+    const { data } = await sb.from('configuracoes').select('chave,valor');
+    if (!data) return;
+    const cfg = Object.fromEntries(data.map(r => [r.chave, r.valor]));
+
+    // Logo dinâmica (só aplica se admin configurou uma logo personalizada)
+    if (cfg.logo_url && cfg.logo_url !== '') {
+      document.querySelectorAll('.logo').forEach(el => {
+        el.innerHTML = '';
+        el.style.setProperty('--logo-url', `url('${cfg.logo_url}')`);
+        el.style.cssText += ';width:auto;';
+      });
+    }
+    // Se não há logo personalizada, o CSS usa logo-colorida.png por padrão
+
+    // Cor primária
+    if (cfg.cor_primary && /^#[0-9A-Fa-f]{6}$/.test(cfg.cor_primary)) {
+      const cor = cfg.cor_primary;
+      const corDark = ajustarCor(cor, -20);
+      document.documentElement.style.setProperty('--primary', cor);
+      document.documentElement.style.setProperty('--primary-dark', corDark);
+      document.documentElement.style.setProperty('--violet', cor);
+      document.documentElement.style.setProperty('--coral', corDark);
+    }
+  } catch(e) { /* silencioso */ }
+}
+
+function ajustarCor(hex, pct) {
+  const num = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, Math.min(255, (num >> 16) + pct));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xff) + pct));
+  const b = Math.max(0, Math.min(255, (num & 0xff) + pct));
+  return '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+}
+carregarIdentidade();
+// ── END LOGO & COR ──────────────────────────────────────────────
+
+
+let candidatoLogado = JSON.parse(sessionStorage.getItem('candidato') || 'null');
+
+function switchTab(tab) {
+  document.getElementById('tab-cadastro').style.display = tab === 'cadastro' ? 'block' : 'none';
+  document.getElementById('tab-login').style.display    = tab === 'login'    ? 'block' : 'none';
+  document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='cadastro')||(i===1&&tab==='login')));
+}
+
+async function hashSenha(s) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function cadastrar() {
+  const btn = document.getElementById('btn-cadastrar');
+  const msg = document.getElementById('msg-cadastro');
+  const nome  = document.getElementById('c-nome').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  const senha = document.getElementById('c-senha').value;
+
+  if (!nome || !email || !senha) { showMsg(msg,'Por favor preencha nome, e-mail e senha.','error'); return; }
+  if (senha.length < 6) { showMsg(msg,'A senha deve ter pelo menos 6 caracteres.','error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Criando conta...';
+
+  const hash = await hashSenha(senha);
+  const { data, error } = await sb.from('candidatos').insert({
+    nome, email, telefone: v('c-tel'), cidade: v('c-cidade'), estado: v('c-estado'),
+    data_nascimento: v('c-nasc') || null, escolaridade: v('c-esc'),
+    curso: v('c-curso'), instituicao: v('c-inst'), periodo_disponivel: v('c-periodo'),
+    sobre: v('c-sobre'), linkedin: v('c-linkedin'), senha_hash: hash
+  }).select().single();
+
+  if (error) {
+    const msg_txt = error.code === '23505' ? 'Este e-mail já está cadastrado. Faça login.' : 'Erro ao criar conta. Tente novamente.';
+    showMsg(msg, msg_txt, 'error');
+    btn.disabled = false; btn.textContent = 'Criar minha conta';
+    return;
+  }
+
+  sessionStorage.setItem('candidato', JSON.stringify(data));
+  candidatoLogado = data;
+  showMsg(msg, '✅ Conta criada! Agora faça o teste de perfil', 'success');
+  setTimeout(() => {
+    document.getElementById('tab-cadastro').style.display = 'none';
+    document.getElementById('tabs').style.display = 'none';
+    document.getElementById('disc-step').classList.add('show');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }, 800);
+}
+
+async function login() {
+  const btn = document.getElementById('btn-login');
+  const msg = document.getElementById('msg-login');
+  const email = document.getElementById('l-email').value.trim();
+  const senha = document.getElementById('l-senha').value;
+
+  if (!email || !senha) { showMsg(msg,'Preencha e-mail e senha.','error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  const hash = await hashSenha(senha);
+
+  const { data, error } = await sb.from('candidatos')
+    .select('*').eq('email', email).eq('senha_hash', hash).maybeSingle();
+
+  if (error || !data) {
+    showMsg(msg, 'E-mail ou senha incorretos.', 'error');
+    btn.disabled = false; btn.textContent = 'Entrar →';
+    return;
+  }
+
+  sessionStorage.setItem('candidato', JSON.stringify(data));
+  candidatoLogado = data;
+  showPainel();
+}
+
+function showPainel() {
+  document.getElementById('tabs').style.display = 'none';
+  document.getElementById('tab-cadastro').style.display = 'none';
+  document.getElementById('tab-login').style.display = 'none';
+  document.getElementById('disc-step').classList.remove('show');
+  document.getElementById('painel').classList.add('show');
+  const authHero = document.getElementById('auth-hero');
+  if (authHero) authHero.style.display = 'none';
+  document.getElementById('painel-nome').textContent = candidatoLogado.nome.split(' ')[0];
+  loadCandidaturas();
+  preencherFormPerfil();
+  renderPainelDISC();
+}
+
+// ---- PAINEL TABS ----
+function switchPainelTab(tab, el) {
+  document.querySelectorAll('.edit-section').forEach(s => s.classList.remove('show'));
+  document.querySelectorAll('.painel-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('show');
+  el.classList.add('active');
+}
+
+// ---- CANDIDATURAS ----
+async function loadCandidaturas() {
+  const { data, error } = await sb.from('candidaturas')
+    .select('*, vagas(id, titulo, tipo, cidade, modalidade, empresas(nome_fantasia))')
+    .eq('candidato_id', candidatoLogado.id)
+    .order('created_at', { ascending: false });
+
+  document.getElementById('cands-loading').style.display = 'none';
+  const list = document.getElementById('cands-list');
+
+  if (error || !data?.length) {
+    list.innerHTML = `<div class="empty-cands"><div><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div><strong>Nenhuma candidatura ainda</strong><br><span style="font-size:.85rem">Explore as vagas e candidate-se!</span><br><br><a href="index.html" style="color:var(--violet);font-weight:600;">Ver vagas →</a></div>`;
+    return;
+  }
+
+  const statusLabel = { em_analise:'Em análise', aprovado:'Aprovado', recusado:'Recusado', convidado:'Convidado' };
+  list.innerHTML = data.map(c => {
+    const vg = c.vagas;
+    const emp = vg?.empresas?.nome_fantasia || '—';
+    const initial = emp.charAt(0).toUpperCase();
+    return `
+      <div class="cand-card" style="cursor:pointer" onclick="window.location.href='vaga.html?id=${vg?.id}'">
+        <div class="cand-logo">${initial}</div>
+        <div class="cand-info">
+          <div class="cand-title">${vg?.titulo || '—'}</div>
+          <div class="cand-meta">${emp} · ${vg?.cidade || '—'} · ${vg?.modalidade || '—'}</div>
+        </div>
+        <span class="status-badge s-${c.status}">${statusLabel[c.status]||c.status}</span>
+      </div>`;
+  }).join('');
+}
+
+// ---- EDITAR PERFIL ----
+function preencherFormPerfil() {
+  const cd = candidatoLogado;
+  // header
+  document.getElementById('edit-avatar').textContent = cd.nome?.charAt(0)?.toUpperCase() || '?';
+  document.getElementById('edit-nome-display').textContent = cd.nome || '—';
+  document.getElementById('edit-email-display').textContent = cd.email || '—';
+  // campos
+  sv('e-nome',    cd.nome);
+  sv('e-tel',     cd.telefone);
+  sv('e-nasc',    cd.data_nascimento);
+  sv('e-estado',  cd.estado);
+  sv('e-cidade',  cd.cidade);
+  sv('e-periodo', cd.periodo_disponivel);
+  sv('e-esc',     cd.escolaridade);
+  sv('e-curso',   cd.curso);
+  sv('e-inst',    cd.instituicao);
+  sv('e-linkedin',cd.linkedin);
+  sv('e-sobre',   cd.sobre);
+  preencherCvAtual();
+}
+
+function sv(id, val) {
+  const el = document.getElementById(id);
+  if (el && val) el.value = val;
+}
+
+function cancelEditPerfil() {
+  preencherFormPerfil();
+  document.getElementById('msg-perfil').style.display = 'none';
+}
+
+async function salvarPerfil() {
+  const btn = document.getElementById('btn-salvar-perfil');
+  const msg = document.getElementById('msg-perfil');
+  const nome = document.getElementById('e-nome').value.trim();
+  if (!nome) { showMsgInline(msg,'Nome é obrigatório.','error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  // Upload CV se houver novo arquivo
+  const cvUrl = await uploadCvIfNeeded();
+  if (cvFile !== null && cvUrl === null) {
+    // upload falhou, já mostrou msg
+    btn.disabled = false; btn.textContent = 'Salvar alterações ✓';
+    return;
+  }
+
+  const updates = {
+    nome,
+    cv_url: cvUrl || candidatoLogado?.cv_url || null,
+    telefone:          v('e-tel'),
+    data_nascimento:   v('e-nasc') || null,
+    estado:            v('e-estado'),
+    cidade:            v('e-cidade'),
+    periodo_disponivel:v('e-periodo'),
+    escolaridade:      v('e-esc'),
+    curso:             v('e-curso'),
+    instituicao:       v('e-inst'),
+    linkedin:          v('e-linkedin'),
+    sobre:             v('e-sobre'),
+  };
+
+  const { data, error } = await sb.from('candidatos')
+    .update(updates).eq('id', candidatoLogado.id).select().single();
+
+  if (error) {
+    showMsgInline(msg,'Erro ao salvar. Tente novamente.','error');
+    btn.disabled = false; btn.textContent = 'Salvar alterações ✓';
+    return;
+  }
+
+  candidatoLogado = data;
+  sessionStorage.setItem('candidato', JSON.stringify(data));
+  document.getElementById('painel-nome').textContent = data.nome.split(' ')[0];
+  preencherFormPerfil();
+  showMsgInline(msg,'✅ Perfil atualizado com sucesso!','success');
+  btn.disabled = false; btn.textContent = 'Salvar alterações ✓';
+}
+
+// ---- ALTERAR SENHA ----
+async function alterarSenha() {
+  const btn = document.getElementById('btn-salvar-senha');
+  const msg = document.getElementById('msg-senha');
+  const atual    = document.getElementById('s-atual').value;
+  const nova     = document.getElementById('s-nova').value;
+  const confirma = document.getElementById('s-confirma').value;
+
+  if (!atual || !nova || !confirma) { showMsgInline(msg,'Preencha todos os campos.','error'); return; }
+  if (nova.length < 6) { showMsgInline(msg,'A nova senha deve ter pelo menos 6 caracteres.','error'); return; }
+  if (nova !== confirma) { showMsgInline(msg,'As senhas não coincidem.','error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Verificando...';
+
+  const hashAtual = await hashSenha(atual);
+  // Verificar senha atual
+  const { data: check } = await sb.from('candidatos')
+    .select('id').eq('id', candidatoLogado.id).eq('senha_hash', hashAtual).maybeSingle();
+
+  if (!check) {
+    showMsgInline(msg,'Senha atual incorreta.','error');
+    btn.disabled = false; btn.textContent = 'Alterar senha ✓';
+    return;
+  }
+
+  const hashNova = await hashSenha(nova);
+  const { error } = await sb.from('candidatos')
+    .update({ senha_hash: hashNova }).eq('id', candidatoLogado.id);
+
+  if (error) {
+    showMsgInline(msg,'Erro ao alterar senha.','error');
+  } else {
+    showMsgInline(msg,'✅ Senha alterada com sucesso!','success');
+    document.getElementById('s-atual').value = '';
+    document.getElementById('s-nova').value = '';
+    document.getElementById('s-confirma').value = '';
+  }
+  btn.disabled = false; btn.textContent = 'Alterar senha ✓';
+}
+
+// ---- UTILS ----
+function logout() {
+  sessionStorage.removeItem('candidato');
+  location.reload();
+}
+
+function showMsg(el, txt, type) { el.textContent = txt; el.className = `msg-box ${type}`; }
+function showMsgInline(el, txt, type) { el.textContent = txt; el.className = `msg-inline ${type}`; }
+function v(id) { return document.getElementById(id)?.value?.trim() || ''; }
+
+
+
+// ================================================================
+// CURRÍCULO PDF — UPLOAD
+// ================================================================
+let cvFile = null;
+
+function handleCvDrop(e) {
+  e.preventDefault();
+  document.getElementById('cv-upload-area').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if (file) processCvFile(file);
+}
+
+function handleCvSelect(e) {
+  const file = e.target.files[0];
+  if (file) processCvFile(file);
+}
+
+function processCvFile(file) {
+  if (file.type !== 'application/pdf') {
+    showMsgInline(document.getElementById('msg-perfil'), 'Apenas arquivos PDF são aceitos.', 'error');
+    return;
+  }
+  if (file.size > 5 * 1024 * 1024) {
+    showMsgInline(document.getElementById('msg-perfil'), 'O arquivo deve ter no máximo 5MB.', 'error');
+    return;
+  }
+  cvFile = file;
+  renderCvPreview(file.name, (file.size / 1024).toFixed(0) + ' KB', null);
+}
+
+function renderCvPreview(name, size, url) {
+  const wrap = document.getElementById('cv-preview-wrap');
+  wrap.innerHTML = `
+    <div class="cv-preview">
+      <div class="cv-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div style="flex:1;min-width:0">
+        <div class="cv-name">${name}</div>
+        <div class="cv-size">${size}</div>
+      </div>
+      ${url ? `<a class="btn-cv-download" href="${url}" target="_blank">⬇ Baixar</a>` : ''}
+      <button class="btn-cv-remove" onclick="removeCv()" title="Remover">✕</button>
+    </div>`;
+}
+
+function removeCv() {
+  cvFile = null;
+  document.getElementById('cv-preview-wrap').innerHTML = '';
+  document.getElementById('cv-file-input').value = '';
+}
+
+async function uploadCvIfNeeded() {
+  if (!cvFile) return candidatoLogado?.cv_url || null;
+
+  // Show progress bar
+  const prog = document.getElementById('cv-progress');
+  const fill = document.getElementById('cv-progress-fill');
+  prog.style.display = 'block';
+  fill.style.width = '30%';
+
+  const ext      = 'pdf';
+  const fileName = `curriculos/${candidatoLogado.id}_${Date.now()}.${ext}`;
+
+  fill.style.width = '60%';
+
+  const { data, error } = await sb.storage
+    .from('curriculos')
+    .upload(fileName, cvFile, { upsert: true, contentType: 'application/pdf' });
+
+  fill.style.width = '100%';
+  setTimeout(() => { prog.style.display = 'none'; fill.style.width = '0%'; }, 600);
+
+  if (error) {
+    showMsgInline(document.getElementById('msg-perfil'), 'Erro ao enviar currículo: ' + error.message, 'error');
+    return null;
+  }
+
+  const { data: urlData } = sb.storage.from('curriculos').getPublicUrl(fileName);
+  cvFile = null;
+  return urlData.publicUrl;
+}
+
+function preencherCvAtual() {
+  if (candidatoLogado?.cv_url) {
+    const url  = candidatoLogado.cv_url;
+    const name = url.split('/').pop().replace(/^\d+_\d+_/, '') || 'curriculo.pdf';
+    renderCvPreview(name, 'PDF salvo', url);
+  }
+}
+// ================================================================
+// END CURRÍCULO
+// ================================================================
+
+// ================================================================
+// DISC ENGINE
+// ================================================================
+const DISC_QUESTIONS = [
+  { q:"Quando preciso resolver um problema no trabalho, prefiro:", opts:[
+    {t:"Agir rápido e tomar decisões sozinho",f:"D"},
+    {t:"Conversar com todos e animar a equipe",f:"I"},
+    {t:"Pensar com calma e ouvir os outros",f:"S"},
+    {t:"Analisar todos os dados antes de decidir",f:"C"}]},
+  { q:"Em uma apresentação em grupo, costumo:", opts:[
+    {t:"Liderar e conduzir tudo",f:"D"},
+    {t:"Falar bastante e engajar o público",f:"I"},
+    {t:"Apoiar os colegas nos bastidores",f:"S"},
+    {t:"Preparar os slides com muito detalhe",f:"C"}]},
+  { q:"Quando recebo uma crítica no trabalho:", opts:[
+    {t:"Encaro direto e busco melhorar rápido",f:"D"},
+    {t:"Fico um pouco chateado mas logo supero",f:"I"},
+    {t:"Reflito por bastante tempo sobre isso",f:"S"},
+    {t:"Analiso se a crítica tem fundamento",f:"C"}]},
+  { q:"Minha maior motivação profissional é:", opts:[
+    {t:"Alcançar resultados e vencer desafios",f:"D"},
+    {t:"Trabalhar com pessoas e ser reconhecido",f:"I"},
+    {t:"Ter estabilidade e ajudar a equipe",f:"S"},
+    {t:"Fazer tudo com qualidade e precisão",f:"C"}]},
+  { q:"Em uma reunião de equipe, costumo:", opts:[
+    {t:"Propor soluções e pressionar por decisões",f:"D"},
+    {t:"Contar histórias e animar o ambiente",f:"I"},
+    {t:"Escutar com atenção e ponderar",f:"S"},
+    {t:"Perguntar dados e questionar os detalhes",f:"C"}]},
+  { q:"Meu ritmo de trabalho ideal é:", opts:[
+    {t:"Rápido, com muitos desafios",f:"D"},
+    {t:"Dinâmico e com muita interação",f:"I"},
+    {t:"Estável e sem grandes pressões",f:"S"},
+    {t:"Metódico, com tempo para aprofundar",f:"C"}]},
+  { q:"Diante de um prazo apertado, eu:", opts:[
+    {t:"Foco no essencial e entrego rápido",f:"D"},
+    {t:"Peço ajuda à equipe com entusiasmo",f:"I"},
+    {t:"Me organizo com calma e evito erros",f:"S"},
+    {t:"Reviso tudo para garantir qualidade",f:"C"}]},
+  { q:"Na escola ou faculdade, eu era:", opts:[
+    {t:"Líder de grupos e projetos",f:"D"},
+    {t:"O mais sociável da turma",f:"I"},
+    {t:"Dedicado e colaborativo",f:"S"},
+    {t:"O mais organizado e detalhista",f:"C"}]},
+  { q:"Quando discordo de alguém no trabalho:", opts:[
+    {t:"Falo direto e defendo meu ponto",f:"D"},
+    {t:"Tento convencer com entusiasmo",f:"I"},
+    {t:"Cedo para manter a harmonia",f:"S"},
+    {t:"Apresento dados para embasar minha visão",f:"C"}]},
+  { q:"O ambiente de trabalho que prefiro é:", opts:[
+    {t:"Competitivo e cheio de metas",f:"D"},
+    {t:"Descontraído e com muita gente",f:"I"},
+    {t:"Colaborativo e com rotina estável",f:"S"},
+    {t:"Silencioso, organizado e focado",f:"C"}]},
+  { q:"Quando aprendo algo novo, prefiro:", opts:[
+    {t:"Aprender fazendo, na prática",f:"D"},
+    {t:"Aprender em grupo, com troca de ideias",f:"I"},
+    {t:"Aprender no meu ritmo, com paciência",f:"S"},
+    {t:"Estudar com materiais detalhados",f:"C"}]},
+  { q:"Minha maior qualidade profissional é:", opts:[
+    {t:"Determinação e foco em resultados",f:"D"},
+    {t:"Comunicação e entusiasmo",f:"I"},
+    {t:"Paciência e lealdade",f:"S"},
+    {t:"Organização e atenção aos detalhes",f:"C"}]},
+  { q:"Como você reage a mudanças no trabalho?", opts:[
+    {t:"Abraço rápido e já penso em aproveitar",f:"D"},
+    {t:"Fico animado e envolvo todos",f:"I"},
+    {t:"Me adapto aos poucos com cautela",f:"S"},
+    {t:"Analiso os riscos antes de aceitar",f:"C"}]},
+  { q:"Para você, um bom líder é aquele que:", opts:[
+    {t:"Decide rápido e lidera pelo exemplo",f:"D"},
+    {t:"Inspira, motiva e engaja as pessoas",f:"I"},
+    {t:"Apoia e cria um ambiente seguro",f:"S"},
+    {t:"Planeja bem e mantém padrões altos",f:"C"}]},
+  { q:"Em um projeto em grupo, sua função costuma ser:", opts:[
+    {t:"Quem define o rumo e cobra resultados",f:"D"},
+    {t:"Quem anima o grupo e faz a comunicação",f:"I"},
+    {t:"Quem executa com dedicação e suporte",f:"S"},
+    {t:"Quem garante que tudo está correto",f:"C"}]},
+  { q:"Quando erra em algo, você:", opts:[
+    {t:"Assume e já parte para a solução",f:"D"},
+    {t:"Pede desculpas e tenta se redimir logo",f:"I"},
+    {t:"Fica preocupado em não ter decepcionado",f:"S"},
+    {t:"Analisa o que falhou para não repetir",f:"C"}]},
+  { q:"Você se descreve mais como:", opts:[
+    {t:"Direto, objetivo e determinado",f:"D"},
+    {t:"Otimista, comunicativo e empolgado",f:"I"},
+    {t:"Tranquilo, confiável e paciente",f:"S"},
+    {t:"Preciso, analítico e cuidadoso",f:"C"}]},
+  { q:"Em tarefas repetitivas, você:", opts:[
+    {t:"Fica entediado e busca novos desafios",f:"D"},
+    {t:"Tenta tornar mais divertido com conversa",f:"I"},
+    {t:"Executa com constância sem reclamar",f:"S"},
+    {t:"Encontra formas de otimizar o processo",f:"C"}]},
+  { q:"Ao receber uma tarefa nova, você:", opts:[
+    {t:"Começa imediatamente sem esperar",f:"D"},
+    {t:"Fala com todos antes de começar",f:"I"},
+    {t:"Planeja com cuidado cada passo",f:"S"},
+    {t:"Lê todas as instruções com atenção",f:"C"}]},
+  { q:"O que mais te incomoda num ambiente de trabalho?", opts:[
+    {t:"Lentidão, indecisão e burocracia",f:"D"},
+    {t:"Isolamento e falta de reconhecimento",f:"I"},
+    {t:"Conflitos e instabilidade constante",f:"S"},
+    {t:"Desorganização e falta de padrão",f:"C"}]},
+];
+
+const DISC_PROFILES = {
+  D: {
+    name: "Dominante", letter:"D",
+    color: "linear-gradient(135deg,#EF4444,#DC2626)",
+    desc: "Você é direto, determinado e orientado a resultados. Age com rapidez, assume riscos calculados e não tem medo de liderar. Busca desafios e toma decisões com confiança.",
+    traits: ["Liderança","Decisão rápida","Foco em resultados","Determinado","Competitivo"]
+  },
+  I: {
+    name: "Influente", letter:"I",
+    color: "linear-gradient(135deg,#F59E0B,#D97706)",
+    desc: "Você é comunicativo, entusiasta e adora trabalhar com pessoas. Tem facilidade para motivar equipes, criar conexões e se destacar em ambientes dinâmicos.",
+    traits: ["Comunicação","Entusiasmo","Trabalho em equipe","Criatividade","Persuasão"]
+  },
+  S: {
+    name: "Estável", letter:"S",
+    color: "linear-gradient(135deg,#10B981,#059669)",
+    desc: "Você é paciente, leal e confiável. Valoriza harmonia, estabilidade e colaboração. É o tipo que todos podem contar — consistente, empático e dedicado.",
+    traits: ["Paciência","Lealdade","Colaboração","Empatia","Consistência"]
+  },
+  C: {
+    name: "Conscencioso", letter:"C",
+    color: "linear-gradient(135deg,#3B82F6,#2563EB)",
+    desc: "Você é analítico, preciso e orientado à qualidade. Pensa antes de agir, valoriza dados e processos. É o tipo que garante que tudo seja feito do jeito certo.",
+    traits: ["Análise","Organização","Precisão","Qualidade","Planejamento"]
+  }
+};
+
+let discRespostas = {};
+let discQAtual = 0;
+
+function iniciarDISC() {
+  document.getElementById('disc-intro').style.display = 'none';
+  document.getElementById('disc-quiz').style.display = 'block';
+  renderDiscQuestion();
+}
+
+function renderDiscQuestion() {
+  const q = DISC_QUESTIONS[discQAtual];
+  const pct = ((discQAtual) / DISC_QUESTIONS.length * 100).toFixed(0);
+  document.getElementById('disc-bar').style.width = pct + '%';
+  document.getElementById('disc-q-current').textContent = discQAtual + 1;
+
+  // Shuffle options for this question
+  const opts = [...q.opts].sort(() => Math.random() - 0.5);
+  const selected = discRespostas[discQAtual];
+
+  document.getElementById('disc-question-wrap').innerHTML = `
+    <div class="disc-question-card">
+      <div class="disc-q-num">Pergunta ${discQAtual + 1} de ${DISC_QUESTIONS.length}</div>
+      <div class="disc-q-text">${q.q}</div>
+      <div class="disc-options">
+        ${opts.map((o,i) => `
+          <button class="disc-opt ${selected === o.f ? 'selected' : ''}"
+            onclick="selectDiscOpt(this, '${o.f}', ${discQAtual})">${o.t}</button>
+        `).join('')}
+      </div>
+    </div>`;
+
+  document.getElementById('disc-prev-btn').style.display = discQAtual > 0 ? 'block' : 'none';
+  const nextBtn = document.getElementById('disc-next-btn');
+  nextBtn.style.opacity = discRespostas[discQAtual] ? '1' : '0.5';
+  nextBtn.disabled = !discRespostas[discQAtual];
+
+  if (discQAtual === DISC_QUESTIONS.length - 1) {
+    nextBtn.textContent = 'Ver meu perfil →';
+  } else {
+    nextBtn.textContent = 'Próxima →';
+  }
+}
+
+function selectDiscOpt(el, fator, qIdx) {
+  document.querySelectorAll('.disc-opt').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  discRespostas[qIdx] = fator;
+  const nextBtn = document.getElementById('disc-next-btn');
+  nextBtn.disabled = false;
+  nextBtn.style.opacity = '1';
+  // auto-advance after short delay
+  setTimeout(() => { if (discRespostas[qIdx]) discNext(); }, 400);
+}
+
+function discNext() {
+  if (!discRespostas[discQAtual]) return;
+  if (discQAtual < DISC_QUESTIONS.length - 1) {
+    discQAtual++;
+    renderDiscQuestion();
+    window.scrollTo({top: document.getElementById('disc-step').offsetTop - 80, behavior:'smooth'});
+  } else {
+    calcularDisc();
+  }
+}
+
+function discPrev() {
+  if (discQAtual > 0) { discQAtual--; renderDiscQuestion(); }
+}
+
+async function calcularDisc() {
+  const scores = {D:0, I:0, S:0, C:0};
+  Object.values(discRespostas).forEach(f => scores[f]++);
+  const total = Object.values(scores).reduce((a,b) => a+b, 0);
+  const perfil = Object.entries(scores).sort((a,b) => b[1]-a[1])[0][0];
+
+  document.getElementById('disc-quiz').style.display = 'none';
+  document.getElementById('disc-progress-wrap') && (document.getElementById('disc-progress-wrap').style.display='none');
+
+  renderDiscResultado(perfil, scores, total, 'disc-resultado', true);
+  document.getElementById('disc-resultado').style.display = 'block';
+
+  // Salva no Supabase
+  if (candidatoLogado) {
+    await sb.from('candidatos').update({
+      disc_perfil: perfil,
+      disc_scores: JSON.stringify(scores)
+    }).eq('id', candidatoLogado.id);
+
+    candidatoLogado.disc_perfil = perfil;
+    candidatoLogado.disc_scores = JSON.stringify(scores);
+    sessionStorage.setItem('candidato', JSON.stringify(candidatoLogado));
+  }
+}
+
+function renderDiscResultado(perfil, scores, total, containerId, showCTA) {
+  const p = DISC_PROFILES[perfil];
+  const container = document.getElementById(containerId);
+
+  const barsHTML = Object.entries(scores).map(([k,v]) => {
+    const pp = DISC_PROFILES[k];
+    const pct = total > 0 ? Math.round(v/total*100) : 0;
+    const colors = {D:'#EF4444',I:'#F59E0B',S:'#10B981',C:'#3B82F6'};
+    return `
+      <div class="disc-bar-row">
+        <div class="disc-bar-label" style="color:${colors[k]}">${pp.emoji} ${pp.name}</div>
+        <div class="disc-bar-track"><div class="disc-bar-fill" style="width:${pct}%;background:${colors[k]}"></div></div>
+        <div class="disc-bar-score">${pct}%</div>
+      </div>`;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="disc-result-card" style="background:${p.color}">
+      <div class="disc-result-letter">${p.emoji} ${p.letter}</div>
+      <div class="disc-result-name">${p.name}</div>
+      <div class="disc-result-desc">${p.desc}</div>
+    </div>
+    <div class="disc-bars">
+      <div class="disc-bars-title">Distribuição do seu perfil</div>
+      ${barsHTML}
+    </div>
+    <div style="background:white;border-radius:16px;padding:1.5rem;border:1.5px solid var(--border)">
+      <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.75rem">Seus pontos fortes</div>
+      <div class="disc-traits">${p.traits.map(t=>`<span class="disc-trait">${t}</span>`).join('')}</div>
+    </div>
+    ${showCTA ? `
+    <div style="text-align:center;margin-top:1.5rem">
+      <button class="btn-submit" style="max-width:280px;margin:0 auto" onclick="showPainel()">
+        Ir para meu painel
+      </button>
+    </div>` : ''}
+  `;
+}
+
+function pularDISC() { showPainel(); }
+
+function renderPainelDISC() {
+  const container = document.getElementById('painel-disc-content');
+  const perfil = candidatoLogado?.disc_perfil;
+  const rawScores = candidatoLogado?.disc_scores;
+
+  if (!perfil) {
+    container.innerHTML = `
+      <div class="form-card" style="text-align:center;padding:2.5rem">
+        <div style="font-size:3rem;margin-bottom:.75rem"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96-.46 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 4.44-1.14z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96-.46 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-4.44-1.14z"/></svg></div>
+        <h3 style="font-family:'Clash Display',sans-serif;font-size:1.3rem;margin-bottom:.5rem">Você ainda não fez o teste DISC</h3>
+        <p style="color:var(--muted);margin-bottom:1.5rem;font-size:.9rem">Leva só 3 minutos e ajuda empresas a entenderem melhor seu perfil.</p>
+        <button class="btn-submit" style="max-width:220px;margin:0 auto" onclick="
+          document.getElementById('painel').classList.remove('show');
+          document.getElementById('tabs').style.display='none';
+          document.getElementById('tab-cadastro').style.display='none';
+          document.getElementById('disc-step').classList.add('show');
+          document.getElementById('disc-intro').style.display='block';
+          document.getElementById('disc-quiz').style.display='none';
+          document.getElementById('disc-resultado').style.display='none';
+        ">Fazer o teste agora →</button>
+      </div>`;
+    return;
+  }
+
+  let scores = {D:0,I:0,S:0,C:0};
+  try { scores = JSON.parse(rawScores); } catch(e) {}
+  const total = Object.values(scores).reduce((a,b)=>a+b,0);
+
+  renderDiscResultado(perfil, scores, total, 'painel-disc-content', false);
+
+  // Add refazer button at bottom
+  container.innerHTML += `
+    <div style="text-align:center;margin-top:1rem">
+      <button onclick="refazerDISC()" style="background:none;border:1.5px solid var(--border);border-radius:10px;padding:.6rem 1.5rem;font-size:.85rem;font-weight:600;cursor:pointer;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif">
+        Refazer o teste
+      </button>
+    </div>`;
+}
+
+function refazerDISC() {
+  discRespostas = {}; discQAtual = 0;
+  document.getElementById('painel').classList.remove('show');
+  document.getElementById('tabs').style.display = 'none';
+  document.getElementById('disc-step').classList.add('show');
+  document.getElementById('disc-intro').style.display = 'none';
+  document.getElementById('disc-quiz').style.display = 'block';
+  document.getElementById('disc-resultado').style.display = 'none';
+  renderDiscQuestion();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ================================================================
+// END DISC ENGINE
+// ================================================================
+
+// Auto-login se já tiver sessão
+if (candidatoLogado) showPainel();
+</script>
+</body>
+</html>

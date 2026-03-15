@@ -1,0 +1,1983 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conecta — Painel da Empresa</title>
+<meta name="description" content="Gerencie suas vagas e visualize os candidatos no painel exclusivo para empresas do Conecta.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Conecta">
+<meta name="theme-color" content="var(--primary)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Conecta">
+<meta property="og:locale" content="pt_BR">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:site" content="@iniciaaí">
+<meta property="og:title" content="Conecta — Painel da Empresa">
+<meta property="og:description" content="Gerencie suas vagas e visualize os candidatos no painel exclusivo para empresas do Conecta.">
+<meta property="og:image" content="https://mantoniogamaa.github.io/iniciaaí/og-image.png">
+<meta property="og:url" content="https://mantoniogamaa.github.io/iniciaaí/painel-empresa.html">
+<meta property="twitter:title" content="Conecta — Painel da Empresa">
+<meta property="twitter:description" content="Gerencie suas vagas e visualize os candidatos no painel exclusivo para empresas do Conecta.">
+<meta property="twitter:image" content="https://mantoniogamaa.github.io/iniciaaí/og-image.png">
+<link rel="canonical" href="https://mantoniogamaa.github.io/iniciaaí/painel-empresa.html">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+/*
+ * ════════════════════════════════════════════════════════════════
+ *  INICIAAÍ — DESIGN SYSTEM UNIFICADO
+ *  Paleta oficial Anhembi Morumbi — Polo Bauru-Centro
+ *  PANTONE 7719C (#007A5E) · PANTONE 3285C (#00A88E) · Gray 10C (#76787B)
+ * ════════════════════════════════════════════════════════════════
+ */
+
+/* ── TOKENS ──────────────────────────────────────────────────── */
+:root {
+  /* Cores Pantone */
+  --c-green:        #007A5E;   /* PANTONE 7719C */
+  --c-green-dark:   #005C47;
+  --c-green-mid:    #006B52;
+  --c-mint:         #00A88E;   /* PANTONE 3285C */
+  --c-mint-dark:    #008C76;
+  --c-mint-light:   #E6F7F4;
+  --c-gray:         #76787B;   /* PANTONE Cool Gray 10C */
+
+  /* Superfícies */
+  --surface-hero:   #003528;   /* hero background base */
+  --surface-dark:   #004D3D;   /* dark sections */
+  --surface-bg:     #F4F8F7;   /* page background */
+  --surface-white:  #FFFFFF;
+  --surface-card:   #FFFFFF;
+
+  /* Texto */
+  --text-primary:   #1A2E28;
+  --text-secondary: #76787B;
+  --text-disabled:  #B0BFB8;
+  --text-on-dark:   rgba(255,255,255,.9);
+  --text-muted-dark:rgba(255,255,255,.6);
+
+  /* Bordas */
+  --border-light:   #D4E5DF;
+  --border-card:    #E0EDEA;
+
+  /* Sombras */
+  --shadow-sm:  0 2px 8px rgba(0,90,70,.07);
+  --shadow-md:  0 8px 24px rgba(0,90,70,.1);
+  --shadow-lg:  0 20px 48px rgba(0,90,70,.14);
+  --shadow-xl:  0 32px 64px rgba(0,90,70,.18);
+
+  /* Bordas arredondadas */
+  --r-sm:  8px;
+  --r-md:  14px;
+  --r-lg:  20px;
+  --r-xl:  28px;
+  --r-pill:50px;
+
+  /* Espaçamento */
+  --space-xs:  .375rem;
+  --space-sm:  .75rem;
+  --space-md:  1.5rem;
+  --space-lg:  2.5rem;
+  --space-xl:  4rem;
+  --space-2xl: 6rem;
+
+  /* Transições */
+  --t-fast:   .15s ease;
+  --t-base:   .25s ease;
+  --t-slow:   .4s ease;
+
+  /* Aliases para compatibilidade com código existente */
+  --primary:      var(--c-green);
+  --primary-dark: var(--c-green-dark);
+  --primary-mid:  var(--c-green-mid);
+  --accent:       var(--c-mint);
+  --accent-dark:  var(--c-mint-dark);
+  --accent-light: var(--c-mint-light);
+  --gray:         var(--c-gray);
+  --gray-light:   #F0F1F2;
+  --bg:           var(--surface-bg);
+  --dark:         var(--surface-dark);
+  --text:         var(--text-primary);
+  --muted:        var(--text-secondary);
+  --border:       var(--border-light);
+  --white:        var(--surface-white);
+  --green:        var(--c-mint);
+  --orange:       #E65100;
+  --yellow:       #F5A623;
+  --cyan:         var(--c-mint);
+  --violet:       var(--c-green);
+  --coral:        var(--c-green-dark);
+}
+
+/* ── RESET & BASE ────────────────────────────────────────────── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', 'Plus Jakarta Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-primary);
+  background: var(--surface-bg);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: inherit;
+}
+
+/* ── TIPOGRAFIA ──────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: 'Clash Display', sans-serif;
+  letter-spacing: -.025em;
+  line-height: 1.1;
+}
+
+/* ── CONTAINER ───────────────────────────────────────────────── */
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+@media(max-width:600px) { .container { padding: 0 1.25rem; } }
+
+/* ── NAV ─────────────────────────────────────────────────────── */
+.nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 72px;
+  background: rgba(255,255,255,.97);
+  border-bottom: 1px solid var(--border-light);
+  box-shadow: 0 1px 0 rgba(0,122,94,.06);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center;
+  padding: 0 2rem;
+  gap: 2rem;
+}
+
+/* Logo */
+.nav-logo {
+  display: block;
+  width: 194px; height: 55px; flex-shrink: 0;
+  background: url('logo-conecta-color.png') no-repeat left center / contain;
+  font-size: 0; color: transparent;
+  text-decoration: none;
+  transition: opacity var(--t-base);
+}
+.nav-logo:hover { opacity: .8; }
+
+/* Links centrais */
+.nav-links {
+  flex: 1;
+  display: flex; align-items: center;
+  justify-content: center;
+  gap: 2.25rem;
+}
+.nav-links a {
+  font-size: .875rem; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none;
+  transition: color var(--t-fast);
+  position: relative; padding-bottom: 2px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute; bottom: -2px; left: 0; right: 0; height: 2px;
+  background: var(--c-mint); border-radius: 2px;
+  transform: scaleX(0); transition: transform var(--t-base);
+}
+.nav-links a:hover { color: var(--c-green); }
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a.active { color: var(--c-green); font-weight: 700; }
+.nav-links a.active::after { transform: scaleX(1); }
+
+/* CTA button */
+.nav-cta {
+  padding: .55rem 1.4rem;
+  background: var(--c-mint);
+  color: white; border: none; border-radius: var(--r-pill);
+  font-size: .875rem; font-weight: 700;
+  text-decoration: none; cursor: pointer;
+  transition: background var(--t-base), transform var(--t-base), box-shadow var(--t-base);
+  white-space: nowrap;
+}
+.nav-cta:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(0,168,142,.3);
+}
+
+/* Mobile hamburger */
+.nav-burger {
+  display: none;
+  flex-direction: column; gap: 5px;
+  background: none; border: none;
+  cursor: pointer; padding: .35rem;
+  margin-left: auto;
+}
+.nav-burger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--text-primary); border-radius: 2px;
+  transition: all var(--t-base);
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* Mobile drawer */
+.nav-mobile {
+  display: none;
+  position: fixed;
+  top: 72px; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,.98);
+  backdrop-filter: blur(16px);
+  z-index: 99;
+  flex-direction: column;
+  padding: 1.5rem 1.5rem;
+  gap: .25rem;
+  border-top: 1px solid var(--border-light);
+  transform: translateX(100%);
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+.nav-mobile.open { transform: translateX(0); }
+.nav-mobile-link {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .9rem 1rem; border-radius: var(--r-md);
+  font-size: .95rem; font-weight: 600;
+  color: var(--text-primary); text-decoration: none;
+  transition: background var(--t-fast);
+}
+.nav-mobile-link:hover { background: var(--c-mint-light); color: var(--c-green); }
+.nav-mobile-link svg { color: var(--c-green); flex-shrink: 0; }
+
+/* ── HERO BASE (dark green) ──────────────────────────────────── */
+.hero {
+  position: relative; overflow: hidden;
+  background: linear-gradient(158deg, #002E22 0%, #006B52 55%, #003D2E 100%);
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  text-align: center;
+  padding: 5rem 2rem 0;
+  min-height: calc(100svh - 72px);
+}
+
+/* Listras diagonais sutis */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    -45deg,
+    transparent 0px, transparent 28px,
+    rgba(255,255,255,.018) 28px, rgba(255,255,255,.018) 29px
+  );
+  pointer-events: none; z-index: 0;
+}
+
+/* Glow central */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: 35%; left: 50%; transform: translate(-50%, -50%);
+  width: 70%; height: 320px;
+  background: radial-gradient(ellipse, rgba(0,168,142,.18) 0%, transparent 65%);
+  pointer-events: none; z-index: 0;
+}
+
+/* Símbolo AM decorativo */
+.hero-deco {
+  position: absolute;
+  right: -2%; bottom: -4%;
+  width: min(260px, 26vw);
+  aspect-ratio: 700/762;
+  background: url('symbol-am-white.png') no-repeat right bottom / contain;
+  pointer-events: none; z-index: 0;
+  opacity: .9;
+}
+
+/* Conteúdo do hero */
+.hero-content {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 780px;
+}
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .4rem 1.1rem;
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: var(--r-pill);
+  font-size: .72rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .08em;
+  color: rgba(255,255,255,.82);
+  margin-bottom: 1.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(2.6rem, 6vw, 4.5rem);
+  color: white; font-weight: 700;
+  margin-bottom: 1.25rem;
+}
+.hero h1 .accent { color: var(--c-mint); }
+
+.hero-sub {
+  font-size: clamp(.95rem, 1.8vw, 1.1rem);
+  color: rgba(255,255,255,.68);
+  line-height: 1.75;
+  max-width: 520px; margin: 0 auto 2.5rem;
+}
+
+/* Hero CTAs */
+.hero-ctas {
+  display: flex; gap: 1rem;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: 3.5rem;
+}
+.btn-hero-primary {
+  padding: .9rem 2.25rem;
+  background: var(--c-mint); color: white;
+  border: none; border-radius: var(--r-pill);
+  font-weight: 700; font-size: .95rem;
+  text-decoration: none; cursor: pointer;
+  transition: background var(--t-base), transform var(--t-base), box-shadow var(--t-base);
+}
+.btn-hero-primary:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(0,168,142,.35);
+}
+.btn-hero-ghost {
+  padding: .9rem 2.25rem;
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.22);
+  color: white; border-radius: var(--r-pill);
+  font-weight: 600; font-size: .95rem;
+  text-decoration: none; cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all var(--t-base);
+}
+.btn-hero-ghost:hover {
+  background: rgba(255,255,255,.2);
+  transform: translateY(-2px);
+}
+
+/* Stats bar */
+.hero-stats {
+  position: relative; z-index: 1;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  max-width: 480px; margin: 0 auto;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.1);
+  border-radius: var(--r-lg) var(--r-lg) 0 0;
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+}
+.hero-stat {
+  padding: 1.4rem 1rem; text-align: center;
+  border-right: 1px solid rgba(255,255,255,.08);
+  transition: background var(--t-fast);
+}
+.hero-stat:last-child { border-right: none; }
+.hero-stat:hover { background: rgba(255,255,255,.07); }
+.hero-stat-val {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 2rem; font-weight: 700; color: white; line-height: 1;
+  margin-bottom: .3rem;
+}
+.hero-stat-lbl { font-size: .7rem; color: rgba(255,255,255,.5); font-weight: 500; }
+
+/* ── WAVE SEPARATOR ──────────────────────────────────────────── */
+/* Transição suave de seção: hero escuro → conteúdo branco */
+.section-transition {
+  display: block; line-height: 0;
+  overflow: hidden;
+  background: var(--surface-hero);  /* match seção acima */
+  margin-bottom: -2px;
+}
+.section-transition svg { display: block; width: 100%; }
+
+/* ── SECTION BASE ────────────────────────────────────────────── */
+.section {
+  padding: var(--space-2xl) 0;
+}
+.section-sm { padding: var(--space-xl) 0; }
+.section-dark {
+  background: var(--surface-dark);
+  padding: var(--space-2xl) 0;
+}
+
+/* Section header */
+.section-badge {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem 1rem;
+  background: var(--c-mint-light);
+  border: 1px solid rgba(0,168,142,.2);
+  color: var(--c-green); border-radius: var(--r-pill);
+  font-size: .7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .09em;
+  margin-bottom: .875rem;
+}
+.section-badge-dark {
+  background: rgba(255,255,255,.1);
+  border-color: rgba(255,255,255,.15);
+  color: rgba(255,255,255,.75);
+}
+
+.section-title {
+  font-size: clamp(1.75rem, 3.5vw, 2.6rem);
+  color: var(--text-primary); margin-bottom: .75rem;
+}
+.section-title .accent { color: var(--c-mint); }
+.section-title-dark { color: white; }
+.section-title-dark .accent { color: var(--c-mint); }
+
+.section-desc {
+  font-size: 1rem; color: var(--text-secondary);
+  line-height: 1.75; max-width: 540px;
+}
+.section-desc-dark { color: rgba(255,255,255,.58); }
+
+/* ── CARDS ───────────────────────────────────────────────────── */
+.card {
+  background: var(--surface-card);
+  border: 1.5px solid var(--border-card);
+  border-radius: var(--r-lg);
+  padding: var(--space-lg);
+  transition: transform var(--t-base), box-shadow var(--t-base), border-color var(--t-base);
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(0,168,142,.3);
+}
+
+/* Highlight card (gradiente verde) */
+.card-highlight {
+  background: linear-gradient(135deg, var(--c-green) 0%, var(--c-mint-dark) 100%);
+  border: none; border-radius: var(--r-lg);
+  padding: var(--space-lg);
+  color: white; position: relative; overflow: hidden;
+  transition: transform var(--t-base), box-shadow var(--t-base);
+}
+.card-highlight::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 85% 15%, rgba(255,255,255,.12), transparent);
+  pointer-events: none;
+}
+.card-highlight:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 48px rgba(0,90,70,.3);
+}
+.card-highlight > * { position: relative; z-index: 1; }
+.card-highlight .card-icon { color: rgba(255,255,255,.65); margin-bottom: .875rem; }
+.card-highlight h3 {
+  font-family: 'Clash Display', sans-serif;
+  font-size: 1.25rem; font-weight: 700; margin-bottom: .4rem;
+}
+.card-highlight p { font-size: .85rem; opacity: .82; line-height: 1.65; }
+
+/* ── BUTTONS ─────────────────────────────────────────────────── */
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .75rem 1.75rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size: .9rem; font-weight: 700;
+  border: none; border-radius: var(--r-pill);
+  cursor: pointer; text-decoration: none;
+  transition: all var(--t-base);
+}
+.btn-primary {
+  background: var(--c-mint); color: white;
+}
+.btn-primary:hover {
+  background: var(--c-mint-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,168,142,.32);
+}
+.btn-secondary {
+  background: white; color: var(--c-green);
+  border: 1.5px solid var(--border-card);
+}
+.btn-secondary:hover {
+  border-color: var(--c-mint);
+  color: var(--c-mint);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+.btn-ghost-dark {
+  background: rgba(255,255,255,.1);
+  border: 1.5px solid rgba(255,255,255,.2);
+  color: white;
+  backdrop-filter: blur(8px);
+}
+.btn-ghost-dark:hover {
+  background: rgba(255,255,255,.2);
+  transform: translateY(-2px);
+}
+.btn-danger {
+  background: rgba(183,28,28,.08); color: #B71C1C;
+  border: 1.5px solid rgba(183,28,28,.2);
+}
+.btn-danger:hover { background: #B71C1C; color: white; }
+.btn-sm { padding: .5rem 1.1rem; font-size: .82rem; }
+.btn-lg { padding: 1rem 2.5rem; font-size: 1rem; }
+.btn-block { width: 100%; justify-content: center; }
+
+/* ── FORMS ───────────────────────────────────────────────────── */
+.form-group { margin-bottom: 1.25rem; }
+.form-label {
+  display: block;
+  font-size: .78rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-secondary);
+  margin-bottom: .5rem;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%; padding: .8rem 1.1rem;
+  background: white;
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--r-md);
+  font-size: .9rem; color: var(--text-primary);
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--c-mint);
+  box-shadow: 0 0 0 3px rgba(0,168,142,.12);
+}
+.form-input::placeholder { color: var(--text-disabled); }
+
+/* ── BADGES / CHIPS ──────────────────────────────────────────── */
+.badge {
+  display: inline-flex; align-items: center; gap: .3rem;
+  padding: .25rem .75rem;
+  border-radius: var(--r-pill);
+  font-size: .72rem; font-weight: 700;
+}
+.badge-green   { background: rgba(0,168,142,.12); color: var(--c-mint-dark); }
+.badge-primary { background: rgba(0,122,94,.1);   color: var(--c-green); }
+.badge-gray    { background: rgba(118,120,123,.12); color: var(--c-gray); }
+.badge-yellow  { background: rgba(245,166,35,.12);  color: #92620A; }
+.badge-red     { background: rgba(183,28,28,.1);   color: #B71C1C; }
+
+/* ── TOGGLE ──────────────────────────────────────────────────── */
+.toggle {
+  width: 44px; height: 24px; border-radius: 50px;
+  border: none; cursor: pointer; flex-shrink: 0;
+  background: var(--border-light);
+  position: relative; transition: background var(--t-base);
+}
+.toggle::after {
+  content: ''; position: absolute;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: white; top: 3px; left: 3px;
+  transition: transform var(--t-base);
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+}
+.toggle.on { background: var(--c-mint); }
+.toggle.on::after { transform: translateX(20px); }
+
+/* ── FADE-IN SCROLL ANIMATION ────────────────────────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity .6s cubic-bezier(.4,0,.2,1), transform .6s cubic-bezier(.4,0,.2,1);
+}
+.fade-up.visible { opacity: 1; transform: none; }
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+.toast {
+  position: fixed; bottom: 1.5rem; right: 1.5rem;
+  padding: .875rem 1.25rem;
+  border-radius: var(--r-md);
+  font-size: .85rem; font-weight: 600; color: white;
+  box-shadow: 0 8px 24px rgba(0,0,0,.2);
+  transform: translateY(80px); opacity: 0;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  z-index: 300; max-width: 320px;
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast.success { background: var(--c-mint); }
+.toast.error   { background: #B71C1C; }
+.toast.info    { background: var(--c-green); }
+
+/* ── FOOTER ──────────────────────────────────────────────────── */
+.footer {
+  background: var(--surface-dark);
+  border-top: 1px solid rgba(255,255,255,.08);
+  padding: 2.5rem 2rem;
+  text-align: center;
+}
+.footer-logo {
+  height: 44px; object-fit: contain;
+  opacity: .92;
+  margin: 0 auto 1.25rem;
+}
+.footer-links {
+  display: flex; gap: 1.5rem;
+  justify-content: center; flex-wrap: wrap;
+  margin-bottom: .75rem;
+}
+.footer-links a {
+  font-size: .82rem; color: rgba(255,255,255,.45);
+  text-decoration: none; transition: color var(--t-fast);
+}
+.footer-links a:hover { color: rgba(255,255,255,.85); }
+.footer-copy { font-size: .72rem; color: rgba(255,255,255,.22); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media(max-width: 768px) {
+  :root {
+    --space-xl:  3rem;
+    --space-2xl: 4rem;
+  }
+
+  .nav { padding: 0 1.25rem; height: 64px; }
+  .nav-logo { width: 130px; height: 40px; }
+  .nav-links { display: none !important; }
+  .nav-cta  { display: none !important; }
+  .nav-burger { display: flex !important; }
+  .nav-mobile { display: flex !important; }
+
+  .hero { padding: 3.5rem 1.25rem 0; min-height: 90svh; }
+  .hero h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
+  .hero-ctas { flex-direction: column; align-items: center; }
+  .hero-ctas a, .hero-ctas button { width: 100%; max-width: 280px; text-align: center; justify-content: center; }
+  .hero-deco { width: min(160px, 38vw); right: -1%; }
+  .hero-stats { grid-template-columns: 1fr 1fr 1fr; max-width: 100%; }
+
+  .section { padding: 3rem 0; }
+  .section-dark { padding: 3rem 0; }
+
+  .section-title { font-size: 1.65rem; }
+}
+
+@media(max-width: 480px) {
+  .hero-stats { grid-template-columns: 1fr; }
+  .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .hero-stat:last-child { border-bottom: none; }
+}
+
+
+/* ═══ PAINEL PAGE CSS ═══ */
+
+  /* ─ NAV FIX: override old nav rules ─ */
+  nav { position:sticky!important; top:0!important; z-index:100!important; height:72px!important; background:rgba(255,255,255,.97)!important; border-bottom:1px solid var(--border-light)!important; box-shadow:0 1px 0 rgba(0,122,94,.06)!important; backdrop-filter:blur(12px)!important; display:flex!important; align-items:center!important; padding:0 2rem!important; gap:2rem!important; }
+  .nav-logo { display:block!important; width:148px!important; height:44px!important; flex-shrink:0!important; background:url('logo-conecta-color.png') no-repeat left center/contain!important; font-size:0!important; color:transparent!important; text-decoration:none!important; }
+  .nav-logo::before { display:none!important; }
+  /* Also fix old .logo class if still present */
+  .logo { display:block!important; width:148px!important; height:44px!important; flex-shrink:0!important; background:url('logo-conecta-color.png') no-repeat left center/contain!important; font-size:0!important; color:transparent!important; -webkit-text-fill-color:transparent!important; text-decoration:none!important; }
+  .logo::before { display:none!important; }
+
+
+  /* ════ DESIGN TOKENS UNIFICADOS ════ */
+  :root {
+    --primary:       #007A5E;
+    --primary-dark:  #005C47;
+    --accent:        #00A88E;
+    --accent-dark:   #008C76;
+    --accent-light:  #E6F7F4;
+    --bg:            #F4F8F7;
+    --white:         #FFFFFF;
+    --dark:          #003D2E;
+    --text:          #1A2E28;
+    --muted:         #5C7A6E;
+    --subtle:        #8FA89E;
+    --border:        #C8DDD9;
+    --shadow-sm:     0 1px 4px rgba(0,0,0,.06);
+    --shadow-md:     0 4px 16px rgba(0,80,60,.08);
+    --shadow-lg:     0 12px 40px rgba(0,80,60,.12);
+    --shadow-accent: 0 8px 28px rgba(0,168,142,.35);
+    --t:             .25s ease;
+    --r-sm: 8px; --r-md: 12px; --r-lg: 18px; --r-xl: 24px; --r-full: 9999px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Plus Jakarta Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  nav { background:rgba(245,243,255,.9); backdrop-filter:blur(12px); border-bottom:1px solid var(--border);
+    padding:0 2rem; height:64px; display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; z-index:10; }
+  .logo { font-family:'Clash Display',sans-serif; font-size:1.4rem; font-weight:700;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    -webkit-background-clip:text; -webkit-text-fill-color:var(--primary); background-clip:text; text-decoration:none; }
+
+  .page-wrap { max-width:960px; margin:0 auto; padding:2.5rem 1.5rem 5rem; }
+
+
+  /* ── HERO INTERNO PADRÃO ── */
+  .page-hero {
+    background:var(--dark); padding:3rem 2rem 2.5rem; position:relative; overflow:hidden;
+  }
+  .page-hero::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 70% 60% at 70% 0%, rgba(12,61,48,.4) 0%, transparent 65%),
+               radial-gradient(ellipse 40% 40% at 10% 100%, rgba(255,92,92,.15) 0%, transparent 60%);
+    pointer-events:none;
+  }
+  .page-hero-inner { max-width:860px; margin:0 auto; position:relative; z-index:1; }
+  .page-hero-badge {
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.12);
+    border-radius:50px; padding:.3rem .9rem; font-size:.72rem; font-weight:700;
+    color:rgba(255,255,255,.55); margin-bottom:1rem; letter-spacing:.04em; text-transform:uppercase;
+  }
+  .page-hero h1 {
+    font-family:'Clash Display',sans-serif; font-size:clamp(1.75rem,4vw,2.75rem);
+    font-weight:700; color:white; line-height:1.15; margin-bottom:.6rem;
+  }
+  .page-hero h1 span {
+    background:linear-gradient(135deg,#80DFCC,var(--accent));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .page-hero p { font-size:.95rem; color:rgba(255,255,255,.5); line-height:1.7; max-width:520px; }
+
+  /* LOGIN */
+  .login-wrap { max-width:420px; margin:0 auto; }
+  .login-header { text-align:center; margin-bottom:2rem; }
+  .login-header h1 { font-family:'Clash Display',sans-serif; font-size:2rem; font-weight:700; margin-bottom:.5rem; }
+  .login-header p { color:var(--muted); font-size:.95rem; }
+  .form-card { background:white; border-radius:20px; padding:2rem; border:1.5px solid var(--border);
+    box-shadow:0 4px 24px rgba(0,0,0,.06); }
+  .form-group { display:flex; flex-direction:column; gap:.4rem; margin-bottom:1rem; }
+  label { font-size:.8rem; font-weight:600; }
+  input, select, textarea {
+    width:100%; padding:.75rem 1rem; border:1.5px solid var(--border); border-radius:10px;
+    font-size:.9rem; font-family:'Plus Jakarta Sans',sans-serif; outline:none;
+    background:var(--bg); color:var(--text); transition:border-color .2s,box-shadow .2s;
+  }
+  input:focus, select:focus { border-color:var(--violet); box-shadow:0 0 0 3px rgba(12,61,48,.1); background:white; }
+  .btn-primary { width:100%; padding:1rem; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:white; border:none; border-radius:12px; font-size:1rem; font-weight:700; cursor:pointer;
+    font-family:'Plus Jakarta Sans',sans-serif; transition:transform .2s,box-shadow .2s; margin-top:.5rem; }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(12,61,48,.45); }
+  .btn-primary:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+  .msg-box { padding:.75rem 1rem; border-radius:10px; font-size:.85rem; font-weight:600;
+    margin-top:1rem; text-align:center; display:none; }
+  .msg-box.error { background:rgba(255,92,92,.1); color:var(--coral); display:block; }
+  .link-cadastro { text-align:center; margin-top:1.25rem; font-size:.85rem; color:var(--muted); }
+  .link-cadastro a { color:var(--violet); font-weight:600; text-decoration:none; }
+
+  /* PAINEL */
+  .painel { display:none; }
+  .painel.show { display:block; animation:fadeUp .4s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  .painel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
+  .painel-header h1 { font-family:'Clash Display',sans-serif; font-size:1.8rem; font-weight:700; }
+  .painel-header p { color:var(--muted); font-size:.9rem; margin-top:.15rem; }
+  .btn-logout { padding:.5rem 1.2rem; background:white; border:1.5px solid var(--border);
+    border-radius:8px; font-size:.8rem; font-weight:600; cursor:pointer;
+    font-family:'Plus Jakarta Sans',sans-serif; color:var(--muted); transition:all .2s; }
+  .btn-logout:hover { border-color:var(--coral); color:var(--coral); }
+
+  .stats-row { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-bottom:2rem; }
+  .stat-card { background:white; border-radius:14px; padding:1.25rem; border:1px solid var(--border); text-align:center; }
+  .stat-num { font-family:'Clash Display',sans-serif; font-size:2rem; font-weight:700; color:var(--violet); }
+  .stat-label { font-size:.78rem; color:var(--muted); font-weight:500; margin-top:.2rem; }
+
+  .vagas-section { margin-bottom:2rem; }
+  .section-title { font-family:'Clash Display',sans-serif; font-size:1.2rem; font-weight:700; margin-bottom:1rem; }
+
+  .vaga-item { background:white; border-radius:14px; padding:1.25rem; border:1.5px solid var(--border);
+    margin-bottom:.75rem; cursor:pointer; transition:border-color .2s,box-shadow .2s; }
+  .vaga-item:hover { border-color:rgba(12,61,48,.4); box-shadow:0 4px 16px rgba(0,0,0,.07); }
+  .vaga-item.selected { border-color:var(--violet); box-shadow:0 0 0 3px rgba(12,61,48,.1); }
+  .vaga-item-header { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .vaga-title { font-weight:700; font-size:.95rem; }
+  .vaga-meta  { font-size:.78rem; color:var(--muted); margin-top:.2rem; }
+  .badge { padding:.25rem .7rem; border-radius:50px; font-size:.72rem; font-weight:600; }
+  .b-pendente  { background:rgba(251,191,36,.15); color:#B45309; }
+  .b-aprovada  { background:rgba(16,185,129,.15); color:var(--green); }
+  .b-rejeitada { background:rgba(255,92,92,.15); color:var(--coral); }
+
+  .cands-count { font-size:.8rem; color:var(--muted); margin-top:.5rem; }
+
+  /* CANDIDATOS PANEL */
+  .candidatos-panel { background:white; border-radius:20px; border:1.5px solid var(--border);
+    padding:1.5rem; margin-top:1.5rem; }
+  .candidatos-panel h3 { font-family:'Clash Display',sans-serif; font-size:1.1rem; margin-bottom:1rem; }
+
+  .cand-row { display:flex; align-items:center; gap:1rem; padding:1rem;
+    border-radius:12px; border:1px solid var(--border); margin-bottom:.6rem; transition:border-color .2s; }
+  .cand-row:hover { border-color:rgba(12,61,48,.3); }
+  .cand-avatar { width:44px; height:44px; border-radius:50%; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex; align-items:center; justify-content:center; color:white;
+    font-family:'Clash Display',sans-serif; font-weight:700; font-size:1.1rem; flex-shrink:0; }
+  .cand-info { flex:1; min-width:0; }
+  .cand-name { font-weight:700; font-size:.9rem; }
+  .cand-meta { font-size:.75rem; color:var(--muted); margin-top:.15rem; }
+  .cand-actions { display:flex; gap:.5rem; flex-shrink:0; }
+  .btn-sm { padding:.35rem .8rem; border-radius:7px; font-size:.75rem; font-weight:700;
+    cursor:pointer; border:none; font-family:'Plus Jakarta Sans',sans-serif; transition:all .2s; }
+  .btn-approve { background:rgba(16,185,129,.15); color:var(--green); }
+  .btn-approve:hover { background:var(--green); color:white; }
+  .btn-reject  { background:rgba(255,92,92,.1); color:var(--coral); }
+  .btn-reject:hover  { background:var(--coral); color:white; }
+  .status-badge { padding:.25rem .75rem; border-radius:50px; font-size:.72rem; font-weight:700; }
+  .s-em_analise { background:rgba(251,191,36,.15); color:#B45309; }
+  .s-aprovado   { background:rgba(16,185,129,.15); color:var(--green); }
+  .s-recusado   { background:rgba(255,92,92,.15); color:var(--coral); }
+
+  .spinner { width:36px; height:36px; border:3px solid var(--border); border-top-color:var(--violet);
+    border-radius:50%; animation:spin .8s linear infinite; margin:2rem auto; }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  .empty-msg { text-align:center; padding:2rem; color:var(--muted); font-size:.9rem; }
+  .empty-msg div { font-size:2rem; margin-bottom:.5rem; }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:1.5rem; right:1.5rem; padding:.85rem 1.25rem; border-radius:12px;
+    font-size:.85rem; font-weight:600; color:white; box-shadow:0 8px 24px rgba(0,0,0,.2);
+    transform:translateY(80px); opacity:0; transition:all .3s; z-index:200; }
+  .toast.show { transform:translateY(0); opacity:1; }
+  .toast.success { background:var(--green); }
+  .toast.error   { background:var(--coral); }
+
+
+  /* VAGA ACTIONS */
+  .vaga-actions { display:flex; gap:.5rem; margin-top:.75rem; flex-wrap:wrap; }
+  .btn-vaga-action { padding:.38rem .9rem; border-radius:8px; font-size:.75rem; font-weight:700;
+    cursor:pointer; border:1.5px solid; font-family:'Plus Jakarta Sans',sans-serif; transition:all .2s; }
+  .btn-edit    { border-color:rgba(12,61,48,.4); color:var(--violet); background:rgba(46,207,168,.07); }
+  .btn-edit:hover    { background:var(--violet); color:white; }
+  .btn-close   { border-color:rgba(251,191,36,.4); color:#B45309; background:rgba(251,191,36,.08); }
+  .btn-close:hover   { background:#FBBF24; color:white; }
+  .btn-reopen  { border-color:rgba(16,185,129,.3); color:var(--green); background:rgba(16,185,129,.06); }
+  .btn-reopen:hover  { background:var(--green); color:white; }
+  .btn-del     { border-color:rgba(255,92,92,.3); color:var(--coral); background:rgba(255,92,92,.06); }
+  .btn-del:hover     { background:var(--coral); color:white; }
+  .b-encerrada { background:rgba(107,114,128,.12); color:var(--muted); }
+
+  /* MODAL EDIÇÃO */
+  .modal-overlay { position:fixed; inset:0; background:rgba(15,10,30,.5);
+    backdrop-filter:blur(4px); z-index:300; display:none; align-items:center; justify-content:center; padding:1rem; }
+  .modal-overlay.open { display:flex; }
+  .modal-box { background:white; border-radius:20px; width:100%; max-width:620px;
+    max-height:92vh; overflow-y:auto; padding:2rem; position:relative; animation:fadeUp .3s ease; }
+  .modal-close { position:absolute; top:1rem; right:1rem; width:32px; height:32px;
+    border-radius:50%; border:none; background:var(--bg); cursor:pointer; font-size:1rem;
+    display:flex; align-items:center; justify-content:center; color:var(--muted); transition:background .2s; }
+  .modal-close:hover { background:var(--border); }
+  .modal-title { font-family:'Clash Display',sans-serif; font-size:1.3rem; font-weight:700; margin-bottom:1.5rem; }
+  .form-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem; }
+  .form-grid-2 .full { grid-column:1/-1; }
+  .modal-label { font-size:.78rem; font-weight:700; color:var(--text); display:block; margin-bottom:.35rem; }
+  .modal-input { width:100%; padding:.7rem 1rem; border:1.5px solid var(--border); border-radius:10px;
+    font-size:.875rem; font-family:'Plus Jakarta Sans',sans-serif; outline:none; background:var(--bg);
+    color:var(--text); transition:border-color .2s; }
+  .modal-input:focus { border-color:var(--violet); background:white; }
+  .modal-footer { display:flex; justify-content:flex-end; gap:.75rem; margin-top:1.5rem;
+    padding-top:1.25rem; border-top:1.5px solid var(--bg); }
+  .btn-modal-save { padding:.75rem 1.75rem; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:white; border:none; border-radius:10px; font-size:.9rem; font-weight:700;
+    cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:transform .2s; }
+  .btn-modal-save:hover { transform:translateY(-2px); }
+  .btn-modal-save:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+  .btn-modal-cancel { padding:.75rem 1.25rem; background:var(--bg); border:1.5px solid var(--border);
+    border-radius:10px; font-size:.9rem; font-weight:600; cursor:pointer;
+    font-family:'Plus Jakarta Sans',sans-serif; color:var(--muted); transition:all .2s; }
+  .btn-modal-cancel:hover { border-color:var(--coral); color:var(--coral); }
+  .msg-modal { padding:.7rem 1rem; border-radius:9px; font-size:.82rem; font-weight:600;
+    margin-top:.75rem; display:none; }
+  .msg-modal.success { background:rgba(16,185,129,.1); color:var(--green); display:block; }
+  .msg-modal.error   { background:rgba(255,92,92,.1); color:var(--coral); display:block; }
+
+  /* NOVA VAGA BTN */
+  .btn-nova-vaga { padding:.55rem 1.2rem; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:white; border:none; border-radius:9px; font-size:.82rem; font-weight:700;
+    cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:transform .2s; text-decoration:none;
+    display:inline-block; }
+  .btn-nova-vaga:hover { transform:translateY(-2px); }
+  .section-header-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
+
+
+  /* BUSCA DE CANDIDATOS */
+  .painel-tabs { display:flex; background:white; border-radius:12px; padding:.3rem; gap:.3rem;
+    border:1px solid var(--border); margin-bottom:1.5rem; }
+  .painel-tab { flex:1; padding:.6rem; border-radius:9px; border:none; cursor:pointer;
+    font-size:.82rem; font-weight:600; font-family:'Plus Jakarta Sans',sans-serif;
+    transition:all .2s; color:var(--muted); background:transparent; }
+  .painel-tab.active { background:linear-gradient(135deg,var(--accent),var(--accent-dark)); color:white; }
+
+  .tab-section { display:none; }
+  .tab-section.show { display:block; animation:fadeUp .3s ease both; }
+
+  /* FILTROS BUSCA */
+  .busca-filtros { background:white; border-radius:16px; padding:1.25rem;
+    border:1.5px solid var(--border); margin-bottom:1.25rem; }
+  .filtros-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr)); gap:.75rem; margin-bottom:.75rem; }
+  .filtro-input { width:100%; padding:.65rem 1rem; border:1.5px solid var(--border); border-radius:10px;
+    font-size:.85rem; font-family:'Plus Jakarta Sans',sans-serif; outline:none;
+    background:var(--bg); color:var(--text); transition:border-color .2s; }
+  .filtro-input:focus { border-color:var(--violet); background:white; }
+  .btn-buscar { width:100%; padding:.75rem; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:white; border:none; border-radius:10px; font-size:.875rem; font-weight:700;
+    cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:transform .2s; }
+  .btn-buscar:hover { transform:translateY(-2px); }
+
+  /* CARDS CANDIDATOS BUSCA */
+  .busca-results-header { display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:1rem; }
+  .busca-count { font-size:.85rem; color:var(--muted); font-weight:500; }
+
+  .cand-card-busca { background:white; border-radius:14px; padding:1.25rem;
+    border:1.5px solid var(--border); margin-bottom:.75rem;
+    transition:border-color .2s, box-shadow .2s; }
+  .cand-card-busca:hover { border-color:rgba(124,58,237,.25); box-shadow:0 4px 16px rgba(0,0,0,.07); }
+  .cand-card-top { display:flex; align-items:center; gap:1rem; margin-bottom:.85rem; }
+  .cand-card-avatar { width:48px; height:48px; border-radius:50%; flex-shrink:0;
+    background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    display:flex; align-items:center; justify-content:center; color:white;
+    font-family:'Clash Display',sans-serif; font-weight:700; font-size:1.2rem; }
+  .cand-card-name { font-weight:700; font-size:.95rem; margin-bottom:.15rem; }
+  .cand-card-sub  { font-size:.78rem; color:var(--muted); }
+  .cand-card-tags { display:flex; gap:.4rem; flex-wrap:wrap; margin-bottom:.85rem; }
+  .cand-tag { padding:.25rem .7rem; border-radius:50px; font-size:.72rem; font-weight:600;
+    background:rgba(46,207,168,.08); color:var(--violet); }
+  .cand-tag.green  { background:rgba(16,185,129,.1); color:var(--green); }
+  .cand-tag.cyan   { background:rgba(6,182,212,.1); color:#0891B2; }
+  .cand-tag.yellow { background:rgba(251,191,36,.12); color:#B45309; }
+  .cand-card-sobre { font-size:.82rem; color:var(--muted); line-height:1.6;
+    font-style:italic; padding:.75rem; background:var(--bg); border-radius:8px; margin-bottom:.85rem; }
+  .cand-card-footer { display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
+  .cand-card-contato { font-size:.78rem; color:var(--muted); }
+  .btn-convidar { padding:.45rem 1.1rem; background:linear-gradient(135deg,var(--accent),var(--accent-dark));
+    color:white; border:none; border-radius:8px; font-size:.78rem; font-weight:700;
+    cursor:pointer; font-family:'Plus Jakarta Sans',sans-serif; transition:all .2s; }
+  .btn-convidar:hover { transform:translateY(-1px); box-shadow:0 4px 12px rgba(12,61,48,.4); }
+  .btn-convidar.invited { background:rgba(16,185,129,.15); color:var(--green); cursor:default; transform:none; box-shadow:none; }
+
+  /* MODAL CONVITE */
+  .modal-convite-body { display:flex; flex-direction:column; gap:1rem; }
+  .modal-convite-body textarea { width:100%; padding:.85rem 1rem; border:1.5px solid var(--border);
+    border-radius:10px; font-size:.875rem; font-family:'Plus Jakarta Sans',sans-serif;
+    outline:none; resize:vertical; min-height:100px; transition:border-color .2s; background:var(--bg); }
+  .modal-convite-body textarea:focus { border-color:var(--violet); background:white; }
+
+  /* DISC BADGE */
+  .disc-badge { display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .6rem;
+    border-radius:50px;font-size:.68rem;font-weight:700;flex-shrink:0; }
+  .disc-D { background:rgba(239,68,68,.12);color:#DC2626; }
+  .disc-I { background:rgba(251,191,36,.15);color:#B45309; }
+  .disc-S { background:rgba(16,185,129,.12);color:#059669; }
+  .disc-C { background:rgba(59,130,246,.12);color:#2563EB; }
+  @media(max-width:600px) { .stats-row{grid-template-columns:1fr 1fr} .cand-actions{flex-direction:column} }
+
+  /* HAMBURGUER MOBILE */
+  .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer;
+    background:none; border:none; padding:.4rem; }
+  .hamburger span { display:block; width:22px; height:2px; background:var(--text);
+    border-radius:2px; transition:all .3s; }
+  .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity:0; }
+  .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
+  .mobile-drawer { display:none; position:fixed; top:64px; left:0; right:0; bottom:0;
+    background:rgba(245,243,255,.98); backdrop-filter:blur(16px); z-index:99;
+    flex-direction:column; padding:1.5rem 2rem; border-top:1px solid var(--border);
+    overflow-y:auto; transform:translateX(100%); transition:transform .3s ease; }
+  .mobile-drawer.open { transform:translateX(0); }
+  .mobile-nav-link { display:block; padding:.85rem 1rem; border-radius:12px; font-size:1rem;
+    font-weight:600; color:var(--text); text-decoration:none; transition:background .2s; margin-bottom:.2rem; }
+  .mobile-nav-link:hover { background:white; }
+  @media(max-width:768px) { .hamburger { display:flex; } .mobile-drawer { display:flex; } }
+
+
+  /* ── LOGO IMAGEM ANHEMBI ── */
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    cursor: pointer;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background: none;
+    font-size: 0;
+  }
+  .logo::before {
+    content: '';
+    display: block;
+    width: 160px;
+    height: 44px;
+    background: url('logo-conecta-color.png') no-repeat center/contain;
+  }
+  /* Logo branca nos heróis (quando nav está sobre fundo escuro) */
+  .hero-logo-wrap .logo::before,
+  .vaga-hero .logo::before {
+    background-image: url('logo-conecta-white.png');
+  }
+
+
+  /* ── FIX GLOBAL: eliminar vermelho, logo correta, marca d'água ── */
+  .logo {
+    display: inline-flex; align-items: center;
+    text-decoration: none; cursor: pointer;
+    font-size: 0; color: transparent;
+    -webkit-text-fill-color: transparent; background: none;
+  }
+  .logo::before {
+    content: '';
+    display: block;
+    width: 140px; height: 44px;
+    background: url('logo-conecta-color.png') no-repeat left center / contain;
+  }
+  nav {
+    background: rgba(255,255,255,.97);
+    box-shadow: 0 1px 16px rgba(0,122,94,.1);
+    height: 72px;
+  }
+
+  /* Todos os botões CTA → verde accent */
+  .btn-submit, .btn-save, .btn-modal-save, .lm-btn,
+  .btn-apply-full, .btn-apply, .btn-search, .btn-buscar,
+  .btn-nova-vaga, .btn-nav-cta, .btn-hero-primary, .btn-nav-primary,
+  .cta-btn-a, .btn-primary {
+    background: var(--accent);
+    background-image: none;
+  }
+  .btn-submit:hover, .btn-save:hover, .btn-apply-full:hover,
+  .btn-search:hover, .btn-buscar:hover, .btn-hero-primary:hover {
+    background: var(--accent-dark);
+    box-shadow: 0 8px 20px rgba(0,168,142,.3);
+  }
+
+  /* Input focus → accent */
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(0,168,142,.1);
+  }
+
+  /* Section badge */
+  .section-badge {
+    background: var(--accent-light);
+    color: var(--primary);
+  }
+
+  /* Section title span highlight */
+  .section-title span, h1 span, h2 span {
+    color: var(--accent);
+    -webkit-text-fill-color: var(--accent);
+    background: none;
+  }
+
+  /* Stat nums brancos dentro de heróis */
+  .hero .stat-num, .page-hero .stat-num {
+    color: white;
+    font-weight: 800;
+  }
+
+  /* Remove qualquer gradiente texto residual */
+  *[style*="background-clip:text"] {
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+  }
+
+
+  /* ── UPGRADE TIPOGRAFIA GLOBAL ── */
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&display=swap');
+
+  body { font-family: 'DM Sans', 'Plus Jakarta Sans', sans-serif; }
+
+  h1, h2, h3, .section-title, .panel-title, .modal-title {
+    font-family: 'Clash Display', sans-serif;
+    letter-spacing: -0.02em;
+  }
+
+  /* Forms mais elegantes */
+  input, select, textarea, button {
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  /* Labels mais profissionais */
+  label { font-size: .8rem; font-weight: 700; letter-spacing: .03em; }
+
+  /* Botões — tipografia impactante */
+  .btn-submit, .btn-save, .btn-primary, .btn-login,
+  .btn-apply-full, .btn-search, .btn-buscar, .btn-nav-cta {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    letter-spacing: .02em;
+  }
+
+  /* Nav links */
+  .nav-links a, .nav-back {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .875rem;
+  }
+
+  /* Form cards */
+  .form-card { border-radius: 20px; }
+  .section-label { letter-spacing: -.01em; }
+
+
+  /* ── PAINEL EMPRESA UPGRADE ── */
+  .painel-header h1 { font-family: 'Clash Display', sans-serif; letter-spacing: -.025em; }
+  .section-title { font-family: 'Clash Display', sans-serif; letter-spacing: -.02em; }
+  .stat-num { font-family: 'Clash Display', sans-serif; font-weight: 700; }
+  .vaga-title { font-family: 'Clash Display', sans-serif; letter-spacing: -.01em; }
+  .cand-name  { font-family: 'DM Sans', sans-serif; font-weight: 700; }
+  .modal-title { font-family: 'Clash Display', sans-serif; }
+  .vaga-item { border-radius: 16px; }
+  .cand-card-busca { border-radius: 16px; }
+  .stat-card { border-radius: 18px; }
+
+
+  @media(max-width:768px) {
+    nav { padding:0 1rem; height:60px; }
+    .logo::before { width:110px; height:38px; }
+    .page-wrap { padding:1.5rem 1rem 4rem; }
+    .stats-row { grid-template-columns:1fr 1fr; }
+    .painel-tabs { flex-direction:column; }
+    .painel-tab { font-size:.82rem; }
+    .filtros-grid { grid-template-columns:1fr; }
+    .cand-card-busca { padding:.85rem; }
+    .cand-card-footer { flex-direction:column; align-items:flex-start; gap:.5rem; }
+    .modal-box { padding:1.25rem; border-radius:16px; }
+    .form-grid-2 { grid-template-columns:1fr; }
+    .painel-header { flex-direction:column; align-items:flex-start; gap:.75rem; }
+    .painel-header h1 { font-size:1.5rem; }
+  }
+
+
+  /* ── SÍMBOLO AM — página interna ── */
+  .page-hero, .vaga-hero { position:relative; overflow:hidden; }
+  .page-am-deco {
+    position:absolute; right:-4%; bottom:-8%;
+    width:min(260px, 28vw); aspect-ratio:700/762;
+    background:url('symbol-am-white.png') no-repeat center/contain;
+    pointer-events:none; z-index:0;
+  }
+  @media(max-width:768px){
+    .page-am-deco { width:min(140px, 35vw); right:-2%; }
+  }
+
+
+  /* ── ANIMAÇÕES HOVER GLOBAIS ── */
+  /* Botões primários */
+  .btn-submit, .btn-save, .btn-apply-full, .btn-next,
+  .btn-nova-vaga, .btn-modal-approve {
+    transition: all .25s ease;
+  }
+  .btn-submit:hover, .btn-save:hover, .btn-apply-full:hover,
+  .btn-next:hover, .btn-nova-vaga:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,168,142,.35);
+  }
+
+  /* Cards genéricos */
+  .form-card, .card, .stat-card {
+    transition: box-shadow .25s ease;
+  }
+
+  /* Nav links */
+  .nav-links a, .nav-back, .mob-link {
+    transition: color .2s ease;
+  }
+
+  /* Input focus glow */
+  input:focus, select:focus, textarea:focus {
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+
+  /* ── LOGO BULLET-PROOF ── */
+  .logo {
+    display: inline-block;
+    width: 150px;
+    height: 48px;
+    background: url('logo-conecta-color.png') no-repeat left center / contain;
+    text-decoration: none;
+    font-size: 0;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .logo::before { display: none; }
+  /* Only the CSS background-image, no ::before pseudo */
+
+
+
+  /* ─ PAGE HERO DECO ─ */
+  .page-hero { position:relative; overflow:hidden; }
+  .page-hero .hero-deco {
+    position:absolute; right:-2%; bottom:-4%;
+    width:min(220px, 24vw); aspect-ratio:700/762;
+    background:url('symbol-am-white.png') no-repeat right bottom/contain;
+    pointer-events:none; z-index:0; opacity:.85;
+  }
+  @media(max-width:768px) { .page-hero .hero-deco { width:min(130px,32vw); } }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"></a>
+  <button class="btn-logout" id="nav-logout" onclick="logout()" style="display:none">Sair</button>
+  <button class="nav-burger" id="nav-burger" onclick="toggleMob()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+    <a class="nav-mobile-link" href="index.html">Portal de Vagas</a>
+    <a class="nav-mobile-link" href="cadastro-empresa.html"> Cadastrar Nova Vaga</a>
+</div>
+
+<div class="page-wrap">
+
+  <!-- LOGIN EMPRESA -->
+  <div id="login-section">
+    <div class="login-wrap">
+      <div class="login-header">
+        <h1><svg style="vertical-align:middle;flex-shrink:0" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg> Área da Empresa</h1>
+        <p>Acesse para gerenciar suas vagas e visualizar os candidatos.</p>
+      </div>
+      <div class="form-card">
+        <div class="form-group"><label>E-mail cadastrado</label><input type="email" id="e-email" placeholder="rh@empresa.com.br" onkeydown="if(event.key==='Enter')loginEmpresa()"></div>
+        <div class="form-group"><label>Senha</label><input type="password" id="e-senha" placeholder="Sua senha" onkeydown="if(event.key==='Enter')loginEmpresa()"></div>
+        <button class="btn-primary" id="btn-login-emp" onclick="loginEmpresa()">Entrar →</button>
+        <div class="msg-box" id="msg-login"></div>
+      </div>
+      <div class="link-cadastro">Ainda não tem conta? <a href="cadastro-empresa.html">Cadastre sua empresa</a></div>
+    </div>
+  </div>
+
+  <!-- PAINEL EMPRESA -->
+  <div class="painel" id="painel-empresa">
+    <div class="painel-header">
+      <div>
+        <h1 id="emp-nome">Empresa</h1>
+        <p id="emp-setor">Painel de gerenciamento</p>
+      </div>
+      <button class="btn-logout" onclick="logout()">Sair da conta</button>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="s-total">0</div><div class="stat-label">Vagas publicadas</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-cands">0</div><div class="stat-label">Total candidaturas</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-analise">0</div><div class="stat-label">Em análise</div></div>
+    </div>
+
+    <!-- TABS -->
+    <div class="painel-tabs">
+      <button class="painel-tab active" onclick="switchTab('vagas',this)"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12"/></svg> Minhas Vagas</button>
+      <button class="painel-tab" onclick="switchTab('busca',this)"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Buscar Candidatos</button>
+    </div>
+
+    <!-- TAB: VAGAS -->
+    <div class="tab-section show" id="tab-vagas">
+      <div class="vagas-section">
+        <div class="section-header-row">
+          <div class="section-title">Suas Vagas</div>
+          <a class="btn-nova-vaga" href="cadastro-empresa.html">+ Nova Vaga</a>
+        </div>
+        <div id="vagas-loading"><div class="spinner"></div></div>
+        <div id="vagas-list"></div>
+      </div>
+      <div class="candidatos-panel" id="candidatos-panel" style="display:none">
+        <h3 id="cands-title">Candidatos</h3>
+        <div id="cands-loading2"><div class="spinner"></div></div>
+        <div id="cands-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB: BUSCA CANDIDATOS -->
+    <div class="tab-section" id="tab-busca">
+      <div class="busca-filtros">
+        <div class="filtros-grid">
+          <input class="filtro-input" type="text" id="b-nome" placeholder="Nome ou palavra-chave">
+          <input class="filtro-input" type="text" id="b-cidade" placeholder="Cidade">
+          <select class="filtro-input" id="b-estado">
+            <option value="">Estado</option>
+            <option>AC</option><option>AL</option><option>AP</option><option>AM</option><option>BA</option>
+            <option>CE</option><option>DF</option><option>ES</option><option>GO</option><option>MA</option>
+            <option>MT</option><option>MS</option><option>MG</option><option>PA</option><option>PB</option>
+            <option>PR</option><option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+            <option>RS</option><option>RO</option><option>RR</option><option>SC</option><option>SP</option>
+            <option>SE</option><option>TO</option>
+          </select>
+          <select class="filtro-input" id="b-esc">
+            <option value="">Escolaridade</option>
+            <option>Ensino Médio Incompleto</option>
+            <option>Ensino Médio Completo</option>
+            <option>Superior Incompleto</option>
+            <option>Superior Completo</option>
+          </select>
+          <select class="filtro-input" id="b-periodo">
+            <option value="">Período</option>
+            <option>Manhã</option><option>Tarde</option><option>Noite</option>
+            <option>Integral</option><option>Flexível</option>
+          </select>
+          <select class="filtro-input" id="b-disc">
+            <option value="">Perfil DISC</option>
+            <option value="D">Dominante</option>
+            <option value="I">Influente</option>
+            <option value="S">Estável</option>
+            <option value="C">Conscencioso</option>
+          </select>
+        </div>
+        <button class="btn-buscar" onclick="buscarCandidatos()">Buscar Candidatos</button>
+      </div>
+      <div id="busca-loading" style="display:none"><div class="spinner"></div></div>
+      <div id="busca-inicial" style="text-align:center;padding:2.5rem 1rem;color:var(--muted)">
+        <div style="font-size:2.5rem;margin-bottom:.75rem"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <strong>Encontre o candidato ideal</strong><br>
+        <span style="font-size:.85rem">Use os filtros acima e clique em Buscar Candidatos</span>
+      </div>
+      <div id="busca-results" style="display:none">
+        <div class="busca-results-header">
+          <div class="busca-count" id="busca-count"></div>
+        </div>
+        <div id="busca-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL EDITAR VAGA -->
+<div class="modal-overlay" id="modal-editar" onclick="if(event.target===this)fecharEdicao()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="fecharEdicao()">×</button>
+    <div class="modal-title"><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Editar Vaga</div>
+    <input type="hidden" id="edit-vaga-id">
+    <div class="form-grid-2">
+      <div class="full">
+        <label class="modal-label">Título da vaga <span style="color:var(--coral)">*</span></label>
+        <input class="modal-input" type="text" id="edit-titulo" placeholder="Ex.: Estágio em Marketing">
+      </div>
+      <div>
+        <label class="modal-label">Tipo</label>
+        <select class="modal-input" id="edit-tipo">
+          <option>Estágio</option><option>Jovem Aprendiz</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Área</label>
+        <select class="modal-input" id="edit-area">
+          <option>Tecnologia</option><option>Marketing</option><option>Design</option>
+          <option>Administrativo</option><option>Financeiro</option><option>RH</option>
+          <option>Logística</option><option>Comunicação</option><option>Vendas</option><option>Outros</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Modalidade</label>
+        <select class="modal-input" id="edit-modalidade">
+          <option>Presencial</option><option>Remoto</option><option>Híbrido</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Cidade</label>
+        <input class="modal-input" type="text" id="edit-cidade" placeholder="Ex.: São Paulo, SP">
+      </div>
+      <div>
+        <label class="modal-label">Período</label>
+        <select class="modal-input" id="edit-periodo">
+          <option>Manhã</option><option>Tarde</option><option>Noite</option><option>Integral</option><option>Flexível</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Carga Horária</label>
+        <select class="modal-input" id="edit-horas">
+          <option>20h/semana</option><option>25h/semana</option><option>30h/semana</option><option>40h/semana</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Escolaridade mínima</label>
+        <select class="modal-input" id="edit-esc">
+          <option>Ensino Médio</option><option>Superior Incompleto</option><option>Superior Completo</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Bolsa (R$)</label>
+        <input class="modal-input" type="number" id="edit-bolsa" placeholder="Ex.: 1500">
+      </div>
+      <div>
+        <label class="modal-label">Nº de vagas</label>
+        <input class="modal-input" type="number" id="edit-numvagas" min="1" placeholder="Ex.: 2">
+      </div>
+      <div>
+        <label class="modal-label">Prazo de inscrição</label>
+        <input class="modal-input" type="text" id="edit-prazo" placeholder="Ex.: 30/06/2025">
+      </div>
+      <div class="full" style="display:flex;align-items:center;gap:.75rem;background:rgba(46,207,168,.05);border:1.5px solid rgba(12,61,48,.2);border-radius:10px;padding:.85rem">
+        <input type="checkbox" id="edit-confidencial" style="width:16px;height:16px;accent-color:var(--primary);cursor:pointer">
+        <div>
+          <div style="font-size:.85rem;font-weight:700"><svg style="vertical-align:middle;flex-shrink:0" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Vaga Confidencial</div>
+          <div style="font-size:.75rem;color:var(--muted)">Empresa aparece como "Empresa Confidencial" no portal</div>
+        </div>
+      </div>
+      <div class="full">
+        <label class="modal-label">Descrição</label>
+        <textarea class="modal-input" id="edit-descricao" rows="3" placeholder="Descreva a vaga..."></textarea>
+      </div>
+      <div class="full">
+        <label class="modal-label">Requisitos (um por linha)</label>
+        <textarea class="modal-input" id="edit-requisitos" rows="3" placeholder="Ex.: Cursando TI&#10;Disponibilidade tarde"></textarea>
+      </div>
+    </div>
+    <div class="msg-modal" id="msg-modal-edit"></div>
+    <div class="modal-footer">
+      <button class="btn-modal-cancel" onclick="fecharEdicao()">Cancelar</button>
+      <button class="btn-modal-save" id="btn-salvar-edicao" onclick="salvarEdicao()">Salvar alterações ✓</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CONVITE -->
+<div class="modal-overlay" id="modal-convite" onclick="if(event.target===this)fecharConvite()">
+  <div class="modal-box" style="max-width:480px">
+    <button class="modal-close" onclick="fecharConvite()">×</button>
+    <div class="modal-title"><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg> Convidar Candidato</div>
+    <input type="hidden" id="convite-cand-id">
+    <div class="modal-convite-body">
+      <div id="convite-cand-info" style="background:var(--bg);border-radius:10px;padding:1rem;font-size:.875rem"></div>
+      <div>
+        <label class="modal-label">Vaga de interesse</label>
+        <select class="modal-input" id="convite-vaga">
+          <option value="">Selecione uma vaga...</option>
+        </select>
+      </div>
+      <div>
+        <label class="modal-label">Mensagem (opcional)</label>
+        <textarea id="convite-msg" placeholder="Ex.: Olá! Seu perfil chamou nossa atenção para a vaga de Estágio em TI. Gostaríamos de conversar com você..."></textarea>
+      </div>
+      <div class="msg-modal" id="msg-convite"></div>
+      <div class="modal-footer" style="margin-top:0;padding-top:0;border-top:none">
+        <button class="btn-modal-cancel" onclick="fecharConvite()">Cancelar</button>
+        <button class="btn-modal-save" id="btn-enviar-convite" onclick="enviarConvite()">Enviar convite ✓</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://hnhxxchhwhdlpuiceirz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaHh4Y2hod2hkbHB1aWNlaXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MjY4MDMsImV4cCI6MjA4OTAwMjgwM30._N9DBrCq7lXW6tpfpcXHHcaH21AqEAcinPPIE-_-Ik8';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── LOGO & COR DINÂMICA ──────────────────────────────────────────
+async function carregarIdentidade() {
+  try {
+    const { data } = await sb.from('configuracoes').select('chave,valor');
+    if (!data) return;
+    const cfg = Object.fromEntries(data.map(r => [r.chave, r.valor]));
+
+    // Logo dinâmica (só aplica se admin configurou uma logo personalizada)
+    if (cfg.logo_url && cfg.logo_url !== '') {
+      document.querySelectorAll('.logo').forEach(el => {
+        el.innerHTML = '';
+        el.style.setProperty('--logo-url', `url('${cfg.logo_url}')`);
+        el.style.cssText += ';width:auto;';
+      });
+    }
+    // Se não há logo personalizada, o CSS usa logo-colorida.png por padrão
+
+    // Cor primária
+    if (cfg.cor_primary && /^#[0-9A-Fa-f]{6}$/.test(cfg.cor_primary)) {
+      const cor = cfg.cor_primary;
+      const corDark = ajustarCor(cor, -20);
+      document.documentElement.style.setProperty('--primary', cor);
+      document.documentElement.style.setProperty('--primary-dark', corDark);
+      document.documentElement.style.setProperty('--violet', cor);
+      document.documentElement.style.setProperty('--coral', corDark);
+    }
+  } catch(e) { /* silencioso */ }
+}
+
+function ajustarCor(hex, pct) {
+  const num = parseInt(hex.slice(1), 16);
+  const r = Math.max(0, Math.min(255, (num >> 16) + pct));
+  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xff) + pct));
+  const b = Math.max(0, Math.min(255, (num & 0xff) + pct));
+  return '#' + [r,g,b].map(v => v.toString(16).padStart(2,'0')).join('');
+}
+carregarIdentidade();
+// ── END LOGO & COR ──────────────────────────────────────────────
+
+
+let empresaLogada = JSON.parse(sessionStorage.getItem('empresa') || 'null');
+let vagaSelecionada = null;
+let todasVagas = [];
+
+async function hashSenha(s) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+async function loginEmpresa() {
+  const btn = document.getElementById('btn-login-emp');
+  const msg = document.getElementById('msg-login');
+  const email = document.getElementById('e-email').value.trim();
+  const senha = document.getElementById('e-senha').value;
+  if (!email || !senha) { showMsg(msg,'Preencha e-mail e senha.','error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Entrando...';
+  const hash = await hashSenha(senha);
+
+  const { data, error } = await sb.from('empresas')
+    .select('*').eq('email', email).eq('senha_hash', hash).maybeSingle();
+
+  if (error || !data) {
+    showMsg(msg,'E-mail ou senha incorretos.','error');
+    btn.disabled = false; btn.textContent = 'Entrar →'; return;
+  }
+
+  sessionStorage.setItem('empresa', JSON.stringify(data));
+  empresaLogada = data;
+  showPainel();
+}
+
+function showPainel() {
+  document.getElementById('login-section').style.display = 'none';
+  document.getElementById('painel-empresa').classList.add('show');
+  document.getElementById('nav-logout').style.display = 'block';
+  document.getElementById('emp-nome').textContent = empresaLogada.nome_fantasia;
+  document.getElementById('emp-setor').textContent = empresaLogada.setor || 'Painel de gerenciamento';
+  loadVagas();
+}
+
+async function loadVagas() {
+  const { data, error } = await sb.from('vagas')
+    .select('*').eq('empresa_id', empresaLogada.id).order('created_at', {ascending:false});
+
+  document.getElementById('vagas-loading').style.display = 'none';
+
+  todasVagas = data || [];
+  document.getElementById('s-total').textContent = todasVagas.filter(v=>v.status==='aprovada'||v.status==='encerrada').length;
+  loadAllStats();
+  renderVagas();
+}
+
+async function loadAllStats() {
+  const ids = todasVagas.map(v=>v.id);
+  if (!ids.length) return;
+  const { data } = await sb.from('candidaturas').select('status').in('vaga_id', ids);
+  const total = data?.length || 0;
+  const analise = data?.filter(c=>c.status==='em_analise').length || 0;
+  document.getElementById('s-cands').textContent = total;
+  document.getElementById('s-analise').textContent = analise;
+}
+
+function renderVagas() {
+  const list = document.getElementById('vagas-list');
+  if (!todasVagas.length) {
+    list.innerHTML = `<div class="empty-msg"><div><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>Nenhuma vaga cadastrada ainda.<br><a href="cadastro-empresa.html" style="color:var(--violet);font-weight:600;">Cadastrar nova vaga →</a></div>`;
+    return;
+  }
+  const statusLabel = {pendente:'Pendente', aprovada:'Aprovada', rejeitada:'Rejeitada', encerrada:'Encerrada'};
+  const statusClass = {pendente:'b-pendente', aprovada:'b-aprovada', rejeitada:'b-rejeitada', encerrada:'b-encerrada'};
+  list.innerHTML = todasVagas.map(v => {
+    const actions = `
+      <div class="vaga-actions" onclick="event.stopPropagation()">
+        <button class="btn-vaga-action btn-edit" onclick="abrirEdicao('${v.id}')"><svg style="vertical-align:middle;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> Editar</button>
+        ${v.status === 'aprovada'
+          ? `<button class="btn-vaga-action btn-close" onclick="encerrarVaga('${v.id}')"><svg style="vertical-align:middle;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Encerrar</button>`
+          : v.status === 'encerrada'
+          ? `<button class="btn-vaga-action btn-reopen" onclick="reabrirVaga('${v.id}')"><svg style="vertical-align:middle;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg> Reabrir</button>`
+          : ''}
+        <button class="btn-vaga-action btn-del" onclick="excluirVaga('${v.id}')"><svg style="vertical-align:middle;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Excluir</button>
+        <button class="btn-vaga-action btn-edit" style="border-color:rgba(6,182,212,.3);color:#0891B2;background:rgba(6,182,212,.06)" onclick="selectVaga('${v.id}')"><svg style="vertical-align:middle;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Candidatos</button>
+      </div>`;
+    return `
+    <div class="vaga-item ${vagaSelecionada===v.id?'selected':''}">
+      <div class="vaga-item-header">
+        <div>
+          <div class="vaga-title">${v.titulo}</div>
+          <div class="vaga-meta">${v.tipo} · ${v.area} · ${v.cidade} · R$ ${Number(v.bolsa||0).toLocaleString('pt-BR')}/mês${v.confidencial ? ' · Confidencial' : ''}</div>
+        </div>
+        <span class="badge ${statusClass[v.status]||''}">${statusLabel[v.status]||v.status}</span>
+      </div>
+      ${actions}
+    </div>`;
+  }).join('');
+}
+
+// ---- EDITAR VAGA ----
+function abrirEdicao(vagaId) {
+  const v = todasVagas.find(x => x.id === vagaId);
+  if (!v) return;
+  document.getElementById('edit-vaga-id').value = vagaId;
+  setVal('edit-titulo',    v.titulo);
+  setVal('edit-tipo',      v.tipo);
+  setVal('edit-area',      v.area);
+  setVal('edit-modalidade',v.modalidade);
+  setVal('edit-cidade',    v.cidade);
+  setVal('edit-periodo',   v.periodo);
+  setVal('edit-horas',     v.horas);
+  setVal('edit-esc',       v.escolaridade);
+  setVal('edit-bolsa',     v.bolsa);
+  setVal('edit-numvagas',  v.num_vagas);
+  setVal('edit-descricao', v.descricao);
+  setVal('edit-requisitos',v.requisitos);
+  setVal('edit-prazo',     v.prazo);
+  const confEl = document.getElementById('edit-confidencial'); if(confEl) confEl.checked = !!v.confidencial;
+  document.getElementById('msg-modal-edit').style.display = 'none';
+  document.getElementById('modal-editar').classList.add('open');
+}
+
+function setVal(id, val) { const el = document.getElementById(id); if(el && val !== null && val !== undefined) el.value = val; }
+
+async function salvarEdicao() {
+  const btn = document.getElementById('btn-salvar-edicao');
+  const msg = document.getElementById('msg-modal-edit');
+  const vagaId = document.getElementById('edit-vaga-id').value;
+  const titulo = document.getElementById('edit-titulo').value.trim();
+  if (!titulo) { showMsgModal(msg,'Título é obrigatório.','error'); return; }
+
+  btn.disabled = true; btn.textContent = 'Salvando...';
+
+  const updates = {
+    titulo,
+    tipo:        gv('edit-tipo'),
+    area:        gv('edit-area'),
+    modalidade:  gv('edit-modalidade'),
+    cidade:      gv('edit-cidade'),
+    periodo:     gv('edit-periodo'),
+    horas:       gv('edit-horas'),
+    escolaridade:gv('edit-esc'),
+    bolsa:       Number(gv('edit-bolsa')) || 0,
+    num_vagas:   Number(gv('edit-numvagas')) || 1,
+    descricao:   gv('edit-descricao'),
+    requisitos:  gv('edit-requisitos'),
+    prazo:        gv('edit-prazo'),
+    confidencial: document.getElementById('edit-confidencial')?.checked || false,
+  };
+
+  const { error } = await sb.from('vagas').update(updates).eq('id', vagaId);
+  if (error) {
+    showMsgModal(msg, 'Erro ao salvar. Tente novamente.', 'error');
+    btn.disabled = false; btn.textContent = 'Salvar alterações ✓';
+    return;
+  }
+
+  // Atualiza cache local
+  const idx = todasVagas.findIndex(v => v.id === vagaId);
+  if (idx !== -1) todasVagas[idx] = { ...todasVagas[idx], ...updates };
+
+  showMsgModal(msg, 'Vaga atualizada com sucesso!', 'success');
+  btn.disabled = false; btn.textContent = 'Salvar alterações ✓';
+  renderVagas();
+  setTimeout(() => fecharEdicao(), 1200);
+}
+
+function fecharEdicao() {
+  document.getElementById('modal-editar').classList.remove('open');
+}
+
+// ---- ENCERRAR / REABRIR ----
+async function encerrarVaga(vagaId) {
+  if (!confirm('Encerrar esta vaga? Ela sairá do portal mas ficará no seu histórico.')) return;
+  const { error } = await sb.from('vagas').update({ status: 'encerrada' }).eq('id', vagaId);
+  if (error) { showToast('Erro ao encerrar.', 'error'); return; }
+  const v = todasVagas.find(x => x.id === vagaId);
+  if (v) v.status = 'encerrada';
+  showToast('Vaga encerrada.', 'success');
+  renderVagas(); loadAllStats();
+}
+
+async function reabrirVaga(vagaId) {
+  if (!confirm('Reabrir esta vaga? Ela voltará a aparecer no portal.')) return;
+  const { error } = await sb.from('vagas').update({ status: 'aprovada' }).eq('id', vagaId);
+  if (error) { showToast('Erro ao reabrir.', 'error'); return; }
+  const v = todasVagas.find(x => x.id === vagaId);
+  if (v) v.status = 'aprovada';
+  showToast('Vaga reaberta!', 'success');
+  renderVagas(); loadAllStats();
+}
+
+async function excluirVaga(vagaId) {
+  const v = todasVagas.find(x => x.id === vagaId);
+  if (!confirm(`Excluir permanentemente "${v?.titulo}"? Esta ação não pode ser desfeita.`)) return;
+  const { error } = await sb.from('vagas').delete().eq('id', vagaId);
+  if (error) { showToast('Erro ao excluir.', 'error'); return; }
+  todasVagas = todasVagas.filter(x => x.id !== vagaId);
+  if (vagaSelecionada === vagaId) {
+    vagaSelecionada = null;
+    document.getElementById('candidatos-panel').style.display = 'none';
+  }
+  showToast('Vaga excluída.', 'error');
+  renderVagas(); loadAllStats();
+}
+
+function showMsgModal(el, txt, type) { el.textContent = txt; el.className = `msg-modal ${type}`; }
+function gv(id) { return document.getElementById(id)?.value?.trim() || ''; }
+
+async function selectVaga(vagaId) {
+  vagaSelecionada = vagaId;
+  renderVagas();
+
+  const vaga = todasVagas.find(v=>v.id===vagaId);
+  const panel = document.getElementById('candidatos-panel');
+  panel.style.display = 'block';
+  document.getElementById('cands-title').textContent = `Candidatos para: ${vaga?.titulo}`;
+  document.getElementById('cands-loading2').style.display = 'block';
+  document.getElementById('cands-list').innerHTML = '';
+  panel.scrollIntoView({behavior:'smooth', block:'start'});
+
+  const { data, error } = await sb.from('candidaturas')
+    .select('*, candidatos(nome, email, telefone, cidade, estado, escolaridade, curso, periodo_disponivel, linkedin, sobre, disc_perfil, disc_scores, cv_url)')
+    .eq('vaga_id', vagaId).order('created_at', {ascending:false});
+
+  document.getElementById('cands-loading2').style.display = 'none';
+  const list = document.getElementById('cands-list');
+
+  if (error || !data?.length) {
+    list.innerHTML = '<div class="empty-msg"><div><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>Nenhum candidato ainda para esta vaga.</div>';
+    return;
+  }
+
+  const statusLabel = {em_analise:'Em análise', aprovado:'Aprovado', recusado:'Recusado'};
+  list.innerHTML = data.map(c => {
+    const cd = c.candidatos;
+    const initial = cd?.nome?.charAt(0)?.toUpperCase() || '?';
+    const statusActions = c.status === 'em_analise'
+      ? `<button class="btn-sm btn-approve" onclick="updateCand('${c.id}','aprovado')"><svg style="vertical-align:middle;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Aprovar</button>
+         <button class="btn-sm btn-reject"  onclick="updateCand('${c.id}','recusado')"><svg style="vertical-align:middle;flex-shrink:0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Recusar</button>`
+      : `<span class="status-badge s-${c.status}">${statusLabel[c.status]}</span>`;
+
+    const waLink = cd?.telefone
+      ? `<a href="https://wa.me/55${cd.telefone.replace(/\D/g,'')}?text=${encodeURIComponent('Olá ' + (cd?.nome||'') + '! Vi sua candidatura no Conecta e gostaríamos de conversar. Quando você tem disponibilidade?')}" target="_blank" class="btn-sm" style="background:linear-gradient(135deg,#25D366,#128C7E);color:white;text-decoration:none;display:inline-flex;align-items:center;gap:.25rem">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.122 1.523 5.856L.057 23.882l6.197-1.624A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.886 9.886 0 01-5.032-1.371l-.361-.214-3.735.979 1.004-3.648-.235-.374A9.86 9.86 0 012.106 12C2.106 6.58 6.58 2.106 12 2.106c5.42 0 9.894 4.474 9.894 9.894 0 5.42-4.474 9.894-9.894 9.894z"/></svg>
+        WhatsApp</a>` : '';
+
+    const liLink = cd?.linkedin
+      ? `<a href="${cd.linkedin.startsWith('http') ? cd.linkedin : 'https://' + cd.linkedin}" target="_blank" class="btn-sm" style="background:linear-gradient(135deg,#0A66C2,#004182);color:white;text-decoration:none;display:inline-flex;align-items:center;gap:.25rem">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn</a>` : '';
+
+    return `
+      <div class="cand-row" id="cand-${c.id}">
+        <div class="cand-avatar">${initial}</div>
+        <div class="cand-info">
+          <div class="cand-name" style="display:flex;align-items:center;gap:.5rem">
+            ${cd?.nome||'—'}
+            ${cd?.disc_perfil ? discBadge(cd.disc_perfil) : ''}
+          </div>
+          <div class="cand-meta">
+            ${cd?.email||'—'} · ${cd?.cidade||'—'}${cd?.estado?', '+cd.estado:''}<br>
+            ${cd?.escolaridade||'—'}${cd?.curso?' · '+cd.curso:''} · ${cd?.periodo_disponivel||'—'}
+            ${cd?.cv_url ? ` · <a href="${cd.cv_url}" target="_blank" style="color:#DC2626;font-weight:700;text-decoration:none"> Currículo</a>` : ''}
+          </div>
+          ${cd?.sobre ? `<div style="font-size:.78rem;color:var(--muted);margin-top:.3rem;font-style:italic">"${cd.sobre.substring(0,100)}${cd.sobre.length>100?'...':''}"</div>` : ''}
+          <div style="display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap">
+            ${waLink}${liLink}
+          </div>
+        </div>
+        <div class="cand-actions">${statusActions}</div>
+      </div>`;
+  }).join('');
+}
+
+async function updateCand(candId, newStatus) {
+  const { error } = await sb.from('candidaturas').update({status: newStatus}).eq('id', candId);
+  if (error) { showToast('Erro ao atualizar.','error'); return; }
+  showToast(newStatus==='aprovado' ? 'Candidato aprovado!' : 'Candidato recusado.', newStatus==='aprovado'?'success':'error');
+  selectVaga(vagaSelecionada);
+  loadAllStats();
+}
+
+function logout() {
+  sessionStorage.removeItem('empresa');
+  location.reload();
+}
+
+function showMsg(el, txt, type) { el.textContent = txt; el.className = `msg-box ${type}`; }
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.className = `toast ${type}`;
+  void t.offsetWidth; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 3000);
+}
+
+// ---- TABS ----
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab-section').forEach(s => s.classList.remove('show'));
+  document.querySelectorAll('.painel-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('show');
+  el.classList.add('active');
+}
+
+// ---- BUSCA CANDIDATOS ----
+async function buscarCandidatos() {
+  const nome    = document.getElementById('b-nome').value.trim().toLowerCase();
+  const cidade  = document.getElementById('b-cidade').value.trim().toLowerCase();
+  const estado  = document.getElementById('b-estado').value;
+  const esc     = document.getElementById('b-esc').value;
+  const periodo = document.getElementById('b-periodo').value;
+
+  document.getElementById('busca-inicial').style.display = 'none';
+  document.getElementById('busca-results').style.display = 'none';
+  document.getElementById('busca-loading').style.display = 'block';
+
+  let query = sb.from('candidatos').select('id,nome,email,telefone,cidade,estado,escolaridade,curso,periodo_disponivel,linkedin,sobre,disc_perfil,disc_scores,cv_url').order('created_at', { ascending: false });
+  if (estado)  query = query.eq('estado', estado);
+  if (esc)     query = query.eq('escolaridade', esc);
+  if (periodo) query = query.eq('periodo_disponivel', periodo);
+
+  const { data, error } = await query;
+  document.getElementById('busca-loading').style.display = 'none';
+
+  let results = data || [];
+
+  // Filtros client-side
+  if (nome)   results = results.filter(c =>
+    c.nome?.toLowerCase().includes(nome) ||
+    c.curso?.toLowerCase().includes(nome) ||
+    c.sobre?.toLowerCase().includes(nome) ||
+    c.instituicao?.toLowerCase().includes(nome)
+  );
+  if (cidade) results = results.filter(c => c.cidade?.toLowerCase().includes(cidade));
+  const discF = document.getElementById('b-disc').value;
+  if (discF) results = results.filter(c => c.disc_perfil === discF);
+
+  const count = document.getElementById('busca-count');
+  const list  = document.getElementById('busca-list');
+  const panel = document.getElementById('busca-results');
+
+  count.textContent = `${results.length} candidato${results.length !== 1 ? 's' : ''} encontrado${results.length !== 1 ? 's' : ''}`;
+
+  if (!results.length) {
+    list.innerHTML = '<div class="empty-msg"><div><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>Nenhum candidato encontrado com esses filtros.</div>';
+  } else {
+    list.innerHTML = results.map(c => renderCandidatoCard(c)).join('');
+  }
+
+  panel.style.display = 'block';
+}
+
+function renderCandidatoCard(c) {
+  const initial = c.nome?.charAt(0)?.toUpperCase() || '?';
+  const tags = [
+    c.escolaridade ? `<span class="cand-tag">${c.escolaridade}</span>` : '',
+    c.curso        ? `<span class="cand-tag cyan">${c.curso}</span>` : '',
+    c.periodo_disponivel ? `<span class="cand-tag yellow">${c.periodo_disponivel}</span>` : '',
+    c.cidade       ? `<span class="cand-tag green">${c.cidade}${c.estado ? ', ' + c.estado : ''}</span>` : '',
+    c.disc_perfil  ? discBadge(c.disc_perfil) : '',
+    c.cv_url       ? `<a href="${c.cv_url}" target="_blank" class="cand-tag" style="background:rgba(239,68,68,.1);color:#DC2626;text-decoration:none"> Ver currículo</a>` : '',
+  ].filter(Boolean).join('');
+
+  return `
+    <div class="cand-card-busca">
+      <div class="cand-card-top">
+        <div class="cand-card-avatar">${initial}</div>
+        <div style="flex:1">
+          <div class="cand-card-name">${c.nome}</div>
+          <div class="cand-card-sub">${c.instituicao || ''} ${c.curso ? '· ' + c.curso : ''}</div>
+        </div>
+        ${c.linkedin ? `<a href="${c.linkedin}" target="_blank" style="color:var(--violet);font-size:.78rem;font-weight:600;text-decoration:none">LinkedIn ↗</a>` : ''}
+      </div>
+      ${tags ? `<div class="cand-card-tags">${tags}</div>` : ''}
+      ${c.sobre ? `<div class="cand-card-sobre">"${c.sobre.substring(0, 180)}${c.sobre.length > 180 ? '...' : ''}"</div>` : ''}
+      <div class="cand-card-footer" style="flex-wrap:wrap;gap:.5rem">
+        <div class="cand-card-contato">${c.email}</div>
+        <div style="display:flex;gap:.4rem;flex-wrap:wrap">
+          ${c.telefone ? `<a href="https://wa.me/55${c.telefone.replace(/\D/g,'')}&text=${encodeURIComponent('Olá ' + c.nome + '! Vi seu perfil no Conecta e gostaria de conversar sobre uma oportunidade. Podemos falar?')}" target="_blank" class="btn-convidar" style="background:linear-gradient(135deg,#25D366,#128C7E);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.554 4.122 1.523 5.856L.057 23.882l6.197-1.624A11.945 11.945 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.886 9.886 0 01-5.032-1.371l-.361-.214-3.735.979 1.004-3.648-.235-.374A9.86 9.86 0 012.106 12C2.106 6.58 6.58 2.106 12 2.106c5.42 0 9.894 4.474 9.894 9.894 0 5.42-4.474 9.894-9.894 9.894z"/></svg>
+            WhatsApp
+          </a>` : ''}
+          ${c.linkedin ? `<a href="${c.linkedin.startsWith('http') ? c.linkedin : 'https://' + c.linkedin}" target="_blank" class="btn-convidar" style="background:linear-gradient(135deg,#0A66C2,#004182);text-decoration:none;display:inline-flex;align-items:center;gap:.3rem">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>` : ''}
+          <button class="btn-convidar" id="btn-inv-${c.id}" onclick="abrirConvite('${c.id}')">
+            ✉️ Convidar para vaga
+          </button>
+        </div>
+      </div>
+    </div>`;
+}
+
+// ---- CONVITE ----
+function abrirConvite(candId) {
+  const cands = document.querySelectorAll('.cand-card-busca');
+  // Pega dados do card
+  const btn = document.getElementById('btn-inv-' + candId);
+  const card = btn?.closest('.cand-card-busca');
+  const nome  = card?.querySelector('.cand-card-name')?.textContent || '—';
+  const email = card?.querySelector('.cand-card-contato')?.textContent?.replace('','') || '—';
+
+  document.getElementById('convite-cand-id').value = candId;
+  document.getElementById('convite-cand-info').innerHTML =
+    `<strong>${nome}</strong><br><span style="color:var(--muted)">${email}</span>`;
+
+  // Preenche select de vagas aprovadas
+  const sel = document.getElementById('convite-vaga');
+  sel.innerHTML = '<option value="">Selecione uma vaga...</option>';
+  todasVagas.filter(v => v.status === 'aprovada').forEach(v => {
+    sel.innerHTML += `<option value="${v.id}">${v.titulo} · ${v.cidade}</option>`;
+  });
+
+  document.getElementById('convite-msg').value = '';
+  document.getElementById('msg-convite').style.display = 'none';
+  document.getElementById('modal-convite').classList.add('open');
+}
+
+async function enviarConvite() {
+  const btn    = document.getElementById('btn-enviar-convite');
+  const msg    = document.getElementById('msg-convite');
+  const candId = document.getElementById('convite-cand-id').value;
+  const vagaId = document.getElementById('convite-vaga').value;
+
+  if (!vagaId) {
+    msg.textContent = 'Selecione uma vaga para convidar.';
+    msg.className = 'msg-modal error'; return;
+  }
+
+  btn.disabled = true; btn.textContent = 'Enviando...';
+
+  // Cria candidatura com status especial 'convidado'
+  const { error } = await sb.from('candidaturas').insert({
+    vaga_id: vagaId,
+    candidato_id: candId,
+    status: 'em_analise',
+    mensagem: document.getElementById('convite-msg').value.trim() || null
+  });
+
+  if (error && error.code === '23505') {
+    msg.textContent = 'Este candidato já se candidatou a esta vaga.';
+    msg.className = 'msg-modal error';
+    btn.disabled = false; btn.textContent = 'Enviar convite ✓';
+    return;
+  }
+
+  if (error) {
+    msg.textContent = 'Erro ao enviar convite. Tente novamente.';
+    msg.className = 'msg-modal error';
+    btn.disabled = false; btn.textContent = 'Enviar convite ✓';
+    return;
+  }
+
+  msg.textContent = 'Convite enviado! O candidato verá no painel dele.';
+  msg.className = 'msg-modal success';
+
+  // Marca botão como convidado
+  const invBtn = document.getElementById('btn-inv-' + candId);
+  if (invBtn) { invBtn.textContent = '✅ Convidado'; invBtn.classList.add('invited'); invBtn.disabled = true; }
+
+  btn.disabled = false; btn.textContent = 'Enviar convite ✓';
+  setTimeout(fecharConvite, 1500);
+}
+
+function fecharConvite() {
+  document.getElementById('modal-convite').classList.remove('open');
+}
+
+
+function discBadge(perfil) {
+  if (!perfil) return '';
+  const labels = {D:'Dominante',I:'Influente',S:'Estável',C:'Conscencioso'};
+  return `<span class="disc-badge disc-${perfil}">${labels[perfil]||perfil}</span>`;
+}
+
+if (empresaLogada) showPainel();
+</script>
+</body>
+</html>

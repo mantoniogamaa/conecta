@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conecta — Painel Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  /* ═══════════════════════════════════════════════
+     ADMIN ANHEMBI — REDESIGN COMPLETO
+     Pantone 7719C + 3285C + Cool Gray 10C
+  ═══════════════════════════════════════════════ */
+
+  /* Variáveis Admin */
+  :root {
+    --primary:       #007A5E;
+    --primary-dark:  #005C47;
+    --primary-mid:   #006B52;
+    --accent:        #00A88E;
+    --accent-dark:   #008C76;
+    --accent-light:  #E6F7F4;
+    --gray:          #76787B;
+    --gray-light:    #F0F1F2;
+    --bg:            #F4F8F7;
+    --dark:          #007A5E;
+    --text:          #1A2E28;
+    --muted:         #76787B;
+    --border:        #D4E5DF;
+    --white:         #FFFFFF;
+    --green:         #00A88E;
+    --orange:        #E65100;
+    --yellow:        #F5A623;
+    --cyan:          #00A88E;
+    --violet:        #007A5E;
+    --coral:         #005C47;
+    /* Admin específico */
+    --sidebar-bg:    #004D3D;
+    --sidebar-hover: rgba(0,168,142,.15);
+    --sidebar-active:rgba(0,168,142,.22);
+    --card-bg:       #FFFFFF;
+    --surface:       #FFFFFF;
+    --card:          #FFFFFF;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: #EEF4F2;
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* ══════════ SIDEBAR ══════════ */
+  .sidebar {
+    width: 256px; flex-shrink: 0;
+    background: var(--sidebar-bg);
+    border-right: none;
+    display: flex; flex-direction: column;
+    position: fixed; top: 0; left: 0; bottom: 0;
+    z-index: 50;
+    box-shadow: 4px 0 24px rgba(0,0,0,.15);
+  }
+
+  /* Marca d'água na sidebar */
+  .sidebar::before {
+    content: '';
+    position: absolute; bottom: 80px; left: -20px;
+    width: 200px; height: 60px;
+    background: url('logo-conecta-white.png') no-repeat center / contain;
+    opacity: .04;
+    pointer-events: none;
+  }
+
+  .sidebar-logo {
+    padding: 1.5rem 1.25rem 1.25rem;
+    border-bottom: 1px solid rgba(255,255,255,.08);
+    display: flex; flex-direction: column; gap: .3rem;
+  }
+
+  /* Logo na sidebar */
+  .logo {
+    display: block;
+    width: 194px; height: 55px;
+    background: url('logo-conecta-white.png') no-repeat left center / contain;
+    font-size: 0; color: transparent;
+    -webkit-text-fill-color: transparent;
+    cursor: pointer; text-decoration: none;
+    filter: brightness(0) invert(1);
+    opacity: .9;
+  }
+
+  .logo-sub {
+    font-size: .68rem; color: rgba(255,255,255,.4);
+    font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+    margin-top: .15rem;
+  }
+
+  .sidebar-nav {
+    flex: 1; padding: 1rem .75rem;
+    display: flex; flex-direction: column; gap: .2rem;
+    overflow-y: auto;
+  }
+
+  .nav-section-label {
+    font-size: .62rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .1em; color: rgba(255,255,255,.3);
+    padding: .75rem .85rem .25rem;
+    margin-top: .25rem;
+  }
+
+  .nav-item {
+    display: flex; align-items: center; gap: .75rem;
+    padding: .65rem .85rem; border-radius: 10px;
+    font-size: .84rem; font-weight: 600;
+    color: rgba(255,255,255,.6);
+    cursor: pointer; transition: all .2s;
+    text-decoration: none; position: relative;
+  }
+  .nav-item:hover {
+    background: var(--sidebar-hover);
+    color: rgba(255,255,255,.9);
+  }
+  .nav-item.active {
+    background: var(--sidebar-active);
+    color: white;
+    box-shadow: inset 3px 0 0 var(--accent);
+  }
+  .nav-item .icon {
+    font-size: .95rem; width: 20px; text-align: center;
+    opacity: .8;
+  }
+  .nav-item.active .icon { opacity: 1; }
+
+  .nav-badge {
+    margin-left: auto;
+    background: var(--accent);
+    color: white; font-size: .65rem; font-weight: 800;
+    padding: .15rem .5rem; border-radius: 50px;
+    min-width: 20px; text-align: center;
+  }
+  .nav-badge.green { background: #2E7D32; }
+
+  .sidebar-footer {
+    padding: 1rem .75rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+
+  .admin-pill {
+    display: flex; align-items: center; gap: .65rem;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px; padding: .75rem .85rem;
+    cursor: default;
+  }
+  .admin-avatar {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--primary-dark));
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; font-weight: 800; color: white; flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,.2);
+  }
+  .admin-info { flex: 1; min-width: 0; }
+  .admin-name { font-size: .82rem; font-weight: 700; color: white; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .admin-role { font-size: .68rem; color: rgba(255,255,255,.45); }
+
+  /* ══════════ MAIN ══════════ */
+  .main { margin-left: 256px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+
+  .topbar {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 40;
+    box-shadow: 0 1px 8px rgba(0,122,94,.06);
+  }
+
+  .topbar-title {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 1.15rem; font-weight: 700; color: var(--text);
+  }
+
+  .topbar-actions { display: flex; align-items: center; gap: .85rem; }
+
+  .search-wrap { position: relative; }
+  .search-wrap svg { position: absolute; left: .7rem; top: 50%; transform: translateY(-50%); color: var(--muted); }
+
+  .topbar-search {
+    padding: .55rem 1rem .55rem 2.4rem;
+    background: #EEF4F2;
+    border: 1.5px solid var(--border);
+    border-radius: 10px; font-size: .85rem; color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif; outline: none;
+    width: 240px; transition: all .2s;
+  }
+  .topbar-search::placeholder { color: var(--muted); }
+  .topbar-search:focus { border-color: var(--accent); background: white; box-shadow: 0 0 0 3px rgba(0,168,142,.1); }
+
+  .btn-new-vaga {
+    display: flex; align-items: center; gap: .4rem;
+    padding: .55rem 1.25rem;
+    background: var(--accent);
+    color: white; border: none; border-radius: 10px;
+    font-size: .85rem; font-weight: 700; cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all .2s; text-decoration: none;
+  }
+  .btn-new-vaga:hover { background: var(--accent-dark); transform: translateY(-1px); box-shadow: 0 4px 14px rgba(0,168,142,.3); }
+
+  .content { padding: 1.75rem 2rem; flex: 1; }
+
+  /* ══════════ SECTIONS ══════════ */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+
+  /* ══════════ STAT CARDS ══════════ */
+  .stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; margin-bottom: 1.75rem; }
+
+  .stat-card {
+    background: white; border-radius: 16px; padding: 1.5rem;
+    border: 1px solid var(--border);
+    position: relative; overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,122,94,.1); }
+
+  .stat-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+  .stat-card.c-violet::before { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+  .stat-card.c-coral::before  { background: var(--accent); }
+  .stat-card.c-green::before  { background: #2E7D32; }
+  .stat-card.c-yellow::before { background: var(--yellow); }
+
+  .stat-card::after {
+    content: ''; position: absolute; top: 0; right: 0;
+    width: 80px; height: 80px; border-radius: 50%;
+    transform: translate(25px, -25px); opacity: .08;
+  }
+  .stat-card.c-violet::after { background: var(--primary); }
+  .stat-card.c-coral::after  { background: var(--accent); }
+  .stat-card.c-green::after  { background: #2E7D32; }
+  .stat-card.c-yellow::after { background: var(--yellow); }
+
+  .stat-icon { font-size: 1.6rem; margin-bottom: .85rem; }
+  .stat-num {
+    font-family: 'Clash Display', sans-serif;
+    font-size: 2.2rem; font-weight: 700; line-height: 1;
+    margin-bottom: .25rem; color: var(--text);
+  }
+  .stat-label { font-size: .78rem; color: var(--muted); font-weight: 500; }
+  .stat-delta { font-size: .72rem; font-weight: 600; margin-top: .4rem; }
+  .delta-up   { color: #2E7D32; }
+  .delta-pend { color: var(--yellow); }
+  .stat-link  { font-size: .75rem; color: var(--accent); font-weight: 600; text-decoration: none; margin-top: .5rem; display: block; }
+  .stat-link:hover { text-decoration: underline; }
+
+  /* ══════════ PANEL ══════════ */
+  .panel-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+  .panel-title { font-family: 'Clash Display', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); }
+
+  .filter-tabs { display: flex; gap: .35rem; background: white; padding: .3rem; border-radius: 10px; border: 1px solid var(--border); }
+  .tab {
+    padding: .4rem .9rem; border-radius: 8px; font-size: .78rem; font-weight: 600;
+    cursor: pointer; border: none; color: var(--muted);
+    background: transparent; transition: all .2s; font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .tab:hover { color: var(--primary); background: var(--accent-light); }
+  .tab.active { background: var(--accent); color: white; }
+
+  /* ══════════ JOB CARDS ══════════ */
+  .job-list { display: flex; flex-direction: column; gap: .65rem; }
+
+  .admin-job-card {
+    background: white; border-radius: 14px; padding: 1.1rem 1.4rem;
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; gap: 1rem;
+    transition: all .2s;
+  }
+  .admin-job-card:hover { border-color: rgba(0,122,94,.3); box-shadow: 0 4px 16px rgba(0,122,94,.08); }
+
+  .ajc-logo {
+    width: 44px; height: 44px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+    background: var(--accent-light);
+  }
+  .ajc-info { flex: 1; min-width: 0; }
+  .ajc-title { font-weight: 700; font-size: .9rem; color: var(--text); margin-bottom: .2rem; }
+  .ajc-meta { display: flex; gap: 1rem; font-size: .76rem; color: var(--muted); flex-wrap: wrap; }
+  .ajc-meta span { display: flex; align-items: center; gap: .25rem; }
+  .ajc-actions { display: flex; gap: .4rem; flex-shrink: 0; }
+
+  .btn-action {
+    padding: .38rem .85rem; border-radius: 8px; font-size: .75rem; font-weight: 700;
+    cursor: pointer; border: 1.5px solid; font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all .2s;
+  }
+  .btn-view    { border-color: var(--border); color: var(--muted); background: white; }
+  .btn-view:hover { border-color: var(--primary); color: var(--primary); }
+  .btn-approve { border-color: rgba(0,168,142,.3); color: var(--accent-dark); background: rgba(0,168,142,.08); }
+  .btn-approve:hover { background: var(--accent); color: white; border-color: var(--accent); }
+  .btn-reject  { border-color: rgba(230,81,0,.25); color: var(--orange); background: rgba(230,81,0,.06); }
+  .btn-reject:hover { background: var(--orange); color: white; border-color: var(--orange); }
+  .btn-delete  { border-color: rgba(230,81,0,.2); color: #B71C1C; background: rgba(183,28,28,.05); }
+  .btn-delete:hover { background: #B71C1C; color: white; }
+
+  /* ══════════ STATUS BADGES ══════════ */
+  .status-badge { padding: .28rem .8rem; border-radius: 50px; font-size: .72rem; font-weight: 700; }
+  .status-pendente  { background: rgba(245,166,35,.12); color: #B45309; }
+  .status-aprovada  { background: rgba(0,168,142,.12); color: var(--accent-dark); }
+  .status-rejeitada { background: rgba(183,28,28,.1); color: #B71C1C; }
+  .status-encerrada { background: rgba(118,120,123,.12); color: var(--gray); }
+
+  /* ══════════ COMPANY CARDS ══════════ */
+  .companies-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 1rem; }
+  .company-card { background: white; border-radius: 16px; padding: 1.5rem; border: 1.5px solid var(--border); transition: all .2s; }
+  .company-card:hover { border-color: rgba(0,122,94,.3); box-shadow: 0 4px 16px rgba(0,122,94,.08); }
+  .cc-header { display: flex; align-items: center; gap: .85rem; margin-bottom: 1rem; padding-bottom: .85rem; border-bottom: 1px solid var(--border); }
+  .cc-avatar { width: 44px; height: 44px; border-radius: 12px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+  .cc-name  { font-weight: 700; font-size: .9rem; color: var(--text); }
+  .cc-setor { font-size: .75rem; color: var(--muted); margin-top: .15rem; }
+  .cc-meta  { display: flex; flex-direction: column; gap: .4rem; font-size: .78rem; color: var(--muted); }
+  .cc-meta span { display: flex; align-items: center; gap: .4rem; }
+
+  /* ══════════ SETTINGS ══════════ */
+  .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+  .settings-card { background: white; border-radius: 16px; padding: 1.5rem; border: 1.5px solid var(--border); }
+  .settings-card h3 { font-family: 'Clash Display', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; color: var(--text); display: flex; align-items: center; gap: .5rem; }
+
+  .setting-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid var(--border); }
+  .setting-row:last-child { border-bottom: none; padding-bottom: 0; }
+  .setting-name { font-size: .875rem; font-weight: 600; color: var(--text); margin-bottom: .15rem; }
+  .setting-desc { font-size: .75rem; color: var(--muted); line-height: 1.5; }
+
+  .toggle { width: 44px; height: 24px; border-radius: 50px; border: none; cursor: pointer; position: relative; flex-shrink: 0; background: var(--border); transition: background .2s; }
+  .toggle::after { content: ''; position: absolute; width: 18px; height: 18px; border-radius: 50%; background: white; top: 3px; left: 3px; transition: transform .2s; box-shadow: 0 1px 4px rgba(0,0,0,.2); }
+  .toggle.on { background: var(--accent); }
+  .toggle.on::after { transform: translateX(20px); }
+
+  /* ══════════ MODAL ══════════ */
+  .modal-overlay { position: fixed; inset: 0; background: rgba(0,30,20,.55); backdrop-filter: blur(4px); z-index: 200; display: none; align-items: center; justify-content: center; padding: 1rem; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: white; border-radius: 20px; width: 100%; max-width: 580px; max-height: 90vh; overflow-y: auto; padding: 2rem; position: relative; animation: modalIn .3s ease; }
+  @keyframes modalIn { from{transform:scale(.96) translateY(8px);opacity:0} to{transform:scale(1) translateY(0);opacity:1} }
+  .modal-close { position: absolute; top: 1.1rem; right: 1.1rem; background: var(--bg); border: none; width: 32px; height: 32px; border-radius: 50%; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; color: var(--muted); transition: background .2s; }
+  .modal-close:hover { background: var(--border); }
+  .modal-actions { display: flex; gap: .75rem; margin-top: 1.5rem; }
+  .btn-modal-approve { flex: 1; padding: .85rem; background: var(--accent); color: white; border: none; border-radius: 12px; font-size: .9rem; font-weight: 700; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; transition: all .2s; }
+  .btn-modal-approve:hover { background: var(--accent-dark); }
+  .btn-modal-reject { flex: 1; padding: .85rem; background: rgba(183,28,28,.08); color: #B71C1C; border: 1.5px solid rgba(183,28,28,.2); border-radius: 12px; font-size: .9rem; font-weight: 700; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; transition: all .2s; }
+  .btn-modal-reject:hover { background: #B71C1C; color: white; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+  .detail-item { background: var(--bg); border-radius: 10px; padding: .75rem; }
+  .detail-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .detail-value { font-size: .9rem; font-weight: 600; color: var(--text); margin-top: .2rem; }
+
+  /* ══════════ LOGIN ══════════ */
+  .login-screen {
+    position: fixed; inset: 0; z-index: 1000;
+    background: linear-gradient(155deg, #004D3D 0%, #007A5E 60%, #005C47 100%);
+    display: flex; align-items: center; justify-content: center; padding: 1rem;
+  }
+  .login-screen::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: radial-gradient(circle, rgba(0,168,142,.12) 1px, transparent 1px);
+    background-size: 36px 36px; pointer-events: none;
+  }
+  .login-screen::after {
+    content: '';
+    position: absolute; top: -80px; right: -80px;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(0,168,142,.25) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .login-card {
+    background: white; border-radius: 24px; padding: 2.5rem 2rem;
+    width: 100%; max-width: 400px; position: relative; z-index: 1;
+    box-shadow: 0 32px 64px rgba(0,0,0,.25);
+    text-align: center;
+  }
+  .login-logo-wrap {
+    margin-bottom: 1.75rem;
+    display: flex; justify-content: center;
+  }
+  .login-logo-wrap img { height: 56px; object-fit: contain; }
+  .login-card h1 { font-family: 'Clash Display', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--text); margin-bottom: .4rem; }
+  .login-card p  { font-size: .875rem; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.6; }
+
+  .login-input-wrap { position: relative; margin-bottom: .85rem; }
+  .login-input-wrap svg { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  .login-input {
+    width: 100%; padding: .85rem 1rem .85rem 2.8rem;
+    border: 1.5px solid var(--border); border-radius: 12px;
+    font-size: .9rem; font-family: 'Plus Jakarta Sans', sans-serif;
+    outline: none; background: var(--bg); color: var(--text);
+    transition: all .2s; text-align: left;
+  }
+  .login-input:focus { border-color: var(--accent); background: white; box-shadow: 0 0 0 3px rgba(0,168,142,.1); }
+  .login-input.shake { animation: shake .35s ease; }
+  @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
+
+  .eye-btn { position: absolute; right: .9rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1rem; color: var(--muted); }
+
+  .btn-login {
+    width: 100%; padding: .9rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    color: white; border: none; border-radius: 12px;
+    font-size: .95rem; font-weight: 700; cursor: pointer;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    transition: all .2s; margin-top: .25rem;
+  }
+  .btn-login:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,168,142,.35); }
+  .btn-login:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+  .login-error { display: none; background: rgba(183,28,28,.08); color: #B71C1C; padding: .65rem 1rem; border-radius: 10px; font-size: .82rem; font-weight: 600; margin-top: .75rem; }
+  .login-error.show { display: block; }
+  .locked-msg { display: none; background: rgba(245,166,35,.1); color: #B45309; padding: .65rem 1rem; border-radius: 10px; font-size: .82rem; font-weight: 600; margin-top: .75rem; }
+  .locked-msg.show { display: block; }
+  .login-attempts { font-size: .75rem; color: var(--muted); margin-top: .5rem; }
+
+  /* ══════════ EMPTY STATE ══════════ */
+  .empty-list { text-align: center; padding: 3rem 1rem; color: var(--muted); }
+  .empty-list div { font-size: 2.5rem; margin-bottom: .75rem; }
+  .empty-list strong { color: var(--text); font-size: .95rem; }
+
+  /* ══════════ TOAST ══════════ */
+  .toast { position: fixed; bottom: 1.5rem; right: 1.5rem; padding: .85rem 1.25rem; border-radius: 12px; font-size: .85rem; font-weight: 600; color: white; box-shadow: 0 8px 24px rgba(0,0,0,.2); transform: translateY(80px); opacity: 0; transition: all .3s; z-index: 300; max-width: 320px; }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast.success { background: var(--accent); }
+  .toast.error   { background: #B71C1C; }
+  .toast.info    { background: var(--primary); }
+
+  /* ══════════ BTN PRIMARY SM ══════════ */
+  .btn-primary-sm { padding: .5rem 1.1rem; background: var(--accent); color: white; border: none; border-radius: 8px; font-size: .82rem; font-weight: 700; cursor: pointer; font-family: 'Plus Jakarta Sans', sans-serif; transition: all .2s; }
+  .btn-primary-sm:hover { background: var(--accent-dark); transform: translateY(-1px); }
+
+  /* ══════════ ADMIN CANDIDATOS ══════════ */
+  .cand-row { display: flex; align-items: center; gap: 1rem; padding: 1rem 1.25rem; border-radius: 12px; border: 1.5px solid var(--border); margin-bottom: .5rem; transition: border-color .2s; background: white; }
+  .cand-row:hover { border-color: rgba(0,122,94,.25); }
+  .cand-avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent)); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1rem; flex-shrink: 0; }
+  .cand-name { font-weight: 700; font-size: .88rem; }
+  .cand-meta { font-size: .74rem; color: var(--muted); margin-top: .15rem; }
+
+  /* ══════════ RESPONSIVE ══════════ */
+  @media(max-width:900px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .sidebar { transform: translateX(-100%); transition: transform .3s; }
+    .sidebar.open { transform: translateX(0); }
+    .main { margin-left: 0; }
+  }
+  @media(max-width:600px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .settings-grid { grid-template-columns: 1fr; }
+  }
+
+
+  /* ── ADMIN TYPOGRAPHY UPGRADE ── */
+  body { font-family: 'DM Sans', 'Plus Jakarta Sans', sans-serif !important; }
+  .topbar-title, .panel-title, .stat-label-title { font-family: 'Clash Display', sans-serif !important; letter-spacing: -.02em !important; }
+  .stat-num { font-family: 'Clash Display', sans-serif !important; font-weight: 700 !important; }
+  .ajc-title { font-family: 'DM Sans', sans-serif !important; font-weight: 700 !important; }
+  .login-card h1 { font-family: 'Clash Display', sans-serif !important; font-size: 1.6rem !important; letter-spacing: -.025em !important; }
+  .settings-card h3 { letter-spacing: -.01em !important; }
+  .btn-login, .btn-new-vaga, .btn-primary-sm, .btn-action, .tab {
+    font-family: 'DM Sans', sans-serif !important;
+    font-weight: 700 !important;
+  }
+  .topbar-search { font-family: 'DM Sans', sans-serif !important; }
+  input, select, textarea { font-family: 'DM Sans', sans-serif !important; }
+
+  /* Nav item typography */
+  .nav-item { font-family: 'DM Sans', sans-serif !important; font-size: .84rem !important; font-weight: 600 !important; }
+  .nav-section-label { font-family: 'DM Sans', sans-serif !important; }
+
+  /* Dashboard section title */
+  .dashboard-title { font-family: 'Clash Display', sans-serif !important; }
+
+  /* Admin job card improvements */
+  .admin-job-card { border-radius: 16px !important; }
+  .stat-card { border-radius: 18px !important; }
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo-wrap">
+      <img src="logo-conecta-color.png" alt="Anhembi Morumbi - Polo Bauru-Centro">
+    </div>
+    <h1>Área Restrita</h1>
+    <p>Acesse com seu e-mail e senha<br>de administrador.</p>
+
+    <div class="login-input-wrap" style="margin-bottom:.75rem">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#8B7BAD"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <input class="login-input" type="email" id="login-email"
+        placeholder="Seu e-mail..." style="padding-left:2.8rem;letter-spacing:normal"
+        onkeydown="if(event.key==='Enter')tryLogin()">
+    </div>
+
+    <div class="login-input-wrap">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:#8B7BAD"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <input class="login-input" type="password" id="login-input"
+        placeholder="Sua senha..." style="padding-left:2.8rem"
+        onkeydown="if(event.key==='Enter')tryLogin()">
+      <button class="eye-btn" onclick="toggleEye()" id="eye-btn" title="Mostrar/ocultar" aria-label="Mostrar senha"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    </div>
+
+    <div class="login-error" id="login-error"> E-mail ou senha incorretos.</div>
+    <div class="locked-msg" id="locked-msg"> Muitas tentativas. Aguarde <span id="countdown">30</span> segundos.</div>
+
+    <button class="btn-login" id="btn-login" onclick="tryLogin()">
+      Entrar no Painel →
+    </button>
+
+    <div class="login-attempts" id="attempts-text"></div>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <span class="logo">Conecta</span>
+    <span class="logo-sub">Painel Admin</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Principal</div>
+    <a class="nav-item active" onclick="showSection('dashboard')">
+      <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Dashboard
+    </a>
+    <a class="nav-item" onclick="showSection('vagas')">
+      <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span> Vagas
+      <span class="nav-badge" id="badge-pendente">0</span>
+    </a>
+    <a class="nav-item" onclick="showSection('aprovadas')">
+      <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span> Aprovadas
+      <span class="nav-badge green" id="badge-aprovada">0</span>
+    </a>
+    <a class="nav-item" onclick="showSection('empresas')">
+      <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> Empresas
+    </a>
+    <div class="nav-section-label">Gestão</div>
+    <a class="nav-item" onclick="showSection('admins')">
+      <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Administradores
+    </a>
+    <a class="nav-item" onclick="showSection('configuracoes')">
+      <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></span> Configurações
+    </a>
+    <div style="flex:1"></div>
+    <a class="nav-item" href="index.html" style="color:var(--muted)">
+      <span class="icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Ver Portal
+    </a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-pill">
+      <div class="admin-avatar" id="sidebar-avatar">AD</div>
+      <div class="admin-info">
+        <div class="admin-name" id="sidebar-nome">Administrador</div>
+        <div class="admin-role" id="sidebar-email">admin</div>
+      </div>
+      <button onclick="logout()" title="Sair" style="background:none;border:none;cursor:pointer;color:var(--muted);font-size:1rem;transition:color 0.2s;" onmouseover="this.style.color='var(--primary-dark)'" onmouseout="this.style.color='var(--muted)'"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Dashboard</div>
+    <div class="topbar-actions">
+      <a class="btn-new-vaga" href="cadastro-empresa.html" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Nova Vaga
+      </a>
+      <div class="search-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input class="topbar-search" type="text" placeholder="Buscar vaga ou empresa..." id="topbar-search" oninput="filterJobs()">
+      </div>
+      <a href="cadastro-empresa.html" style="text-decoration:none;">
+        <button style="padding:0.5rem 1rem;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:white;border:none;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">+ Nova Vaga</button>
+      </a>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD -->
+    <div class="section active" id="section-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card c-yellow">
+          <div class="stat-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          <div class="stat-num" id="dash-pendente">0</div>
+          <div class="stat-label">Aguardando Aprovação</div>
+          <div class="stat-delta delta-pend">Vagas pendentes</div>
+        </div>
+        <div class="stat-card c-green">
+          <div class="stat-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <div class="stat-num" id="dash-aprovada">0</div>
+          <div class="stat-label">Vagas Aprovadas</div>
+          <div class="stat-delta delta-up">Publicadas no portal</div>
+        </div>
+        <div class="stat-card c-coral">
+          <div class="stat-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+          <div class="stat-num" id="dash-rejeitada">0</div>
+          <div class="stat-label">Vagas Rejeitadas</div>
+          <div class="stat-delta" style="color:var(--muted)">Reprovadas</div>
+        </div>
+        <div class="stat-card c-violet">
+          <div class="stat-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+          <div class="stat-num" id="dash-empresas">0</div>
+          <div class="stat-label">Empresas Cadastradas</div>
+          <div class="stat-delta delta-up">Total de empresas</div>
+        </div>
+      </div>
+
+      <div class="panel-header">
+        <div class="panel-title"><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Últimas Submissões</div>
+        <button class="tab active" onclick="showSection('vagas')">Ver todas →</button>
+      </div>
+      <div class="job-list" id="dashboard-recent"></div>
+    </div>
+
+    <!-- VAGAS PENDENTES -->
+    <div class="section" id="section-vagas">
+      <div class="panel-header">
+        <div class="panel-title"><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12"/></svg> Gerenciar Vagas</div>
+        <div class="filter-tabs">
+          <button class="tab active" onclick="setFilter('todas',this)">Todas</button>
+          <button class="tab" onclick="setFilter('pendente',this)">Pendentes</button>
+          <button class="tab" onclick="setFilter('aprovada',this)">Aprovadas</button>
+          <button class="tab" onclick="setFilter('rejeitada',this)">Rejeitadas</button>
+        </div>
+      </div>
+      <div class="job-list" id="vagas-list"></div>
+    </div>
+
+    <!-- APROVADAS -->
+    <div class="section" id="section-aprovadas">
+      <div class="panel-header">
+        <div class="panel-title"><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg> Vagas Aprovadas</div>
+      </div>
+      <div class="job-list" id="aprovadas-list"></div>
+    </div>
+
+    <!-- EMPRESAS -->
+    <div class="section" id="section-empresas">
+      <div class="panel-header">
+        <div class="panel-title"><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg> Empresas Cadastradas</div>
+      </div>
+      <div class="companies-grid" id="companies-grid"></div>
+    </div>
+
+    <!-- CONFIGURAÇÕES -->
+    <div class="section" id="section-configuracoes">
+      <div class="settings-grid">
+        <div class="settings-card" style="grid-column:1/-1">
+          <h3><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Identidade Visual do Portal</h3>
+          <p style="font-size:.82rem;color:var(--muted);margin-bottom:1.5rem">Personalize a aparência do portal público. Alterações são salvas no banco e aplicadas imediatamente.</p>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+
+            <!-- LOGO -->
+            <div>
+              <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.75rem">Logo do Portal</div>
+              <div id="logo-preview-wrap" style="background:rgba(255,255,255,.05);border:1.5px dashed rgba(255,255,255,.15);border-radius:12px;padding:1.25rem;text-align:center;margin-bottom:.75rem;min-height:80px;display:flex;align-items:center;justify-content:center">
+                <span id="logo-preview-text" style="color:var(--muted);font-size:.82rem">Nenhuma logo carregada</span>
+                <img id="logo-preview-img" src="" alt="Logo" style="display:none;max-height:56px;max-width:200px;object-fit:contain">
+              </div>
+              <input type="file" id="logo-file-input" accept=".png,.jpg,.jpeg,.svg,.webp" style="display:none" onchange="previewLogo(event)">
+              <div style="display:flex;gap:.5rem">
+                <button onclick="document.getElementById('logo-file-input').click()" style="flex:1;padding:.5rem .9rem;background:rgba(167,139,250,.15);color:#A78BFA;border:1px solid rgba(167,139,250,.3);border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg> Escolher arquivo</button>
+                <button id="btn-salvar-logo" onclick="salvarLogo()" style="flex:1;padding:.5rem .9rem;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:white;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif" disabled><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> Salvar logo</button>
+              </div>
+              <button onclick="removerLogo()" style="width:100%;margin-top:.4rem;padding:.4rem;background:rgba(255,92,92,.1);color:#FF5C5C;border:1px solid rgba(255,92,92,.2);border-radius:8px;font-size:.72rem;font-weight:600;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif"> Remover logo</button>
+              <div id="msg-logo" style="font-size:.78rem;font-weight:600;margin-top:.5rem;display:none"></div>
+            </div>
+
+            <!-- NOME E COR -->
+            <div style="display:flex;flex-direction:column;gap:1rem">
+              <div>
+                <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem">Nome do Portal</div>
+                <input type="text" id="config-nome-portal" placeholder="Ex.: Conecta" value="Conecta"
+                  style="width:100%;padding:.7rem 1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;font-size:.9rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none">
+              </div>
+              <div>
+                <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.5rem">Cor Principal</div>
+                <div style="display:flex;align-items:center;gap:.75rem">
+                  <input type="color" id="config-cor-primary" value="var(--accent)"
+                    style="width:44px;height:36px;border:none;border-radius:8px;cursor:pointer;background:none">
+                  <input type="text" id="config-cor-text" value="var(--accent)" placeholder="var(--accent)"
+                    style="flex:1;padding:.6rem 1rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:10px;font-size:.875rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none"
+                    oninput="document.getElementById('config-cor-primary').value=this.value">
+                </div>
+                <div style="display:flex;gap:.4rem;margin-top:.6rem;flex-wrap:wrap">
+                  <button onclick="setColor('var(--accent)')" style="width:28px;height:28px;background:var(--accent);border:none;border-radius:6px;cursor:pointer;transition:transform .15s" title="Verde Anhembi" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='none'"></button>
+                  <button onclick="setColor('#1565C0')" style="width:28px;height:28px;background:#2ECFA8;border:none;border-radius:6px;cursor:pointer;transition:transform .15s" title="Verde Menta Anhembi" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='none'"></button>
+                  <button onclick="setColor('#2E7D32')" style="width:28px;height:28px;background:#2E7D32;border:none;border-radius:6px;cursor:pointer;transition:transform .15s" title="Verde" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='none'"></button>
+                  <button onclick="setColor('#6A1B9A')" style="width:28px;height:28px;background:#6A1B9A;border:none;border-radius:6px;cursor:pointer;transition:transform .15s" title="Roxo" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='none'"></button>
+                  <button onclick="setColor('#E65100')" style="width:28px;height:28px;background:#E65100;border:none;border-radius:6px;cursor:pointer;transition:transform .15s" title="Laranja" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='none'"></button>
+                  <button onclick="setColor('#1C1C1E')" style="width:28px;height:28px;background:#1C1C1E;border:none;border-radius:6px;cursor:pointer;transition:transform .15s" title="Preto" onmouseover="this.style.transform='scale(1.15)'" onmouseout="this.style.transform='none'"></button>
+                </div>
+              </div>
+              <button onclick="salvarConfiguracoes()" style="padding:.75rem;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:white;border:none;border-radius:10px;font-size:.875rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:transform .2s;margin-top:auto" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                Salvar configurações do portal ✓
+              </button>
+            </div>
+          </div>
+
+          <!-- PRÉVIA -->
+          <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid rgba(255,255,255,.08)">
+            <div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.75rem">Prévia do nav do portal</div>
+            <div id="nav-preview" style="background:rgba(248,248,248,.95);border-radius:12px;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;border:1px solid rgba(255,255,255,.1)">
+              <div id="nav-prev-logo" style="font-family:'Clash Display',sans-serif;font-size:1.3rem;font-weight:700;color:var(--accent)">Conecta</div>
+              <div style="display:flex;gap:1.5rem">
+                <span style="font-size:.8rem;color:#6B6B7B;font-weight:500">Ver Vagas</span>
+                <span style="font-size:.8rem;color:#6B6B7B;font-weight:500">Sobre</span>
+                <span style="font-size:.8rem;padding:.4rem 1rem;background:var(--accent);color:white;border-radius:50px;font-weight:600" id="nav-prev-btn">Criar Perfil</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-card">
+          <h3><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg> Notificações</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">E-mail ao receber vaga</div>
+              <div class="setting-desc">Receba um e-mail a cada nova submissão de vaga</div>
+            </div>
+            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">Lembrete de pendentes</div>
+              <div class="setting-desc">Alerta diário de vagas aguardando revisão</div>
+            </div>
+            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+        <div class="settings-card">
+          <h3><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg> Portal</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">Aprovação automática</div>
+              <div class="setting-desc">Publicar vagas sem revisão manual (não recomendado)</div>
+            </div>
+            <button class="toggle" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">Exibir bolsa nas cards</div>
+              <div class="setting-desc">Mostrar valor da bolsa nos cards da listagem</div>
+            </div>
+            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">Aceitar novas submissões</div>
+              <div class="setting-desc">Permitir que empresas cadastrem novas vagas</div>
+            </div>
+            <button class="toggle on" onclick="this.classList.toggle('on')"></button>
+          </div>
+        </div>
+        <div class="settings-card">
+          <h3><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg> Dados</h3>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">Limpar vagas rejeitadas</div>
+              <div class="setting-desc">Remove permanentemente todas as vagas rejeitadas</div>
+            </div>
+            <button onclick="clearRejected()" style="padding:0.4rem 0.9rem;background:rgba(255,92,92,0.15);color:var(--coral);border:1px solid rgba(255,92,92,0.3);border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">Limpar</button>
+          </div>
+          <div class="setting-row">
+            <div class="setting-info">
+              <div class="setting-name">Adicionar vagas de demonstração</div>
+              <div class="setting-desc">Popula o painel com dados fictícios para teste</div>
+            </div>
+            <button onclick="addDemoData()" style="padding:0.4rem 0.9rem;background:rgba(167,139,250,0.15);color:#80DFCC;border:1px solid rgba(167,139,250,0.3);border-radius:8px;font-size:0.78rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;">Adicionar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ADMINS -->
+    <div class="section" id="section-admins">
+      <div class="panel-header">
+        <div class="panel-title"><svg style="vertical-align:middle;flex-shrink:0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Administradores</div>
+        <button class="btn-primary-sm" onclick="openAdminModal()">+ Novo Admin</button>
+      </div>
+      <div class="job-list" id="admins-list"></div>
+    </div>
+
+  </div>
+</main>
+
+<!-- MODAL ADMINS -->
+<div class="modal-overlay" id="modal-admin-overlay" onclick="if(event.target===this)closeAdminModal()">
+  <div class="modal" style="max-width:420px">
+    <button class="modal-close" onclick="closeAdminModal()">×</button>
+    <h2 style="font-family:'Clash Display',sans-serif;font-size:1.3rem;margin-bottom:1.5rem"><svg style="vertical-align:middle;flex-shrink:0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Novo Administrador</h2>
+    <div style="display:flex;flex-direction:column;gap:1rem">
+      <div>
+        <label style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block;margin-bottom:.4rem">Nome</label>
+        <input type="text" id="new-admin-nome" placeholder="Nome do administrador"
+          style="width:100%;padding:.75rem 1rem;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;font-size:.9rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none">
+      </div>
+      <div>
+        <label style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block;margin-bottom:.4rem">E-mail</label>
+        <input type="email" id="new-admin-email" placeholder="email@exemplo.com"
+          style="width:100%;padding:.75rem 1rem;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;font-size:.9rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none">
+      </div>
+      <div>
+        <label style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);display:block;margin-bottom:.4rem">Senha</label>
+        <input type="password" id="new-admin-senha" placeholder="Mínimo 6 caracteres"
+          style="width:100%;padding:.75rem 1rem;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;font-size:.9rem;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;outline:none">
+      </div>
+      <div id="admin-modal-msg" style="font-size:.85rem;display:none;padding:.75rem;border-radius:8px;text-align:center"></div>
+      <button onclick="createAdmin()" style="width:100%;padding:.9rem;background:linear-gradient(135deg,var(--accent),var(--accent-dark));color:white;border:none;border-radius:12px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:transform .2s" onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+        Criar Administrador ✓
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL DETALHES -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn()">×</button>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = 'https://hnhxxchhwhdlpuiceirz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhuaHh4Y2hod2hkbHB1aWNlaXJ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM0MjY4MDMsImV4cCI6MjA4OTAwMjgwM30._N9DBrCq7lXW6tpfpcXHHcaH21AqEAcinPPIE-_-Ik8';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ---- AUTH ----
+let adminLogado = JSON.parse(sessionStorage.getItem('admin_data') || 'null');
+let attempts = 0;
+const MAX_ATTEMPTS = 5;
+let locked = false;
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+function checkAuth() {
+  if (adminLogado) {
+    document.getElementById('login-screen').style.display = 'none';
+    updateSidebarAdmin();
+    loadAllData().then(render);
+  }
+}
+
+async function tryLogin() {
+  if (locked) return;
+  const email = document.getElementById('login-email').value.trim();
+  const senha = document.getElementById('login-input').value;
+  const btn   = document.getElementById('btn-login');
+  const err   = document.getElementById('login-error');
+
+  if (!email || !senha) { err.classList.add('show'); return; }
+
+  btn.disabled = true; btn.textContent = 'Verificando...';
+  const hash = await sha256(senha);
+
+  const { data, error } = await sb.from('admins')
+    .select('*').eq('email', email).eq('senha_hash', hash).eq('ativo', true).maybeSingle();
+
+  if (error || !data) {
+    attempts++;
+    document.getElementById('login-input').value = '';
+    document.getElementById('login-input').classList.add('shake');
+    setTimeout(() => document.getElementById('login-input').classList.remove('shake'), 400);
+    err.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Entrar no Painel →';
+
+    const left = MAX_ATTEMPTS - attempts;
+    if (left > 0) document.getElementById('attempts-text').textContent = `Tentativas restantes: ${left}`;
+
+    if (attempts >= MAX_ATTEMPTS) {
+      locked = true; btn.disabled = true;
+      err.classList.remove('show');
+      document.getElementById('locked-msg').classList.add('show');
+      document.getElementById('attempts-text').textContent = '';
+      let secs = 30;
+      document.getElementById('countdown').textContent = secs;
+      const iv = setInterval(() => {
+        secs--; document.getElementById('countdown').textContent = secs;
+        if (secs <= 0) {
+          clearInterval(iv); locked = false; attempts = 0;
+          btn.disabled = false;
+          document.getElementById('locked-msg').classList.remove('show');
+          document.getElementById('attempts-text').textContent = '';
+        }
+      }, 1000);
+    }
+  } else {
+    sessionStorage.setItem('admin_data', JSON.stringify(data));
+    adminLogado = data;
+    document.getElementById('login-screen').style.display = 'none';
+    updateSidebarAdmin();
+    await loadAllData();
+    render();
+  }
+}
+
+function updateSidebarAdmin() {
+  if (!adminLogado) return;
+  document.getElementById('sidebar-nome').textContent = adminLogado.nome;
+  document.getElementById('sidebar-email').textContent = adminLogado.email;
+  document.getElementById('sidebar-avatar').textContent = adminLogado.nome.charAt(0).toUpperCase();
+}
+
+function toggleEye() {
+  const inp = document.getElementById('login-input');
+  const btn = document.getElementById('eye-btn');
+  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '···'; }
+  else { inp.type = 'password'; btn.textContent = '···'; }
+}
+
+function logout() {
+  sessionStorage.removeItem('admin_data');
+  location.reload();
+}
+
+// ---- ADMINS CRUD ----
+async function renderAdmins() {
+  const { data } = await sb.from('admins').select('*').order('created_at');
+  const list = document.getElementById('admins-list');
+
+  if (!data?.length) {
+    list.innerHTML = emptyHTML('Nenhum administrador', 'Adicione um novo admin clicando em "+ Novo Admin".');
+    return;
+  }
+
+  list.innerHTML = data.map(a => `
+    <div class="admin-job-card">
+      <div class="ajc-logo" style="background:linear-gradient(135deg,rgba(12,61,48,.3),rgba(255,92,92,.2));font-family:'Clash Display',sans-serif;font-weight:700;color:#80DFCC;font-size:1.2rem">
+        ${a.nome.charAt(0).toUpperCase()}
+      </div>
+      <div class="ajc-info">
+        <div class="ajc-title">${a.nome} ${a.email === adminLogado?.email ? '<span style="font-size:.7rem;background:rgba(167,139,250,.2);color:#80DFCC;padding:.15rem .5rem;border-radius:50px;font-weight:600">Você</span>' : ''}</div>
+        <div class="ajc-meta">
+          <span> ${a.email}</span>
+          <span> ${new Date(a.created_at).toLocaleDateString('pt-BR')}</span>
+        </div>
+      </div>
+      <span class="status-badge ${a.ativo ? 'status-aprovada' : 'status-rejeitada'}">${a.ativo ? 'Ativo' : 'Inativo'}</span>
+      <div class="ajc-actions">
+        ${a.email !== adminLogado?.email ? `
+          <button class="btn-action ${a.ativo ? 'btn-reject' : 'btn-approve'}" onclick="toggleAdminStatus('${a.id}', ${a.ativo})">
+            ${a.ativo ? 'Desativar' : 'Ativar'}
+          </button>
+          <button class="btn-action btn-delete" onclick="deleteAdmin('${a.id}', '${a.nome}')">Excluir</button>
+        ` : '<span style="font-size:.75rem;color:var(--muted)">Conta atual</span>'}
+      </div>
+    </div>`).join('');
+}
+
+async function createAdmin() {
+  const nome  = document.getElementById('new-admin-nome').value.trim();
+  const email = document.getElementById('new-admin-email').value.trim();
+  const senha = document.getElementById('new-admin-senha').value;
+  const msg   = document.getElementById('admin-modal-msg');
+
+  if (!nome || !email || !senha) { showAdminMsg('Preencha todos os campos.', 'error'); return; }
+  if (senha.length < 6) { showAdminMsg('Senha deve ter pelo menos 6 caracteres.', 'error'); return; }
+
+  const hash = await sha256(senha);
+  const { error } = await sb.from('admins').insert({ nome, email, senha_hash: hash });
+
+  if (error) {
+    showAdminMsg(error.code === '23505' ? 'Este e-mail já está cadastrado.' : 'Erro ao criar admin.', 'error');
+    return;
+  }
+
+  showAdminMsg('Administrador criado com sucesso!', 'success');
+  setTimeout(() => { closeAdminModal(); renderAdmins(); }, 1500);
+}
+
+async function toggleAdminStatus(id, ativo) {
+  await sb.from('admins').update({ ativo: !ativo }).eq('id', id);
+  showToast(ativo ? '❌ Admin desativado.' : '✅ Admin ativado!', ativo ? 'error' : 'success');
+  renderAdmins();
+}
+
+async function deleteAdmin(id, nome) {
+  if (!confirm(`Tem certeza que deseja excluir o admin "${nome}"?`)) return;
+  await sb.from('admins').delete().eq('id', id);
+  showToast('Admin excluído.', 'info');
+  renderAdmins();
+}
+
+function openAdminModal() {
+  document.getElementById('modal-admin-overlay').classList.add('open');
+  document.getElementById('new-admin-nome').value = '';
+  document.getElementById('new-admin-email').value = '';
+  document.getElementById('new-admin-senha').value = '';
+  document.getElementById('admin-modal-msg').style.display = 'none';
+}
+
+function closeAdminModal() {
+  document.getElementById('modal-admin-overlay').classList.remove('open');
+}
+
+function showAdminMsg(txt, type) {
+  const el = document.getElementById('admin-modal-msg');
+  el.textContent = txt;
+  el.style.display = 'block';
+  el.style.background = type === 'error' ? 'rgba(255,92,92,.15)' : 'rgba(16,185,129,.15)';
+  el.style.color = type === 'error' ? 'var(--primary-dark)' : '#10B981';
+}
+
+// ---- DATA (Supabase) ----
+let allVagas = [];
+let allCandidatos = [];
+
+async function loadAllData() {
+  const [vagasRes, candsRes] = await Promise.all([
+    sb.from('vagas').select('*, empresas(nome_fantasia, razao_social, cnpj, email, telefone, setor)').order('created_at', { ascending: false }),
+    sb.from('candidatos').select('*').order('created_at', { ascending: false })
+  ]);
+  allVagas      = vagasRes.data  || [];
+  allCandidatos = candsRes.data  || [];
+}
+
+let currentFilter = 'todas';
+let currentSection = 'dashboard';
+
+// ---- SECTIONS ----
+const sectionTitles = {
+  dashboard: 'Dashboard',
+  vagas: 'Gerenciar Vagas',
+  aprovadas: 'Vagas Aprovadas',
+  empresas: 'Empresas Cadastradas',
+  admins: 'Administradores',
+  configuracoes: 'Configurações'
+};
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`section-${id}`).classList.add('active');
+  event.currentTarget && event.currentTarget.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => { if (n.getAttribute('onclick') && n.getAttribute('onclick').includes(id)) n.classList.add('active'); });
+  document.getElementById('topbar-title').textContent = sectionTitles[id] || id;
+  currentSection = id;
+  loadAllData().then(render);
+}
+
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-tabs .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderVagas();
+}
+
+// ---- RENDER ----
+function render() {
+  updateStats();
+  if (currentSection === 'dashboard') renderDashboard();
+  else if (currentSection === 'vagas') renderVagas();
+  else if (currentSection === 'aprovadas') renderAprovadas();
+  else if (currentSection === 'empresas') renderEmpresas();
+  else if (currentSection === 'admins') renderAdmins();
+  else if (currentSection === 'configuracoes') carregarConfiguracoes();
+}
+
+function updateStats() {
+  const pend  = allVagas.filter(v => v.status === 'pendente').length;
+  const aprov = allVagas.filter(v => v.status === 'aprovada').length;
+  const rej   = allVagas.filter(v => v.status === 'rejeitada').length;
+  const emps  = new Set(allVagas.map(v => v.empresa_id).filter(Boolean)).size;
+
+  document.getElementById('dash-pendente').textContent  = pend;
+  document.getElementById('dash-aprovada').textContent  = aprov;
+  document.getElementById('dash-rejeitada').textContent = rej;
+  document.getElementById('dash-empresas').textContent  = emps;
+  document.getElementById('badge-pendente').textContent = pend;
+  document.getElementById('badge-aprovada').textContent = aprov;
+}
+
+function renderDashboard() {
+  const recentes = allVagas.slice(0, 5);
+  const c = document.getElementById('dashboard-recent');
+  c.innerHTML = recentes.length ? recentes.map(v => cardHTML(v, true)).join('') : emptyHTML('Nenhuma submissão ainda', 'As vagas cadastradas pelas empresas aparecerão aqui.');
+}
+
+function renderVagas() {
+  const kw = document.getElementById('topbar-search').value.toLowerCase();
+  let vagas = allVagas;
+  if (currentFilter !== 'todas') vagas = vagas.filter(v => v.status === currentFilter);
+  if (kw) vagas = vagas.filter(v =>
+    v.titulo?.toLowerCase().includes(kw) ||
+    v.empresas?.nome_fantasia?.toLowerCase().includes(kw) ||
+    v.area?.toLowerCase().includes(kw)
+  );
+  const c = document.getElementById('vagas-list');
+  c.innerHTML = vagas.length ? vagas.map(v => cardHTML(v, true)).join('') : emptyHTML('Nenhuma vaga', 'Nenhuma vaga com os filtros atuais.');
+}
+
+function renderAprovadas() {
+  const vagas = allVagas.filter(v => v.status === 'aprovada');
+  const c = document.getElementById('aprovadas-list');
+  c.innerHTML = vagas.length ? vagas.map(v => cardHTML(v, false)).join('') : emptyHTML('Nenhuma vaga aprovada', 'Aprove vagas na aba "Gerenciar Vagas".');
+}
+
+function renderEmpresas() {
+  const seen = new Set();
+  const empresas = allVagas.filter(v => {
+    if (!v.empresa_id || seen.has(v.empresa_id)) return false;
+    seen.add(v.empresa_id); return true;
+  });
+  const c = document.getElementById('companies-grid');
+  c.innerHTML = empresas.length ? empresas.map(v => `
+    <div class="company-card">
+      <div class="cc-header">
+        <div class="cc-avatar"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+        <div>
+          <div class="cc-name">${v.empresas?.nome_fantasia || '—'}</div>
+          <div class="cc-setor">${v.empresas?.setor || '—'}</div>
+        </div>
+      </div>
+      <div class="cc-meta">
+        <span> ${v.empresas?.email || '—'}</span>
+        <span> ${v.empresas?.telefone || '—'}</span>
+        <span> CNPJ: ${v.empresas?.cnpj || '—'}</span>
+        <span> ${allVagas.filter(x => x.empresa_id === v.empresa_id).length} vaga(s)</span>
+      </div>
+    </div>
+  `).join('') : emptyHTML('Nenhuma empresa', 'As empresas que cadastrarem vagas aparecerão aqui.');
+}
+
+function cardHTML(v, showActions) {
+  const badgeClass = `status-${v.status}`;
+  const badgeText  = v.status === 'pendente' ? 'Pendente' : v.status === 'aprovada' ? 'Aprovada' : 'Rejeitada';
+  const date = new Date(v.created_at).toLocaleDateString('pt-BR');
+  const emp  = v.empresas?.nome_fantasia || '—';
+  const id   = v.id;
+
+  let actions = '';
+  if (showActions) {
+    if (v.status === 'pendente') {
+      actions = `
+        <button class="btn-action btn-view"    onclick="event.stopPropagation();openDetail('${id}')">Ver</button>
+        <button class="btn-action btn-approve" onclick="event.stopPropagation();approveVaga('${id}')">Aprovar</button>
+        <button class="btn-action btn-reject"  onclick="event.stopPropagation();rejectVaga('${id}')">Rejeitar</button>`;
+    } else {
+      actions = `
+        <button class="btn-action btn-view"   onclick="event.stopPropagation();openDetail('${id}')">Ver</button>
+        <button class="btn-action btn-delete" onclick="event.stopPropagation();deleteVaga('${id}')">Excluir</button>`;
+    }
+  }
+
+  return `
+    <div class="admin-job-card" onclick="openDetail('${id}')">
+      <div class="ajc-logo" style="background:rgba(0,122,94,.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="12"/></svg></div>
+      <div class="ajc-info">
+        <div class="ajc-title">${v.titulo || 'Sem título'}</div>
+        <div class="ajc-meta">
+          <span> ${emp}</span>
+          <span> ${v.area || '—'}</span>
+          <span> ${v.cidade || '—'}</span>
+          <span> ${date}</span>
+        </div>
+      </div>
+      <span class="status-badge ${badgeClass}">${badgeText}</span>
+      <div class="ajc-actions">${actions}</div>
+    </div>`;
+}
+
+function emptyHTML(title, sub) {
+  return `<div class="empty-list"><div><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div><strong>${title}</strong><br><span style="font-size:0.8rem">${sub}</span></div>`;
+}
+
+// ---- ACTIONS (Supabase) ----
+async function approveVaga(id) {
+  const { error } = await sb.from('vagas').update({ status: 'aprovada' }).eq('id', id);
+  if (error) { showToast('Erro ao aprovar.', 'error'); return; }
+  const v = allVagas.find(x => x.id === id);
+  if (v) v.status = 'aprovada';
+  showToast('Vaga aprovada e publicada!', 'success');
+  render();
+}
+
+async function rejectVaga(id) {
+  const { error } = await sb.from('vagas').update({ status: 'rejeitada' }).eq('id', id);
+  if (error) { showToast('Erro ao rejeitar.', 'error'); return; }
+  const v = allVagas.find(x => x.id === id);
+  if (v) v.status = 'rejeitada';
+  showToast('Vaga rejeitada.', 'error');
+  render();
+}
+
+async function deleteVaga(id) {
+  if (!confirm('Excluir esta vaga permanentemente?')) return;
+  const { error } = await sb.from('vagas').delete().eq('id', id);
+  if (error) { showToast('Erro ao excluir.', 'error'); return; }
+  allVagas = allVagas.filter(v => v.id !== id);
+  showToast('Vaga excluída.', 'info');
+  render();
+}
+
+async function clearRejected() {
+  const ids = allVagas.filter(v => v.status === 'rejeitada').map(v => v.id);
+  if (!ids.length) { showToast('Nenhuma vaga rejeitada.', 'info'); return; }
+  await sb.from('vagas').delete().in('id', ids);
+  allVagas = allVagas.filter(v => v.status !== 'rejeitada');
+  showToast('Vagas rejeitadas removidas.', 'info');
+  render();
+}
+
+// ---- FILTER ----
+function filterJobs() { if (currentSection === 'vagas') renderVagas(); }
+
+// ---- DETAIL MODAL ----
+function openDetail(id) {
+  const v = allVagas.find(x => x.id === id);
+  if (!v) return;
+  const statusClass = `status-${v.status}`;
+  const statusText  = v.status === 'pendente' ? 'Pendente' : v.status === 'aprovada' ? 'Aprovada' : 'Rejeitada';
+
+  document.getElementById('modal-body').innerHTML = `
+    <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.25rem;">
+      <div style="flex:1">
+        <div style="font-size:0.78rem;color:var(--muted);margin-bottom:0.15rem;">${v.empresas?.nome_fantasia || '—'}</div>
+        <h2 style="font-family:'Clash Display',sans-serif;font-size:1.3rem;">${v.titulo || '—'}</h2>
+      </div>
+      <span class="status-badge ${statusClass}">${statusText}</span>
+    </div>
+
+    <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.5rem;">EMPRESA</div>
+    <div class="detail-grid" style="margin-bottom:1.25rem;">
+      <div class="detail-item"><div class="detail-label">Nome Fantasia</div><div class="detail-value">${v.empresas?.nome_fantasia || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">CNPJ</div><div class="detail-value">${v.empresas?.cnpj || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">E-mail</div><div class="detail-value">${v.empresas?.email || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">Telefone</div><div class="detail-value">${v.empresas?.telefone || '—'}</div></div>
+    </div>
+
+    <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.5rem;">VAGA</div>
+    <div class="detail-grid" style="margin-bottom:1.25rem;">
+      <div class="detail-item"><div class="detail-label">Tipo</div><div class="detail-value">${v.tipo || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">Área</div><div class="detail-value">${v.area || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">Modalidade</div><div class="detail-value">${v.modalidade || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">Cidade</div><div class="detail-value">${v.cidade || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">Período</div><div class="detail-value">${v.periodo || '—'}</div></div>
+      <div class="detail-item"><div class="detail-label">Bolsa</div><div class="detail-value">R$ ${Number(v.bolsa||0).toLocaleString('pt-BR')}/mês</div></div>
+    </div>
+
+    <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem;">DESCRIÇÃO</div>
+    <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.7;margin-bottom:1rem;">${v.descricao || '—'}</div>
+
+    <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem;">REQUISITOS</div>
+    <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:1rem;font-size:0.85rem;line-height:1.7;margin-bottom:1rem;">${v.requisitos || '—'}</div>
+
+    <div style="font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:0.4rem;">BENEFÍCIOS</div>
+    <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:1rem;font-size:0.85rem;margin-bottom:1.5rem;">${v.beneficios || '—'}</div>
+
+    ${v.status === 'pendente' ? `
+    <div class="modal-actions">
+      <button class="btn-modal-approve" onclick="approveVaga('${v.id}');closeModalBtn()"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg> Aprovar e Publicar</button>
+      <button class="btn-modal-reject"  onclick="rejectVaga('${v.id}');closeModalBtn()"><svg style="vertical-align:middle;flex-shrink:0" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg> Rejeitar</button>
+    </div>` : ''}
+  `;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalBtn(); }
+function closeModalBtn() { document.getElementById('modal-overlay').classList.remove('open'); document.body.style.overflow = ''; }
+
+// ---- TOAST ----
+function showToast(msg, type = 'info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type}`;
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ---- INIT ----
+// ---- INIT ----
+checkAuth();
+</script>
+</body>
+</html>
